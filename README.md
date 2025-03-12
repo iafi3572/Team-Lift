@@ -1,6 +1,8 @@
 # Team-Lift
 
 ADD DESCRIPTION__
+
+
 Contributors: Ian Fischer, Samuel Hagen, Matthew Cooper, Lana Reeves, Kirin Kawamoto\n
 ADD TECHNOLOGY STACK USED\n
 ADD Prerequisites to run the application - Any software that needs to be installed to run the application\n
