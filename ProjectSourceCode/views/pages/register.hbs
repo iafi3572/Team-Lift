@@ -1,0 +1,42 @@
+<form action="/register" method="post" class="container-md">
+    <h1 class="text-center">Lift Track Registration</h1>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input class="form-control" id="username" name="username" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="birthday">Birthday</label>
+        <input type="date" class="form-control" id="birthday" name="birthday" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+        />
+    </div>
+    <br />
+    <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+        type="confirmPassword"
+        class="form-control"
+        id="confirmPassword"
+        name="confirmPassword"
+    />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Register</button>
+
+    <p class="mt-3">Already have an account? <a href="/login">Log in</a></p>
+</form>
