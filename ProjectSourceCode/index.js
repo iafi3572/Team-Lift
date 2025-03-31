@@ -77,6 +77,10 @@ app.use(
 
 // TODO - Include your API routes here
 
+app.get('/', async (req, res) => {
+  const today = new Date().toLocaleDateString(); // Get current date
+  res.render('pages/home', { date: today });
+});
 
 
 // *****************************************************
