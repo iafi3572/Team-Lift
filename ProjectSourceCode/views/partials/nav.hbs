@@ -1,0 +1,108 @@
+<style>
+.navbar {
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.dropbtn {
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(37, 37, 37, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #b9b9b9;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #b9b9b9;}
+</style>
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <a class="navbar-brand" href="/"></a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          {{#if user}}
+            <a class="nav-link" href='/'>Home</a>
+          {{else}}
+            <a class="nav-link" href='/login'>Home</a>
+          {{/if}}
+        </li>
+        <li class="nav-item">
+          {{#if user}}
+            <a class="nav-link" href='/workouts'>Workouts</a>
+          {{else}}
+            <a class="nav-link" href='/login'>Workouts</a>
+          {{/if}}
+        </li>
+        <li class="dropdown">
+          <button class="dropbtn">My Fitness</button>
+          <div class="dropdown-content">
+            {{#if user}}
+              <a class="nav-link" href='/myplan'>My Plan</a>
+            {{else}}
+              <a class="nav-link" href='/login'>My Plan</a>
+            {{/if}}
+            {{#if user}}
+              <a class="nav-link" href='/tracking'>Tracking/Analytics</a>
+            {{else}}
+              <a class="nav-link" href='/login'>Tracking/Analytics</a>
+            {{/if}}
+            {{#if user}}
+              <a class="nav-link" href='/myworkouts'>My Workouts</a>
+            {{else}}
+              <a class="nav-link" href='/login'>My Workouts</a>
+            {{/if}}
+          </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href='/logout'>Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="navbar-collapse collapse order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="#">
+              {{user.email}}
+              </a>
+          </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
