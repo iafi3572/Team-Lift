@@ -96,9 +96,7 @@ app.get('/register', (req, res) => {
   res.render('pages/register.hbs')
 });
 
-app.get('/home', (req, res) => {
-  res.render('pages/home.hbs')
-});
+
 app.post('/register', async (req, res) =>{
   let password = req.body.password;
   let confirmPassword = req.body.confirmPassword;
