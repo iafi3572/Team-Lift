@@ -96,6 +96,9 @@ app.get('/register', (req, res) => {
   res.render('pages/register.hbs')
 });
 
+app.get('/home', (req, res) => {
+  res.render('pages/home.hbs')
+});
 app.post('/register', async (req, res) =>{
   let password = req.body.password;
   let confirmPassword = req.body.confirmPassword;
@@ -105,7 +108,7 @@ app.post('/register', async (req, res) =>{
 
   //checks that password and confirm password are the same
   if (password !== confirmPassword) {
-    res.render('pages/register',{
+    return res.render('pages/register',{
       error:true,
       message: 'Passwords do not match',
       username: username,
@@ -125,8 +128,16 @@ app.post('/register', async (req, res) =>{
   }
 
   catch(err) {
+    if (err.code == '23505') {
+      res.render('pages/register',{
+        error:true,
+        message: 'Username already exists',
+      });
+    }
+    else {
     console.error('error', err);
     res.redirect('/register');
+    }
   }
 });
 
@@ -135,6 +146,52 @@ app.get('/login', (req, res) => {
   res.render('pages/login.hbs')
 });
 
+app.get('/', (req, res) => {
+  res.redirect('/login'); 
+});
+
+app.post('/login', async (req, res) => { 
+  let username = req.body.username;
+
+  try {
+    const user = await db.one(`SELECT * FROM users WHERE username= $1;`, [username]);
+    
+    // check if password from request matches with password in DB
+    const match = await bcrypt.compare(req.body.password, user.hash_password);
+
+    res.status(200);
+
+    if (match) {
+      req.session.user = user;
+      req.session.save();
+
+      res.redirect("/home");
+    }
+
+    else {
+      res.render("pages/login", {
+        message: `Incorrect password`,
+        error: true,
+      });
+    }
+  }
+
+  catch (err) {
+
+    res.status(401);
+    res.redirect("/register")
+  }
+  });
+
+  const auth = (req, res, next) => {
+    if (!req.session.user) {
+      // Default to login page.
+      return res.redirect('/login');
+    }
+    next();
+  };
+  
+  app.use(auth);
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
