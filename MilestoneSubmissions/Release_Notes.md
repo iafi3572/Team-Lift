@@ -10,6 +10,9 @@
 
 - **Sam**:
 
+  - Excersize page UI 
+  - Excersize routes
+
 - **Matthew**:
 
 - **Kirin**:
@@ -17,3 +20,5 @@
 - **Ian**:
 
 ### Other Notes / Known Issues
+
+- API limits and display options
