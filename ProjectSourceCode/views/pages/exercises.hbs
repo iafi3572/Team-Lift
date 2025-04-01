@@ -1,0 +1,16 @@
+<table class="mx-4 table">
+  <tr>
+    <th>Name</th>
+    <th>Equipment</th>
+    <th>Image</th>
+    <th>Target Muscles</th>
+  </tr>
+  {{#each data}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{equipment}}</td>
+      <td><img src="{{gifUrl}}" alt="Event Image" width="100" /></td>
+      <td>{{target}}</td>
+    </tr>
+  {{/each}}
+</table>
