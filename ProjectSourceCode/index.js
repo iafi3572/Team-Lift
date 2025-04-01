@@ -72,18 +72,18 @@ app.use(
   })
 );
 
-app.get('/login', (req, res) => {
-  res.render('pages/login');
+app.get("/login", (req, res) => {
+  res.render("pages/login");
   //do something
 });
 
-app.get('/register', (req, res) => {
-  res.render('pages/register');
+app.get("/register", (req, res) => {
+  res.render("pages/register");
   //do something
 });
 
-app.get('/tracking', (req, res) => {
-  res.render('pages/tracking');
+app.get("/tracking", (req, res) => {
+  res.render("pages/tracking");
   //do something
 });
 
@@ -96,7 +96,7 @@ app.get('/tracking', (req, res) => {
 app.get("/exercises", async (req, res) => {
   const options = {
     method: "GET",
-    url: "https://exercisedb.p.rapidapi.com/exercises",
+    url: "https://exercisedb.p.rapidapi.com/exercises?limit=100",
     headers: {
       "X-RapidAPI-Key": process.env.API_KEY,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",

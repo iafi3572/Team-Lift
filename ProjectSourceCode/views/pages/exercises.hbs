@@ -1,16 +1,19 @@
-<table class="mx-4 table">
-  <tr>
-    <th>Name</th>
-    <th>Equipment</th>
-    <th>Image</th>
-    <th>Target Muscles</th>
-  </tr>
-  {{#each data}}
-    <tr>
-      <td>{{name}}</td>
-      <td>{{equipment}}</td>
-      <td><img src="{{gifUrl}}" alt="Event Image" width="100" /></td>
-      <td>{{target}}</td>
-    </tr>
-  {{/each}}
-</table>
+<div class="container mt-4">
+  <!-- Page Title -->
+  <h1 class="text-center mb-5 mt-5 fw-bold display-5">Exercise Library</h1>
+
+  <div class="row">
+    {{#each data}}
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card" style="width: 18rem;">
+          <img src="{{gifUrl}}" class="card-img-top" alt="{{name}}" />
+          <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text"><strong>Equipment:</strong> {{equipment}}</p>
+            <p class="card-text"><strong>Target Muscles:</strong> {{target}}</p>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
