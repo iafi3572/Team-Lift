@@ -76,7 +76,49 @@ app.use(
 // *****************************************************
 
 // TODO - Include your API routes here
+//Register
+app.get('/register', (req, res) => {
+  res.render('pages/register.hbs')
+});
 
+app.post('/register', async (req, res) =>{
+  let password = req.body.password;
+  let confirmPassword = req.body.confirmPassword;
+  let username = req.body.username;
+  let email = req.body.email;
+  let birthday = req.body.birthday;
+
+  //checks that password and confirm password are the same
+  if (password !== confirmPassword) {
+    res.render('pages/register',{
+      error:true,
+      message: 'Passwords do not match',
+      username: username,
+      email:email,
+      birthday:birthday
+    });
+  }
+
+  
+  const hash = await bcrypt.hash(req.body.password, 10);
+
+  try {
+    //adds data into user database then redirects user to login page
+    await db.none(`
+      INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`, [username, hash, email, birthday]);
+      res.status(201).redirect('/login');
+  }
+
+  catch(err) {
+    console.error('error', err);
+    res.redirect('/register');
+  }
+});
+
+//login
+app.get('/login', (req, res) => {
+  res.render('pages/login.hbs')
+});
 
 
 // *****************************************************
