@@ -64,7 +64,10 @@ app.use(
     resave: false,
   })
 );
-
+app.use((req,res, next)=> {
+  res.locals.user = req.session.user;
+  next();
+});
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -73,15 +76,6 @@ app.use(
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.get("/login", (req, res) => {
-  res.render("pages/login");
-  //do something
-});
-
-app.get("/register", (req, res) => {
-  res.render("pages/register");
-  //do something
-});
 
 app.get("/tracking", (req, res) => {
   res.render("pages/tracking");
