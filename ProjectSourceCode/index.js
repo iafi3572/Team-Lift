@@ -13,6 +13,8 @@ const bodyParser = require("body-parser");
 const session = require("express-session"); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require("bcryptjs"); //  To hash passwords
 const req = require("express/lib/request");
+const axios = require("axios").default;
+
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
@@ -144,6 +146,28 @@ app.get('/login', (req, res) => {
   res.render('pages/login.hbs')
 });
 
+app.get("/exercises", async (req, res) => {
+  const options = {
+    method: "GET",
+    url: "https://exercisedb.p.rapidapi.com/exercises?limit=100",
+    headers: {
+      "X-RapidAPI-Key": process.env.API_KEY,
+      "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const { data } = await axios.request(options);
+    console.log(data);
+    res.render("pages/exercises.hbs", { data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("pages/exercises.hbs", {
+      exercises: [],
+    });
+  }
+});
+
 app.get('/', (req, res) => {
   res.redirect('/login'); 
 });
@@ -201,5 +225,6 @@ app.get("/home", async (req, res) => {
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
+
 module.exports = app.listen(3000);
 console.log("Server is listening on port 3000");
