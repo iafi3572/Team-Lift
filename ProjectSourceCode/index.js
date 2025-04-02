@@ -220,6 +220,22 @@ app.get("/home", async (req, res) => {
   res.render("pages/home", { date: today });
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.render('pages/login', {
+        message: 'Error logging out. Please try again.',
+        error: true, // Indicate an error occurred
+      });
+    }
+    res.render('pages/login', {
+      message: 'Logged out Successfully',
+      error: false,
+    });
+  });
+});
+
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
