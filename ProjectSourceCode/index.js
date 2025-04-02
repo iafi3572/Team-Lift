@@ -92,6 +92,10 @@ app.get('/tracking', (req, res) => {
 
 // TODO - Include your API routes here
 
+app.get('/home', async (req, res) => {
+  const today = new Date().toLocaleDateString(); // Get current date
+  res.render('pages/home', { date: today });
+});
 
 
 // *****************************************************
