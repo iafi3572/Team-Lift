@@ -24,6 +24,9 @@
 
 - **Kirin**:
 
+  -  Created index.js file
+  -  Created logout route   
+
 - **Ian**:
 
 ### Other Notes / Known Issues
