@@ -10,8 +10,9 @@
 
 - **Sam**:
 
-  - Excersize page UI 
-  - Excersize routes
+  - Exercise page UI 
+  - Exercise routes
+  - Created the Docker file
 
 - **Matthew**:
 
