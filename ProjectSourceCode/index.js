@@ -71,6 +71,21 @@ app.use(
   })
 );
 
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+  //do something
+});
+
+app.get('/register', (req, res) => {
+  res.render('pages/register');
+  //do something
+});
+
+app.get('/tracking', (req, res) => {
+  res.render('pages/tracking');
+  //do something
+});
+
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
