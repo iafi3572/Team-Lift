@@ -223,7 +223,7 @@ app.get("/home", async (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
-      return res.render('pages/login', {
+      return res.render('pages/home', {
         message: 'Error logging out. Please try again.',
         error: true, // Indicate an error occurred
       });
