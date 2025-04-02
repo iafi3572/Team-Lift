@@ -7,10 +7,11 @@
   - Login Page (UI and Routes)
   - Register Page (UI and Routes)
   - User Database
+  - Head Partial and Main layout
 
 - **Sam**:
 
-  - Exercise page UI 
+  - Exercise page UI
   - Exercise routes
   - Created the Docker file
 
