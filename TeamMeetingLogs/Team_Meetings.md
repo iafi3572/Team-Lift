@@ -19,7 +19,7 @@
 
 - **Sam**: Working on Docker compose
 - **Lana**: Working on the register page and the database associated with users.
-- **Kirian**: Working on `index.js` and getting the barebones setup and logout page.
+- **Kirin**: Working on `index.js` and getting the barebones setup and logout page.
 - **Ian**: Filling in the icebox with more tasks for the home page.
   - Creating the layout for the homepage
 - **Mathew**:
