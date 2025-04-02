@@ -17,10 +17,10 @@
 
 - **Matthew**:
 
-  -message partial
-  -nav partial
-  -footer partial
-  -created logo
+  - message partial
+  - nav partial
+  - footer partial
+  - created logo
 
 - **Kirin**:
 
