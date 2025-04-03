@@ -235,7 +235,9 @@ app.get('/logout', (req, res) => {
   });
 });
 
-
+app.get('/myplan', (req, res) => {
+  res.render('pages/myplan.hbs')
+});
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
