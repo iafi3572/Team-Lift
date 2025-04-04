@@ -216,7 +216,8 @@ app.post('/login', async (req, res) => {
   app.use(auth);
 
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString(); // Get current date
+  const today = new Date().toLocaleDateString("en-US", {timeZone: "America/Denver"})
+ // Get current date
   res.render("pages/home", { date: today });
 });
 
