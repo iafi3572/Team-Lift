@@ -220,7 +220,10 @@ app.get("/home", async (req, res) => {
   res.render("pages/home", { date: today });
 });
 
-
+//myworkouts page
+app.get('/myworkouts', (req, res) => {
+  res.render('pages/myworkouts.hbs')
+});
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
