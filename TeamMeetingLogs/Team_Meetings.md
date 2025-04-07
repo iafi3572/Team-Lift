@@ -1,3 +1,19 @@
+
+# 4/2 Standup
+
+## Tasks/Follow-up Items (Roles & Responsibilities)
+
+- **Sam**: Working on the exercises page UI more, YouTube API, CSS style page.
+- **Lana**: Working on the My Workouts UI and My Workouts database.
+- **Kirin**: Working on the workout schedule - implementing features for the schedule page: adding workouts to the day and editing workouts on days.
+- **Ian**: Working on the workout schedule page - layout and calendar, and updating today’s workout onto the home page.  
+- **Mathew**: Working on analytics, goals, and statistics page.
+
+## Alternative Actions/Options Discussed
+
+- On track - no additional feedback.
+
+
 # 3/19 Standup
 
 ## Decisions Made
