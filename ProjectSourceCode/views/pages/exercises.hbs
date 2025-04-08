@@ -3,12 +3,12 @@
 
   <div class="row">
     {{#each data}}
-      <div class="col-md-4 col-sm-6 mb-3"> <!-- Reduced space between cards -->
+      <div class="col-md-4 col-sm-6 mb-3">
+        <!-- Reduced space between cards -->
         <button
-          class="card btn btn-outline-none w-100" <!-- Made the card a button and stretched to full width -->
+          class="card btn btn-outline-none w-100"
           data-bs-toggle="modal"
           data-bs-target="#exerciseModal{{@index}}"
-          style="border: none; padding: 0; display: block;" <!-- Removed button border and made card clickable -->
         >
           <img src="{{gifUrl}}" class="card-img-top" alt="{{name}}" />
           <div class="card-body">
