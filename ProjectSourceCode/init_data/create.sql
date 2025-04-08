@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS workouts (
-    workout_id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_id SERIAL PRIMARY KEY,
     username VARCHAR(50), 
     workout_name VARCHAR(255) NOT NULL, 
     workout_muscle VARCHAR(255) NOT NULL,
