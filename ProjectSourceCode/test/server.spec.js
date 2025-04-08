@@ -32,7 +32,7 @@ describe("Server!", () => {
 // ********************************************************************************
 
 // Example Positive Testcase :
-// API: /add_user
+// API: /register
 // // Input: {username: "John Doe", password: "hello", confirmPassword: "hello", email: "tester@tester.com",birthday: "2020-02-20"}
 // Expect: res.status == 200'
 // Result: This test case should pass and return a status 200.
@@ -59,12 +59,12 @@ describe("Testing Add User API", () => {
 });
 
 // Example Negative Testcase :
-// API: /add_user
+// API: /register
 // Input: {username: "John Doe", password: "hello", confirmPassword: "hello-not-matching", email: "tester@tester.com",birthday: "2020-02-20"}
 // Expect: res.status == 400'
 // Result: This test case should not pass because the passwords do not match
 // Explanation: The testcase will call the /register with the following input
-// and and expect a failure of the test case
+// and expect a failure of the test case with status 400
 
 describe("Testing Add User API", () => {
   it("negative : /register", (done) => {
@@ -77,6 +77,52 @@ describe("Testing Add User API", () => {
         confirmPassword: "not-matching",
         email: "tester@tester.com",
         birthday: "2020-02-20",
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+});
+
+// Example Positive Testcase :
+// API: /login
+// // Input: {username: "John Doe", password: "hello"}
+// Expect: res.status == 200'
+// Result: This test case should pass and return a status 200.
+// Explanation: The testcase will call the /login API with the following input
+// and expects the API to return a status of 200.
+describe("Login User API", () => {
+  it("positive : /login", (done) => {
+    chai
+      .request(server)
+      .post("/login")
+      .send({
+        username: "John Doe",
+        password: "hello",
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+});
+
+// Example Negative Testcase :
+// API: /login
+// Input: {username: "John Doe", password: "wrong password"}
+// Expect: res.status == 400'
+// Result: This test case should not pass because the password is wrong
+// Explanation: The testcase will call the /login with the following input
+// and expect a failure of the test case with status 400
+describe("Login User API", () => {
+  it("negative : /login", (done) => {
+    chai
+      .request(server)
+      .post("/login")
+      .send({
+        username: "John Doe",
+        password: "wrong password",
       })
       .end((err, res) => {
         expect(res).to.have.status(400);
