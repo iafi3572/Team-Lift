@@ -237,21 +237,181 @@ app.get('/logout', (req, res) => {
 
 // myplan page
 
-app.get('/myplan', (req, res) => {
-  // res.render('pages/myplan.hbs')
-  res.render("pages/myplan", {
-    weekdays: [
-      { id: "sun", label: "Sunday", scheduledSets: [] },
-      { id: "mon", label: "Monday", scheduledSets: [] },
-      { id: "tues", label: "Tuesday", scheduledSets: [] },
-      { id: "wed", label: "Wednesday", scheduledSets: [] },
-      { id: "thurs", label: "Thursday", scheduledSets: [] },
-      { id: "fri", label: "Friday", scheduledSets: [] },
-      { id: "sat", label: "Saturday", scheduledSets: [] }
-    ],
-    allWorkouts: [] // make sure this is included too
-  });
+// app.get('/myplan', (req, res) => {
+//   // res.render('pages/myplan.hbs')
+//   res.render("pages/myplan", {
+//     weekdays: [
+//       { id: "sun", label: "Sunday", scheduledSets: [] },
+//       { id: "mon", label: "Monday", scheduledSets: [] },
+//       { id: "tues", label: "Tuesday", scheduledSets: [] },
+//       { id: "wed", label: "Wednesday", scheduledSets: [] },
+//       { id: "thurs", label: "Thursday", scheduledSets: [] },
+//       { id: "fri", label: "Friday", scheduledSets: [] },
+//       { id: "sat", label: "Saturday", scheduledSets: [] }
+//     ],
+//     allWorkouts: [] // make sure this is included too
+//   });
   
+// });
+
+const weekLabels = [
+  { id: 'sun', label: 'Sunday' },
+  { id: 'mon', label: 'Monday' },
+  { id: 'tues', label: 'Tuesday' },
+  { id: 'wed', label: 'Wednesday' },
+  { id: 'thurs', label: 'Thursday' },
+  { id: 'fri', label: 'Friday' },
+  { id: 'sat', label: 'Saturday' }
+];
+
+app.get('/myplan', async (req, res) => {
+  const username = req.session.user.username; 
+
+  try {
+    const scheduleData = await db.any(`
+      SELECT
+        ws.day_of_week,
+        ws.start_time,
+        ws.duration_hours,
+        ws.duration_minutes,
+        s.set_id,
+        s.set_name,
+        w.workout_id,
+        w.workout_name,
+        w.workout_muscle,
+        wsi.order_index
+      FROM workout_schedule ws
+      JOIN workout_sets s ON ws.set_id = s.set_id
+      JOIN workout_set_items wsi ON s.set_id = wsi.set_id
+      JOIN workouts w ON wsi.workout_id = w.workout_id
+      WHERE ws.username = $1
+      ORDER BY 
+        ws.day_of_week,
+        ws.start_time,
+        wsi.order_index;
+    `, [username]);
+
+    // Group schedule by day -> set -> workouts
+    const setsByDay = {};
+
+    for (const row of scheduleData) {
+      const day = row.day_of_week;
+      if (!setsByDay[day]) setsByDay[day] = [];
+
+      let set = setsByDay[day].find(s => s.set_id === row.set_id);
+      if (!set) {
+        set = {
+          set_id: row.set_id,
+          set_name: row.set_name,
+          start_time: row.start_time.slice(0, 5), // remove seconds
+          duration_hours: row.duration_hours,
+          duration_minutes: row.duration_minutes,
+          workouts: []
+        };
+        setsByDay[day].push(set);
+      }
+
+      set.workouts.push({
+        workout_id: row.workout_id,
+        workout_name: row.workout_name,
+        workout_muscle: row.workout_muscle,
+        order_index: row.order_index
+      });
+    }
+
+    // Merge into full weekdays for template
+    const weekdays = weekLabels.map(day => ({
+      ...day,
+      scheduledSets: setsByDay[day.label] || []
+    }));
+
+    // Get all workouts (for modal list)
+    const allWorkouts = await db.any(`
+      SELECT workout_id, workout_name, workout_muscle
+      FROM workouts
+      WHERE username = $1
+      ORDER BY workout_name;
+    `, [username]);
+
+    console.log(username);
+    console.log(allWorkouts);
+    console.log('All Workouts:', {allWorkouts});
+
+    res.render('pages/myplan', {
+      weekdays,
+      allWorkouts
+    });
+
+    delete req.session.message; // Clear after render
+  } catch (err) {
+    console.error('Error loading schedule:', err);
+    res.render('pages/myplan', {
+      weekdays: weekLabels.map(day => ({ ...day, scheduledSets: [] })),
+      allWorkouts: [],
+      message: 'Failed to load schedule.',
+      error: true
+    });
+  }
+});
+
+
+app.post('/myplan/add', async (req, res) => {
+  try {
+    const username = req.session.user.username;
+    if (!username) return res.redirect('/login');
+
+    const {
+      set_name,
+      day_of_week,
+      start_time,
+      duration_hours,
+      duration_minutes
+    } = req.body;
+
+    const selectedWorkouts = req.body.workouts || []; // array of selected workout_ids
+    const workoutsArray = Array.isArray(selectedWorkouts)
+      ? selectedWorkouts
+      : [selectedWorkouts];
+
+    await db.task(async t => {
+      // 1. Insert into workout_sets
+      const insertSet = await t.one(
+        `INSERT INTO workout_sets (set_name, username)
+         VALUES ($1, $2)
+         RETURNING set_id`,
+        [set_name, username]
+      );
+      const set_id = insertSet.set_id;
+
+      // 2. Insert into workout_set_items
+      for (const workoutId of workoutsArray) {
+        const orderKey = `order_${workoutId}`;
+        const orderIndex = parseInt(req.body[orderKey]) || 999;
+        await t.none(
+          `INSERT INTO workout_set_items (set_id, workout_id, order_index)
+           VALUES ($1, $2, $3)`,
+          [set_id, workoutId, orderIndex]
+        );
+      }
+
+      // 3. Insert into workout_schedule
+      await t.none(
+        `INSERT INTO workout_schedule (
+          username, set_id, day_of_week, start_time, duration_hours, duration_minutes
+        ) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [username, set_id, day_of_week, start_time, duration_hours, duration_minutes]
+      );
+    });
+
+    res.redirect('/myplan');
+
+  } catch (err) {
+    console.error('Error adding workout set:', err);
+    res.status(400).render('pages/myplan', {
+      message: 'Failed to add workout set. Please check your inputs.',
+      error: true
+    });
+  }
 });
 
 

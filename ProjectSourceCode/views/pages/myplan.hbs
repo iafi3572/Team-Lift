@@ -1,3 +1,4 @@
+{{>message}}
     {{!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Plan</title>
@@ -71,7 +72,7 @@
         <button class="btn btn-outline-primary btn-sm mt-3"
                 data-bs-toggle="modal"
                 data-bs-target="#addSetModal"
-                data-day="{{this.id}}">
+                data-day="{{this.label}}">
           + Add
         </button>
       </div>
@@ -83,7 +84,7 @@
 {{!-- Modal --}}
 <div class="modal fade" id="addSetModal" tabindex="-1" aria-labelledby="addSetModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <form method="POST" action="/myplan/add-set">
+    <form method="POST" action="/myplan/add">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addSetModalLabel">Add Workout Set</h5>
