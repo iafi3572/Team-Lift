@@ -14,3 +14,4 @@ CREATE TABLE IF NOT EXISTS workouts (
     time_minutes INT,
     FOREIGN KEY (username) REFERENCES users(username)
 );
+
