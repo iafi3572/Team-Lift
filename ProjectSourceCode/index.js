@@ -221,9 +221,49 @@ app.get("/home", async (req, res) => {
 });
 
 //myworkouts page
-app.get('/myworkouts', (req, res) => {
-  res.render('pages/myworkouts.hbs')
+app.post('/myworkouts', async (req, res) =>{
+  let workoutName = req.body.workoutName;
+  let workoutMuscle = req.body.workoutMuscle;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  const username = req.session.user.username;
+
+  try {
+    //adds data into user database then redirects user to login page
+    await db.none(`
+      INSERT INTO workouts (username, workout_name, workout_muscle, time_hours, time_minutes) VALUES ($1, $2, $3, $4, $5);`, [username, workoutName, workoutMuscle, hour, min]);
+
+    res.redirect('/myworkouts');
+  }
+
+  catch(err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error saving workout. Please try again`,
+      error: true,
+    });
+  }
 });
+
+app.get('/myworkouts', async (req, res) => {
+  const username = req.session.user.username;
+  
+  try {
+    const workouts = await db.any('SELECT * FROM workouts WHERE username = $1;', [username]);
+    console.log(workouts);
+    res.render('pages/myworkouts', {
+      workouts,
+    });
+  }
+
+  catch(err) {
+    res.status(500).render('pages/myworkouts', {
+      error:true,
+      message: 'Could not load workouts. Please try again'
+    });
+  }
+});
+
+  
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************

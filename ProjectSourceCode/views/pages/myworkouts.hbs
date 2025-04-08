@@ -1,89 +1,147 @@
-<h1 class="text-center">My Workouts</h1>
-<div class="row">
-    <div class="col-2">
-        <div class="custom-container ms-2" >
+{{>message}}
+<div class="container mt-4">
+    <h1 class="text-center">My Workouts</h1>
+    <div class="row justify-content-center">
+        <div class="col-auto" >
             <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#event_modal">
                 Create Workout
             </button>
+            <br>
+            <br>
+            <br>
         </div>
-    </div>
 
+        <div
+            class="modal fade"
+            id="event_modal"
+            tabindex="-1"
+            aria-labelledby="event_modal_label"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="event_modal_label">Workout Information</h5>
+                        <button
+                            type="submit"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        >
+                        </button>
+                    </div>
 
-    <div
-        class="modal fade"
-        id="event_modal"
-        tabindex="-1"
-        aria-labelledby="event_modal_label"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="event_modal_label">Workout Information</h5>
-                    <button
-                        type="submit"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    >
-                    </button>
+                    <div class="modal-body">
+                        <form
+                        id="data-form"
+                        class="needs-validation"
+                        method="post"
+                        action="/myworkouts"
+                        >
+                        <div class="mb-3">
+                            <label for="workoutName" class="form-label"><strong>Workout Name</strong></label>
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="workoutName"
+                            name="workoutName"
+                            required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="workoutMuscle" class="form-label"><strong>Workout Muscle</strong></label>
+                            <select class="form-select" id="workoutMuscle" name="workoutMuscle" required>
+                                <option value="" selected disabled>Select Target Muscle</option>
+                                <option value="Abs">Abs</option>
+                                <option value="Biceps">Biceps</option>
+                                <option value="Calves">Calves</option>
+                                <option value="Cardio">Cardio</option>
+                                <option value="Chest">Chest</option>
+                                <option value="Shoulders">Shoulders</option>
+                                <option value="Forearms">Forearms</option>
+                                <option value="Legs">Legs</option>
+                                <option value="Hamstrings">Hamstrings</option>
+                                <option value="Back">Back</option>
+                                <option value="Quads">Quads</option>
+                                <option value="Traps">Traps</option>
+                                <option value="Triceps">Triceps</option>
+                                <option value="Upper Back">Upper Back</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="avg_time" class="form-label"><strong>Time for Completion</strong></label>
+                            <div>
+                                <label for="hour" class="form-label">Hour</label>
+                                <input type="number" class="form-control" id="hour" name="hour" min="0" max="23" placeholder="HH" required>
+                            </div>
+                            <div>
+                                <label for="minute" class="form-label">Minute</label>
+                                <input type="number" class="form-control" id="min" name="min" min="0" max="59" placeholder="MM" required>
+                            </div>
+
+                        </div>
+                        <button class="btn btn-primary" type="submit">
+                            Create Workout
+                        </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="row w-100" style="max-width: 1140px;">
+                {{#each workouts}}
+                <div class="col-md-4 col-sm-6 mb-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{workout_name}}</h5>
+                            <p class="card-text"><strong>Target Muscles:</strong> {{workout_muscle}}</p>
+                            <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
+                            <div>
+                                <button
+                                class="btn btn-light mt-3"
+                                data-bs-toggle="modal"
+                                data-bs-target="#info_modal_{{@index}}"
+                                >
+                                View More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="modal-body">
-                    <form
-                    id="data-form"
-                    class="needs-validation"
-                    >
-                    <div class="mb-3">
-                        <label for="workout_name" class="form-label"><strong>Workout Name</strong></label>
-                        <input
-                        type="text"
-                        class="form-control"
-                        id="workout_name"
-                        required
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <label for="workout_muscle" class="form-label"><strong>Workout Muscle</strong></label>
-                        <select class="form-select" id="workout_muscle" name="workout_muscle" required>
-                            <option value="" selected disabled>Select Target Muscle</option>
-                            <option value="Abs">Abs</option>
-                            <option value="Quads">Quads</option>
-                            <option value="Calves">Calves</option>
-                            <option value="Upper_Back">Upper Back</option>
-                            <option value="Biceps">Biceps</option>
-                            <option value="Triceps">Triceps</option>
-                            <option value="Delts">Delts</option>
-                            <option value="Hamstrings">Hamstrings</option>
-                            <option value="Cardio">Cardiovascular</option>
-                            <option value="Forearms">Forearms</option>
-                            <option value="Glutes">Glutes</option>
-                            <option value="Traps">Traps</option>
-                            <option value="Lats">Lats</option>
-                            <option value="Pectorals">Chest</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="avg_time" class="form-label"><strong>Time for Completion</strong></label>
-                        <div>
-                            <label for="hour" class="form-label">Hour</label>
-                            <input type="number" class="form-control" id="hour" min="0" max="23" placeholder="HH">
+                <!-- Modal for  workout -->
+                <div
+                class="modal fade"
+                id="info_modal_{{@index}}"
+                tabindex="-1"
+                aria-labelledby="info_modal_label_{{@index}}"
+                aria-hidden="true"
+                >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="info_modal_label_{{@index}}">Workout Information</h5>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                            <div class="modal-body">
+                                <h1>{{workout_name}}</h1>
+                                <p><strong>Target Muscle:</strong> {{workout_muscle}}</p>
+                                <p><strong>Time:</strong> {{time_hour}} hours {{time_minutes}} minutes</p>
+                                <button class="btn btn-danger">Delete Workout</button>
+                            </div>
                         </div>
-                        <div>
-                            <label for="minute" class="form-label">Minute</label>
-                            <input type="number" class="form-control" id="minute" min="0" max="59" placeholder="MM">
-                        </div>
-
                     </div>
-                    <button class="btn btn-primary" type="submit">
-                        Create Workout
-                    </button>
-
-                    </form>
                 </div>
+                {{/each}}
             </div>
         </div>
     </div>
 </div>
-
-
