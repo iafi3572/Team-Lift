@@ -1,0 +1,352 @@
+[
+  {
+    "name": "barbell standing twist",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Abs"
+  },
+  {
+    "name": "bottoms-up",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Abs"
+  },
+  {
+    "name": "cable judo flip",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Abs"
+  },
+  {
+    "name": "cable kneeling crunch",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Abs"
+  },
+  {
+    "name": "cable russian twists (on stability ball)",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Abs"
+  },
+  {
+    "name": "barbell alternate biceps curl",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Biceps"
+  },
+  {
+    "name": "barbell curl",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Biceps"
+  },
+  {
+    "name": "barbell drag curl",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Biceps"
+  },
+  {
+    "name": "barbell lying preacher curl",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Biceps"
+  },
+  {
+    "name": "barbell preacher curl",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Biceps"
+  },
+  {
+    "name": "barbell seated calf raise",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Calves"
+  },
+  {
+    "name": "barbell standing leg calf raise",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Calves"
+  },
+  {
+    "name": "barbell standing rocking leg calf raise",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Calves"
+  },
+  {
+    "name": "circles knee stretch",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Calves"
+  },
+  {
+    "name": "donkey calf raise",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Calves"
+  },
+  {
+    "name": "jack burpee",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Cardio"
+  },
+  {
+    "name": "mountain climber",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Cardio"
+  },
+  {
+    "name": "run (equipment)",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Cardio"
+  },
+  {
+    "name": "run",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Cardio"
+  },
+  {
+    "name": "stationary bike walk",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Cardio"
+  },
+  {
+    "name": "assisted chest dip (kneeling)",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Chest"
+  },
+  {
+    "name": "barbell bench press",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Chest"
+  },
+  {
+    "name": "barbell decline bench press",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Chest"
+  },
+  {
+    "name": "barbell decline wide-grip press",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Chest"
+  },
+  {
+    "name": "barbell front raise and pullover",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Chest"
+  },
+  {
+    "name": "cable alternate shoulder press",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Shoulders"
+  },
+  {
+    "name": "cable cross-over reverse fly",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Shoulders"
+  },
+  {
+    "name": "cable forward raise",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Shoulders"
+  },
+  {
+    "name": "cable front raise",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Shoulders"
+  },
+  {
+    "name": "cable front shoulder raise",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Shoulders"
+  },
+  {
+    "name": "barbell reverse wrist curl v. 2",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Forearms"
+  },
+  {
+    "name": "barbell reverse wrist curl",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Forearms"
+  },
+  {
+    "name": "barbell standing back wrist curl",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Forearms"
+  },
+  {
+    "name": "barbell wrist curl v. 2",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Forearms"
+  },
+  {
+    "name": "barbell wrist curl",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Forearms"
+  },
+  {
+    "name": "barbell clean-grip front squat",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Legs"
+  },
+  {
+    "name": "barbell deadlift",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Legs"
+  },
+  {
+    "name": "barbell front chest squat",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Legs"
+  },
+  {
+    "name": "barbell front squat",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Legs"
+  },
+  {
+    "name": "barbell full squat",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Legs"
+  },
+  {
+    "name": "assisted prone hamstring",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Hamstrings"
+  },
+  {
+    "name": "barbell good morning",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Hamstrings"
+  },
+  {
+    "name": "barbell straight leg deadlift",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Hamstrings"
+  },
+  {
+    "name": "dumbbell lying femoral",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Hamstrings"
+  },
+  {
+    "name": "inverse leg curl (bench support)",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Hamstrings"
+  },
+  {
+    "name": "alternate lateral pulldown",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Back"
+  },
+  {
+    "name": "assisted parallel close grip pull-up",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Back"
+  },
+  {
+    "name": "assisted pull-up",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Back"
+  },
+  {
+    "name": "barbell pullover to press",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Back"
+  },
+  {
+    "name": "barbell decline bent arm pullover",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Back"
+  },
+  {
+    "name": "barbell wide squat",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Quads"
+  },
+  {
+    "name": "dumbbell single leg split squat",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Quads"
+  },
+  {
+    "name": "lever leg extension",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Quads"
+  },
+  {
+    "name": "lying (side) quads stretch",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Quads"
+  },
+  {
+    "name": "smith chair squat",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Quads"
+  },
+  {
+    "name": "barbell shrug",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Traps"
+  },
+  {
+    "name": "cable shrug",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Traps"
+  },
+  {
+    "name": "dumbbell decline shrug v. 2",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Traps"
+  },
+  {
+    "name": "dumbbell decline shrug",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Traps"
+  },
+  {
+    "name": "dumbbell incline shrug",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Traps"
+  },
+  {
+    "name": "barbell close-grip bench press",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Triceps"
+  },
+  {
+    "name": "barbell decline close grip to skull press",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Triceps"
+  },
+  {
+    "name": "barbell incline reverse-grip press",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Triceps"
+  },
+  {
+    "name": "barbell jm bench press",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Triceps"
+  },
+  {
+    "name": "barbell lying close-grip press",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Triceps"
+  },
+  {
+    "name": "barbell bent over row",
+    "youtubeLink": "https://www.youtube.com/example_link_1",
+    "category": "Upper Back"
+  },
+  {
+    "name": "barbell incline row",
+    "youtubeLink": "https://www.youtube.com/example_link_2",
+    "category": "Upper Back"
+  },
+  {
+    "name": "barbell one arm bent over row",
+    "youtubeLink": "https://www.youtube.com/example_link_3",
+    "category": "Upper Back"
+  },
+  {
+    "name": "barbell reverse grip bent over row",
+    "youtubeLink": "https://www.youtube.com/example_link_4",
+    "category": "Upper Back"
+  },
+  {
+    "name": "cable decline seated wide-grip row",
+    "youtubeLink": "https://www.youtube.com/example_link_5",
+    "category": "Upper Back"
+  }
+]
