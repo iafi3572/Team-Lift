@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS workouts (
-    workout_id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_id SERIAL PRIMARY KEY,
     username VARCHAR(50), 
     workout_name VARCHAR(255) NOT NULL, 
     workout_muscle VARCHAR(255) NOT NULL,
@@ -97,3 +97,4 @@ VALUES
 ('upper legs','leverage machine','https://v2.exercisedb.io/image/9i6L3HeDzymN9C',585,'lever leg extension','quads','Adjust the seat height and backrest of the machine to fit your body. Sit on the machine with your back against the backrest and your feet on the footpad. Grasp the handles or sidebars for stability. Extend your legs forward by straightening your knees, lifting the weight. Pause for a moment at the top, then slowly lower the weight back to the starting position. Repeat for the desired number of repetitions.'),
 ('upper legs','body weight','https://v2.exercisedb.io/image/xOKEmRGrHLluga',613,'lying (side) quads stretch','quads','Lie on your side with your legs straight. Bend your top leg and grab your ankle or foot with your hand. Gently pull your ankle or foot towards your glutes until you feel a stretch in your quads. Hold the stretch for 20-30 seconds. Release the stretch and repeat on the other side.'),
 ('upper legs','smith machine','https://v2.exercisedb.io/image/mEGGR3JQnGRpfP',750,'smith chair squat','quads','Adjust the height of the smith machine bar to a comfortable position. Stand with your feet shoulder-width apart, toes slightly turned out. Place the barbell across your upper back, resting it on your traps. Engage your core and keep your chest up as you slowly lower your body by bending your knees and hips. Continue lowering until your thighs are parallel to the ground, or as low as you can comfortably go. Pause for a moment, then push through your heels to return to the starting position. Repeat for the desired number of repetitions.');
+
