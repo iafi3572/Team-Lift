@@ -136,7 +136,7 @@ app.post('/register', async (req, res) =>{
     }
     else {
     console.error('error', err);
-    res.redirect('/register');
+    res.status(400).redirect('/register');
     }
   }
 });
@@ -191,7 +191,7 @@ app.post('/login', async (req, res) => {
     }
 
     else {
-      res.render("pages/login", {
+      res.status(400).render("pages/login", {
         message: `Incorrect password`,
         error: true,
       });
@@ -200,8 +200,7 @@ app.post('/login', async (req, res) => {
 
   catch (err) {
 
-    res.status(401);
-    res.redirect("/register")
+    res.status(400).redirect("/register");
   }
   });
 
