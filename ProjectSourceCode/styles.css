@@ -1,0 +1,20 @@
+/* Increase the card size and decrease the spacing between cards */
+.card {
+  width: 100%; /* Make the card fill the column */
+  height: auto; /* Ensure the card height adjusts to content */
+}
+
+.col-md-4,
+.col-sm-6 {
+  margin-bottom: 15px; /* Reduced space between cards */
+}
+
+/* Optional: Customize card appearance */
+.card-body {
+  padding: 15px; /* Adjust card body padding for a bit more space */
+}
+
+.card-img-top {
+  object-fit: cover; /* Ensures the image doesn't stretch unnaturally */
+  height: 200px; /* You can adjust the height of the image */
+}

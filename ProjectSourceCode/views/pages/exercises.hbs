@@ -1,77 +1,55 @@
-<script>
-  document.addEventListener("DOMContentLoaded", function () { const title =
-  document.getElementById("modalTitle"); // Modal title const modalBody =
-  document.querySelector("#exerciseModal .modal-body"); // Modal body // Event
-  listener for the "View More" buttons
-  document.querySelectorAll(".view-more-btn").forEach(button => {
-  button.addEventListener("click", function () { // Fetch data attributes from
-  the clicked button const name = this.getAttribute("data-name"); const img =
-  this.getAttribute("data-img"); const target =
-  this.getAttribute("data-target"); const equipment =
-  this.getAttribute("data-equipment"); // Update modal title title.textContent =
-  name; // Update modal body with dynamic content modalBody.innerHTML = ` <img
-  src="${img}" class="card-img-top mb-3" alt="${name}" />
-  <p><strong>Name:</strong> ${name}</p> <p><strong>Target Muscles:</strong>
-  ${target}</p> <p><strong>Equipment:</strong> ${equipment}</p> `; }); }); });
-</script>
-
 <div class="container mt-4">
   <h1 class="text-center mb-5 mt-5 fw-bold display-5">Exercise Library</h1>
 
   <div class="row">
     {{#each data}}
-      <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card" style="width: 18rem;">
+      <div class="col-md-4 col-sm-6 mb-3"> <!-- Reduced space between cards -->
+        <button
+          class="card btn btn-outline-none w-100" <!-- Made the card a button and stretched to full width -->
+          data-bs-toggle="modal"
+          data-bs-target="#exerciseModal{{@index}}"
+          style="border: none; padding: 0; display: block;" <!-- Removed button border and made card clickable -->
+        >
           <img src="{{gifUrl}}" class="card-img-top" alt="{{name}}" />
           <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text"><strong>Equipment:</strong> {{equipment}}</p>
             <p class="card-text"><strong>Target Muscles:</strong> {{target}}</p>
-            <div class="d-flex justify-content-end">
+          </div>
+        </button>
+      </div>
+
+      <!-- Modal for each exercise -->
+      <div
+        class="modal fade"
+        id="exerciseModal{{@index}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{name}}</h5>
+            </div>
+            <div class="modal-body">
+              <img src="{{gifUrl}}" class="card-img-top mb-3" alt="{{name}}" />
+              <p><strong>Name:</strong> {{name}}</p>
+              <p><strong>Target Muscles:</strong> {{target}}</p>
+              <p><strong>Equipment:</strong> {{equipment}}</p>
+              <p>{{instructions}}</p>
+            </div>
+            <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-outline-primary view-more-btn"
-                data-bs-target="#exerciseModal"
-                data-name="{{name}}"
-                data-img="{{gifUrl}}"
-                data-equipment="{{equipment}}"
-                data-target="{{target}}"
-                data-bs-toggle="modal"
-              >
-                View More
-              </button>
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >Close</button>
             </div>
           </div>
         </div>
       </div>
     {{/each}}
-  </div>
-</div>
-
-<div
-  class="modal fade"
-  id="exerciseModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle">Exercise Name</h5>
-        <!-- Dynamic title -->
-      </div>
-      <div class="modal-body">
-        <!-- Modal body content will be dynamically updated by JS -->
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >Close</button>
-      </div>
-    </div>
   </div>
 </div>
