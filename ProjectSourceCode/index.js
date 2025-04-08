@@ -235,9 +235,26 @@ app.get('/logout', (req, res) => {
   });
 });
 
+// myplan page
+
 app.get('/myplan', (req, res) => {
-  res.render('pages/myplan.hbs')
+  // res.render('pages/myplan.hbs')
+  res.render("pages/myplan", {
+    weekdays: [
+      { id: "sun", label: "Sunday", scheduledSets: [] },
+      { id: "mon", label: "Monday", scheduledSets: [] },
+      { id: "tues", label: "Tuesday", scheduledSets: [] },
+      { id: "wed", label: "Wednesday", scheduledSets: [] },
+      { id: "thurs", label: "Thursday", scheduledSets: [] },
+      { id: "fri", label: "Friday", scheduledSets: [] },
+      { id: "sat", label: "Saturday", scheduledSets: [] }
+    ],
+    allWorkouts: [] // make sure this is included too
+  });
+  
 });
+
+
 //myworkouts page
 app.post('/myworkouts', async (req, res) =>{
   let workoutName = req.body.workoutName;

@@ -1,4 +1,4 @@
-    <meta charset="UTF-8">
+    {{!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Plan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,4 +43,124 @@
             <div class="col day" id="sat">Sat <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('sat')">+</button></div>
         </div>
     </div>
-</body>
+</body> --}}
+
+{{!-- Extends your layout --}}
+{{!-- {{> title title="My Plan" }} --}}
+
+<div class="container-fluid my-4">
+  <h2 class="mb-4">My Plan</h2>
+
+  <div class="row text-center plan-container">
+    {{#each weekdays}}
+    <div class="col day border" id="{{this.id}}">
+      <strong>{{this.label}}</strong>
+      {{#each this.scheduledSets}}
+        <div class="workout border p-2 mt-2">
+          <strong>{{set_name}}</strong><br />
+          <small>{{start_time}} ({{duration_hours}}h {{duration_minutes}}m)</small>
+          <ul class="text-start ps-4">
+            {{#each workouts}}
+              <li>{{workout_name}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/each}}
+
+      <div class="mt-auto">
+        <button class="btn btn-outline-primary btn-sm mt-3"
+                data-bs-toggle="modal"
+                data-bs-target="#addSetModal"
+                data-day="{{this.id}}">
+          + Add
+        </button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+{{!-- Modal --}}
+<div class="modal fade" id="addSetModal" tabindex="-1" aria-labelledby="addSetModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form method="POST" action="/myplan/add-set">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSetModalLabel">Add Workout Set</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label for="setName" class="form-label">Set Name</label>
+            <input type="text" class="form-control" id="setName" name="set_name" required>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="day" class="form-label">Day</label>
+              <select class="form-select" id="day" name="day_of_week" required>
+                <option disabled selected>Select a day</option>
+                {{#each weekdays}}
+                <option value="{{this.label}}">{{this.label}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col">
+              <label for="startTime" class="form-label">Start Time</label>
+              <input type="time" class="form-control" id="startTime" name="start_time" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Duration</label>
+              <div class="d-flex gap-2">
+                <input type="number" class="form-control" name="duration_hours" placeholder="Hours" min="0" required>
+                <input type="number" class="form-control" name="duration_minutes" placeholder="Minutes" min="0" max="59" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Select Workouts and Order</label>
+            <div class="list-group">
+              {{#each allWorkouts}}
+              <div class="list-group-item d-flex align-items-center justify-content-between">
+                <div>
+                  <input type="checkbox" class="form-check-input me-2" name="workouts" value="{{workout_id}}" id="workout-{{workout_id}}">
+                  <label for="workout-{{workout_id}}">{{workout_name}} ({{workout_muscle}})</label>
+                </div>
+                <input type="number" class="form-control form-control-sm" name="order_{{workout_id}}" placeholder="Order" min="1" style="width: 70px;">
+              </div>
+              {{/each}}
+            </div>
+            <small class="text-muted">Check workouts and assign an order (e.g., 1, 2, 3...)</small>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Add to Schedule</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{{!-- Bootstrap JS --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Optional: Pre-fill day when "+" button is clicked
+  const addButtons = document.querySelectorAll('[data-bs-target="#addSetModal"]');
+  const daySelect = document.getElementById('day');
+  addButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const day = button.getAttribute('data-day');
+      if (daySelect) {
+        [...daySelect.options].forEach(opt => {
+          opt.selected = (opt.value.toLowerCase() === day.toLowerCase());
+        });
+      }
+    });
+  });
+</script>
+
