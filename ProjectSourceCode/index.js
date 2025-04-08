@@ -181,13 +181,14 @@ app.post('/login', async (req, res) => {
     // check if password from request matches with password in DB
     const match = await bcrypt.compare(req.body.password, user.hash_password);
 
-    res.status(200);
+    
 
     if (match) {
       req.session.user = user;
       req.session.save();
 
       res.redirect("/home");
+      res.status(200);
     }
 
     else {
