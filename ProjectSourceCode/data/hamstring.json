@@ -1,0 +1,82 @@
+[
+  {
+    "bodyPart": "upper legs",
+    "equipment": "assisted",
+    "gifUrl": "https://v2.exercisedb.io/image/AhX63mZTq9XOO9",
+    "id": "0016",
+    "name": "assisted prone hamstring",
+    "target": "hamstrings",
+    "secondaryMuscles": ["glutes", "lower back"],
+    "instructions": [
+      "Lie face down on a mat or bench with your legs fully extended.",
+      "Have a partner or use a resistance band to secure your ankles.",
+      "Engage your hamstrings and lift your legs towards your glutes, keeping your knees straight.",
+      "Pause for a moment at the top, then slowly lower your legs back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/4JWwz2dIsbf-1J",
+    "id": "0044",
+    "name": "barbell good morning",
+    "target": "hamstrings",
+    "secondaryMuscles": ["lower back"],
+    "instructions": [
+      "Start by standing with your feet shoulder-width apart and the barbell resting on your upper back.",
+      "Keeping your back straight and your core engaged, hinge forward at the hips, pushing your buttocks back as if you were trying to touch the wall behind you with your glutes.",
+      "Lower your torso until it is parallel to the ground, feeling a stretch in your hamstrings.",
+      "Pause for a moment, then return to the starting position by squeezing your glutes and pushing your hips forward.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/pLQeiCgOFv9CR7",
+    "id": "0116",
+    "name": "barbell straight leg deadlift",
+    "target": "hamstrings",
+    "secondaryMuscles": ["glutes", "lower back"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and your toes pointing forward.",
+      "Hold the barbell with an overhand grip, hands slightly wider than shoulder-width apart.",
+      "Bend at your hips and lower the barbell towards the ground, keeping your back straight and your knees slightly bent.",
+      "Lower the barbell until you feel a stretch in your hamstrings.",
+      "Engage your hamstrings and glutes to lift the barbell back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "gifUrl": "https://v2.exercisedb.io/image/LeSCw6Dun1yekL",
+    "id": "0339",
+    "name": "dumbbell lying femoral",
+    "target": "hamstrings",
+    "secondaryMuscles": ["glutes"],
+    "instructions": [
+      "Lie flat on your back with your legs extended and a dumbbell resting on your lower abdomen.",
+      "Bend your knees and bring the dumbbell towards your glutes, keeping your feet flat on the ground.",
+      "Pause for a moment at the top, then slowly lower the dumbbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "body weight",
+    "gifUrl": "https://v2.exercisedb.io/image/vB7ztQL1XwtF9U",
+    "id": "0496",
+    "name": "inverse leg curl (bench support)",
+    "target": "hamstrings",
+    "secondaryMuscles": ["glutes", "calves"],
+    "instructions": [
+      "Lie face down on a bench with your hips at the edge and your legs extended straight behind you.",
+      "Hold onto the bench for support.",
+      "Keeping your upper body still, bend your knees and curl your legs towards your glutes.",
+      "Pause for a moment at the top, then slowly extend your legs back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]
