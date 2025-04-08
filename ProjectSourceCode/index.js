@@ -124,7 +124,7 @@ app.post('/register', async (req, res) =>{
     //adds data into user database then redirects user to login page
     await db.none(`
       INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`, [username, hash, email, birthday]);
-      res.status(201).redirect('/login');
+      res.status(200).redirect('/login');
   }
 
   catch(err) {
