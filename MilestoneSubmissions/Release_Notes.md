@@ -9,6 +9,12 @@
   - Workouts Database
 
 - **Sam**:
+
+  - Implemented the YouTube API Routes 
+  - Added the YouTube data to the exercises page
+  - Exercises Database
+  - Styles page
+    
 - **Matthew**:
 
   - visuals for goals
