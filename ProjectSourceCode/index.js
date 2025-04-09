@@ -212,6 +212,88 @@ app.get("/home", async (req, res) => {
   res.render("pages/home", { date: today });
 });
 
+//myworkouts page
+app.post('/myworkouts', async (req, res) =>{
+  let workoutName = req.body.workoutName;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  const username = req.session.user.username;
+
+  const selectedExercises = req.body.exercises;
+  
+
+  try {
+    //adds data into workout database
+    workout_id = await db.one(`
+      INSERT INTO workouts (username, workout_name,time_hours, time_minutes) VALUES ($1, $2, $3, $4) RETURNING workout_id;`, [username, workoutName, hour, min]);
+    
+    //adds the exercises from the workout into the workout_exercises database
+    for (const exercise of selectedExercises) {
+      muscle_group = await db.one(`SELECT muscle_target FROM exercises WHERE exercise_name = $1;`, [exercise]);
+    
+      await db.none(`
+        INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`, [workout_id.workout_id, exercise, muscle_group.muscle_target]);
+    }
+
+    res.redirect('/myworkouts');
+  }
+
+  catch(err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error saving workout. Please try again`,
+      error: true,
+    });
+  }
+});
+
+
+app.get('/myworkouts', async (req, res) => {
+  const username = req.session.user.username;
+
+  try {
+    //gets the workouts for the user to display
+    const workouts = await db.any('SELECT * FROM workouts WHERE username = $1;', [username]);
+
+    for (const workout of workouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target FROM workout_exercises 
+        WHERE workout_id = $1;`, [workout.workout_id]);
+      
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
+    
+    //gets all muscle target groups
+    const muscleTarget = await db.any('SELECT DISTINCT muscle_target FROM exercises;');
+
+    //gets all the exercises within each muscle target group
+    const exercisesByMuscleTarget = [];
+    for (const muscle of muscleTarget) {
+      
+        const exercises = await db.any(`SELECT exercise_name FROM exercises WHERE muscle_target = $1`, [muscle.muscle_target]);
+
+        exercisesByMuscleTarget.push({
+            muscleTarget: muscle.muscle_target,
+            exercises: exercises
+        });
+    }
+  
+    res.render('pages/myworkouts', {
+      workouts,
+      exercisesByMuscleTarget
+    });
+  }
+
+  catch(err) {
+    res.status(500).render('pages/myworkouts', {
+      error:true,
+      message: 'Could not load workouts. Please try again'
+    });
+  }
+});
+
+
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
