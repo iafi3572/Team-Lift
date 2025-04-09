@@ -58,6 +58,8 @@ describe("Testing Add User API", () => {
   });
 });
 
+
+
 // Example Negative Testcase :
 // API: /register
 // Input: {username: "John Doe", password: "hello", confirmPassword: "hello-not-matching", email: "tester@tester.com",birthday: "2020-02-20"}
@@ -68,22 +70,28 @@ describe("Testing Add User API", () => {
 
 describe("Testing Add User API", () => {
   it("negative : /register", (done) => {
+
     chai
       .request(server)
       .post("/register")
       .send({
         username: "John Doe",
         password: "hello",
+
         confirmPassword: "not-matching",
+
         email: "tester@tester.com",
         birthday: "2020-02-20",
       })
       .end((err, res) => {
         expect(res).to.have.status(400);
+
+
         done();
       });
   });
 });
+
 
 // Example Positive Testcase :
 // API: /login
@@ -130,3 +138,4 @@ describe("Login User API", () => {
       });
   });
 });
+

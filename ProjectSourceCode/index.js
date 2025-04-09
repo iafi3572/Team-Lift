@@ -110,7 +110,9 @@ app.post("/register", async (req, res) => {
 
   //checks that password and confirm password are the same
   if (password !== confirmPassword) {
+
     return res.status(400).render("pages/register", {
+
       error: true,
       message: "Passwords do not match",
       username: username,
@@ -128,7 +130,9 @@ app.post("/register", async (req, res) => {
       INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`,
       [username, hash, email, birthday]
     );
+
     res.status(200).redirect("/login");
+
   } catch (err) {
     if (err.code == "23505") {
       res.render("pages/register", {
@@ -137,7 +141,9 @@ app.post("/register", async (req, res) => {
       });
     } else {
       console.error("error", err);
+
       res.status(400).redirect("/register");
+
     }
   }
 });
@@ -150,17 +156,75 @@ app.get("/login", (req, res) => {
 app.get("/exercises", async (req, res) => {
   const options = {
     method: "GET",
-    url: "https://exercisedb.p.rapidapi.com/exercises?limit=100",
+    url: "https://exercisedb.p.rapidapi.com/exercises?limit=10",
     headers: {
-      "X-RapidAPI-Key": process.env.API_KEY,
+      "X-RapidAPI-Key": process.env.EX_API_KEY,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
 
   try {
     const { data } = await axios.request(options);
-    console.log(data);
-    res.render("pages/exercises.hbs", { data });
+    // console.log(data);
+    const exerciseNames = data.map((exercise) => exercise.name);
+
+    // console.log(exerciseNames);
+
+    const testerName = "abs workout tutorial";
+
+    const vid_data = [];
+
+    const getVideoId = async (exerciseName) => {
+      const ytOptions = {
+        method: "GET",
+        url: "https://www.googleapis.com/youtube/v3/search",
+        params: {
+          part: "snippet",
+          maxResults: 1,
+          type: "video",
+          q: exerciseName,
+          key: process.env.YT_API_KEY,
+        },
+      };
+
+      try {
+        const response = await axios.request(ytOptions);
+        const videoData = response.data;
+        if (videoData.items && videoData.items.length > 0) {
+          const video = videoData.items[0];
+          const videoId = video.id.videoId;
+          return videoId;
+        } else {
+          console.log("No videos found");
+          return null;
+        }
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
+
+    const videoLinks = async () => {
+      for (let exercise of exerciseNames) {
+        const input = exercise + " workout tutorial";
+        const videoId = await getVideoId(input);
+        vid_data.push({
+          videoId: "https://www.youtube.com/embed/" + videoId,
+        });
+      }
+      // console.log(vid_data);
+      return vid_data;
+    };
+
+    const videoLinkData = await videoLinks();
+    // console.log(videoLinkData);
+    const mergedExercises = data.map((exercise, index) => ({
+      ...exercise,
+      videoId: videoLinkData[index]?.videoId || null, // adds videoId to each object
+    }));
+    console.log(mergedExercises);
+
+    res.render("pages/exercises.hbs", { mergedExercises });
   } catch (error) {
     console.error(error);
     res.status(500).render("pages/exercises.hbs", {
@@ -189,15 +253,19 @@ app.post("/login", async (req, res) => {
       req.session.save();
 
       res.redirect("/home");
+
       res.status(200);
     } else {
       res.status(400).render("pages/login", {
+
         message: `Incorrect password`,
         error: true,
       });
     }
   } catch (err) {
+
     res.status(400).redirect("/register");
+
   }
 });
 
@@ -205,6 +273,7 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to login page.
     return res.redirect("/login");
+
   }
   next();
 };
@@ -212,9 +281,94 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString(); // Get current date
+  const today = new Date().toLocaleDateString("en-US", {timeZone: "America/Denver"})
+ // Get current date
   res.render("pages/home", { date: today });
 });
+
+//myworkouts page
+app.post('/myworkouts', async (req, res) =>{
+  let workoutName = req.body.workoutName;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  const username = req.session.user.username;
+
+  const selectedExercises = req.body.exercises;
+  
+
+  try {
+    //adds data into workout database
+    workout_id = await db.one(`
+      INSERT INTO workouts (username, workout_name,time_hours, time_minutes) VALUES ($1, $2, $3, $4) RETURNING workout_id;`, [username, workoutName, hour, min]);
+    
+    //adds the exercises from the workout into the workout_exercises database
+    for (const exercise of selectedExercises) {
+      muscle_group = await db.one(`SELECT muscle_target FROM exercises WHERE exercise_name = $1;`, [exercise]);
+    
+      await db.none(`
+        INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`, [workout_id.workout_id, exercise, muscle_group.muscle_target]);
+    }
+
+    res.redirect('/myworkouts');
+  }
+
+  catch(err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error saving workout. Please try again`,
+      error: true,
+    });
+  }
+});
+
+
+app.get('/myworkouts', async (req, res) => {
+  const username = req.session.user.username;
+
+  try {
+    //gets the workouts for the user to display
+    const workouts = await db.any('SELECT * FROM workouts WHERE username = $1;', [username]);
+
+    for (const workout of workouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target FROM workout_exercises 
+        WHERE workout_id = $1;`, [workout.workout_id]);
+      
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
+    
+    //gets all muscle target groups
+    const muscleTarget = await db.any('SELECT DISTINCT muscle_target FROM exercises;');
+
+    //gets all the exercises within each muscle target group
+    const exercisesByMuscleTarget = [];
+    for (const muscle of muscleTarget) {
+      
+        const exercises = await db.any(`SELECT exercise_name FROM exercises WHERE muscle_target = $1`, [muscle.muscle_target]);
+
+        exercisesByMuscleTarget.push({
+            muscleTarget: muscle.muscle_target,
+            exercises: exercises
+        });
+    }
+  
+    res.render('pages/myworkouts', {
+      workouts,
+      exercisesByMuscleTarget
+    });
+  }
+
+
+  catch(err) {
+    res.status(500).render('pages/myworkouts', {
+      error:true,
+      message: 'Could not load workouts. Please try again'
+    });
+  }
+});
+
+
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -230,6 +384,12 @@ app.get("/logout", (req, res) => {
     });
   });
 });
+
+
+app.get('/myplan', (req, res) => {
+  res.render('pages/myplan.hbs')
+});
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->

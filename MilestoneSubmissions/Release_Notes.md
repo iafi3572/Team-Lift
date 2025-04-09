@@ -1,5 +1,32 @@
 # Release Notes
 
+## Updates Since Last Meeting (4/2 - 4/9)
+
+- **Lana**:
+
+  - My Workouts (UI and Routes)
+  - Workout Exercise Database
+  - Workouts Database
+
+- **Sam**:
+
+  - Implemented the YouTube API Routes 
+  - Added the YouTube data to the exercises page
+  - Exercises Database
+  - Styles page
+    
+- **Matthew**:
+
+  - visuals for goals
+  - visuals for average
+  - visuals for today's exercise
+  
+- **Kirin**:
+- **Ian**:
+
+### Other Notes / Known Issues
+
+
 ## Updates Since Last Meeting (3/19 - 4/2)
 
 - **Lana**:
@@ -24,8 +51,8 @@
 
 - **Kirin**:
 
-  -  Created index.js file
-  -  Created logout route   
+  - Created index.js file
+  - Created logout route
 
 - **Ian**:
   - Home Page Layout
