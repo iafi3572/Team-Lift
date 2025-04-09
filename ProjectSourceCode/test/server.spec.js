@@ -58,6 +58,7 @@ describe("Testing Add User API", () => {
   });
 });
 
+
 // Example Negative Testcase :
 // API: /register
 // Input: {username: "John Doe", password: "hello", confirmPassword: "hello-not-matching", email: "tester@tester.com",birthday: "2020-02-20"}
@@ -130,3 +131,4 @@ describe("Login User API", () => {
       });
   });
 });
+
