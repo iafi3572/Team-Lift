@@ -330,89 +330,76 @@ const weekLabels = [
   { id: 'sat', label: 'Saturday' }
 ];
 
+
 app.get('/myplan', async (req, res) => {
-  const username = req.session.user.username; 
+  const username = req.session.user?.username;
+  if (!username) return res.redirect('/login');
 
   try {
-    const scheduleData = await db.any(`
+    // Step 1: Get scheduled workouts for the user
+    const scheduledWorkouts = await db.any(`
       SELECT
         ws.day_of_week,
         ws.start_time,
-        ws.duration_hours,
-        ws.duration_minutes,
-        s.set_id,
-        s.set_name,
         w.workout_id,
         w.workout_name,
-        w.workout_muscle,
-        wsi.order_index
+        w.time_hours,
+        w.time_minutes
       FROM workout_schedule ws
-      JOIN workout_sets s ON ws.set_id = s.set_id
-      JOIN workout_set_items wsi ON s.set_id = wsi.set_id
-      JOIN workouts w ON wsi.workout_id = w.workout_id
+      JOIN workouts w ON ws.workout_id = w.workout_id
       WHERE ws.username = $1
-      ORDER BY 
-        ws.day_of_week,
-        ws.start_time,
-        wsi.order_index;
+      ORDER BY ws.day_of_week, ws.start_time;
     `, [username]);
 
-    // Group schedule by day -> set -> workouts
-    const setsByDay = {};
+    // Step 2: Attach exercises to each scheduled workout individually
+    for (const workout of scheduledWorkouts) {
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target
+        FROM workout_exercises
+        WHERE workout_id = $1;
+      `, [workout.workout_id]);
 
-    for (const row of scheduleData) {
-      const day = row.day_of_week;
-      if (!setsByDay[day]) setsByDay[day] = [];
-
-      let set = setsByDay[day].find(s => s.set_id === row.set_id);
-      if (!set) {
-        set = {
-          set_id: row.set_id,
-          set_name: row.set_name,
-          start_time: row.start_time.slice(0, 5), // remove seconds
-          duration_hours: row.duration_hours,
-          duration_minutes: row.duration_minutes,
-          workouts: []
-        };
-        setsByDay[day].push(set);
-      }
-
-      set.workouts.push({
-        workout_id: row.workout_id,
-        workout_name: row.workout_name,
-        workout_muscle: row.workout_muscle,
-        order_index: row.order_index
-      });
+      workout.exercises = exercises;
+      workout.start_time = workout.start_time.slice(0, 5); // format to HH:MM
     }
 
-    // Merge into full weekdays for template
+    // Step 3: Group workouts by day
+    const scheduleByDay = {};
+    for (const workout of scheduledWorkouts) {
+      if (!scheduleByDay[workout.day_of_week]) {
+        scheduleByDay[workout.day_of_week] = [];
+      }
+      scheduleByDay[workout.day_of_week].push(workout);
+    }
+
+    // Step 4: Map into final format using external weekLabels
     const weekdays = weekLabels.map(day => ({
       ...day,
-      scheduledSets: setsByDay[day.label] || []
+      scheduledWorkouts: scheduleByDay[day.label] || []
     }));
 
-    // Get all workouts (for modal list)
+    // Step 5: Fetch user-created workouts
     const allWorkouts = await db.any(`
-      SELECT workout_id, workout_name, workout_muscle
+      SELECT workout_id, workout_name
       FROM workouts
       WHERE username = $1
+        AND EXISTS (
+          SELECT 1 FROM workout_exercises
+          WHERE workout_exercises.workout_id = workouts.workout_id
+        )
       ORDER BY workout_name;
     `, [username]);
-
-    console.log(username);
-    console.log(allWorkouts);
-    console.log('All Workouts:', {allWorkouts});
+    
 
     res.render('pages/myplan', {
       weekdays,
       allWorkouts
     });
 
-    delete req.session.message; // Clear after render
   } catch (err) {
     console.error('Error loading schedule:', err);
     res.render('pages/myplan', {
-      weekdays: weekLabels.map(day => ({ ...day, scheduledSets: [] })),
+      weekdays: [],
       allWorkouts: [],
       message: 'Failed to load schedule.',
       error: true
@@ -423,59 +410,34 @@ app.get('/myplan', async (req, res) => {
 
 app.post('/myplan/add', async (req, res) => {
   try {
-    const username = req.session.user.username;
+    const username = req.session.user?.username;
     if (!username) return res.redirect('/login');
 
     const {
-      set_name,
       day_of_week,
       start_time,
-      duration_hours,
-      duration_minutes
+      workout_id
     } = req.body;
 
-    const selectedWorkouts = req.body.workouts || []; // array of selected workout_ids
-    const workoutsArray = Array.isArray(selectedWorkouts)
-      ? selectedWorkouts
-      : [selectedWorkouts];
+    if (!day_of_week || !start_time || !workout_id) {
+      throw new Error('Missing required fields');
+    }
 
-    await db.task(async t => {
-      // 1. Insert into workout_sets
-      const insertSet = await t.one(
-        `INSERT INTO workout_sets (set_name, username)
-         VALUES ($1, $2)
-         RETURNING set_id`,
-        [set_name, username]
-      );
-      const set_id = insertSet.set_id;
-
-      // 2. Insert into workout_set_items
-      for (const workoutId of workoutsArray) {
-        const orderKey = `order_${workoutId}`;
-        const orderIndex = parseInt(req.body[orderKey]) || 999;
-        await t.none(
-          `INSERT INTO workout_set_items (set_id, workout_id, order_index)
-           VALUES ($1, $2, $3)`,
-          [set_id, workoutId, orderIndex]
-        );
-      }
-
-      // 3. Insert into workout_schedule
-      await t.none(
-        `INSERT INTO workout_schedule (
-          username, set_id, day_of_week, start_time, duration_hours, duration_minutes
-        ) VALUES ($1, $2, $3, $4, $5, $6)`,
-        [username, set_id, day_of_week, start_time, duration_hours, duration_minutes]
-      );
-    });
+    await db.none(
+      `INSERT INTO workout_schedule (username, workout_id, day_of_week, start_time)
+       VALUES ($1, $2, $3, $4)`,
+      [username, workout_id, day_of_week, start_time]
+    );
 
     res.redirect('/myplan');
 
   } catch (err) {
-    console.error('Error adding workout set:', err);
+    console.error('Error adding workout to schedule:', err);
     res.status(400).render('pages/myplan', {
-      message: 'Failed to add workout set. Please check your inputs.',
-      error: true
+      message: 'Failed to add workout. Please check your inputs.',
+      error: true,
+      weekdays: [],
+      allWorkouts: []
     });
   }
 });

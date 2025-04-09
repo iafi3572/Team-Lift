@@ -14,33 +14,15 @@ CREATE TABLE IF NOT EXISTS workouts (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
-CREATE TABLE IF NOT EXISTS workout_sets (
-    set_id SERIAL PRIMARY KEY,
-    set_name VARCHAR(255) NOT NULL,
-    username VARCHAR(50) NOT NULL,
-    FOREIGN KEY (username) REFERENCES users(username)
-);
-
-CREATE TABLE IF NOT EXISTS workout_set_items (
-    set_id INT NOT NULL,
-    workout_id INT NOT NULL,
-    order_index INT NOT NULL DEFAULT 1,
-    PRIMARY KEY (set_id, workout_id),
-    FOREIGN KEY (set_id) REFERENCES workout_sets(set_id),
-    FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
-);
-
 CREATE TABLE IF NOT EXISTS workout_schedule (
     schedule_id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    set_id INT NOT NULL,
+    workout_id INT NOT NULL,
     day_of_week VARCHAR(10) NOT NULL CHECK (day_of_week IN 
         ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
     start_time TIME NOT NULL,
-    duration_hours INT DEFAULT 0,
-    duration_minutes INT DEFAULT 0,
     FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (set_id) REFERENCES workout_sets(set_id)
+    FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
 );
 
 CREATE TABLE IF NOT EXISTS workout_exercises (
@@ -135,3 +117,31 @@ VALUES
 ('upper legs','body weight','https://v2.exercisedb.io/image/xOKEmRGrHLluga',613,'lying (side) quads stretch','quads','Lie on your side with your legs straight. Bend your top leg and grab your ankle or foot with your hand. Gently pull your ankle or foot towards your glutes until you feel a stretch in your quads. Hold the stretch for 20-30 seconds. Release the stretch and repeat on the other side.'),
 ('upper legs','smith machine','https://v2.exercisedb.io/image/mEGGR3JQnGRpfP',750,'smith chair squat','quads','Adjust the height of the smith machine bar to a comfortable position. Stand with your feet shoulder-width apart, toes slightly turned out. Place the barbell across your upper back, resting it on your traps. Engage your core and keep your chest up as you slowly lower your body by bending your knees and hips. Continue lowering until your thighs are parallel to the ground, or as low as you can comfortably go. Pause for a moment, then push through your heels to return to the starting position. Repeat for the desired number of repetitions.');
 
+-- CREATE TABLE IF NOT EXISTS workout_sets (
+--     set_id SERIAL PRIMARY KEY,
+--     set_name VARCHAR(255) NOT NULL,
+--     username VARCHAR(50) NOT NULL,
+--     FOREIGN KEY (username) REFERENCES users(username)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS workout_set_items (
+--     set_id INT NOT NULL,
+--     workout_id INT NOT NULL,
+--     order_index INT NOT NULL DEFAULT 1,
+--     PRIMARY KEY (set_id, workout_id),
+--     FOREIGN KEY (set_id) REFERENCES workout_sets(set_id),
+--     FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS workout_schedule (
+--     schedule_id SERIAL PRIMARY KEY,
+--     username VARCHAR(50) NOT NULL,
+--     set_id INT NOT NULL,
+--     day_of_week VARCHAR(10) NOT NULL CHECK (day_of_week IN 
+--         ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+--     start_time TIME NOT NULL,
+--     duration_hours INT DEFAULT 0,
+--     duration_minutes INT DEFAULT 0,
+--     FOREIGN KEY (username) REFERENCES users(username),
+--     FOREIGN KEY (set_id) REFERENCES workout_sets(set_id)
+-- );
