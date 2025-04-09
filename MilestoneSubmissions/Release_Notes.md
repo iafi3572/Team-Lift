@@ -10,6 +10,11 @@
 
 - **Sam**:
 - **Matthew**:
+
+  - visuals for goals
+  - visuals for average
+  - visuals for today's exercise
+  
 - **Kirin**:
 - **Ian**:
 
