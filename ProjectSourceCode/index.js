@@ -26,6 +26,11 @@ const hbs = handlebars.create({
   partialsDir: __dirname + "/views/partials",
 });
 
+app.engine("hbs", hbs.engine);
+app.set("view engine", "hbs");
+
+app.use(express.static(path.join(__dirname, "resources")));
+
 // database configuration
 const dbConfig = {
   host: "db", // the database server
