@@ -207,7 +207,8 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString(); // Get current date
+  const today = new Date().toLocaleDateString("en-US", {timeZone: "America/Denver"})
+ // Get current date
   res.render("pages/home", { date: today });
 });
 
@@ -308,6 +309,10 @@ app.get("/logout", (req, res) => {
   });
 });
 
+
+app.get('/myplan', (req, res) => {
+  res.render('pages/myplan.hbs')
+});
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
