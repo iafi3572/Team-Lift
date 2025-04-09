@@ -105,7 +105,9 @@ app.post("/register", async (req, res) => {
 
   //checks that password and confirm password are the same
   if (password !== confirmPassword) {
-    return res.render("pages/register", {
+
+    return res.status(400).render("pages/register", {
+
       error: true,
       message: "Passwords do not match",
       username: username,
@@ -123,7 +125,9 @@ app.post("/register", async (req, res) => {
       INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`,
       [username, hash, email, birthday]
     );
-    res.status(201).redirect("/login");
+
+    res.status(200).redirect("/login");
+
   } catch (err) {
     if (err.code == "23505") {
       res.render("pages/register", {
@@ -132,7 +136,9 @@ app.post("/register", async (req, res) => {
       });
     } else {
       console.error("error", err);
-      res.redirect("/register");
+
+      res.status(400).redirect("/register");
+
     }
   }
 });
@@ -237,22 +243,24 @@ app.post("/login", async (req, res) => {
     // check if password from request matches with password in DB
     const match = await bcrypt.compare(req.body.password, user.hash_password);
 
-    res.status(200);
-
     if (match) {
       req.session.user = user;
       req.session.save();
 
       res.redirect("/home");
+
+      res.status(200);
     } else {
-      res.render("pages/login", {
+      res.status(400).render("pages/login", {
+
         message: `Incorrect password`,
         error: true,
       });
     }
   } catch (err) {
-    res.status(401);
-    res.redirect("/register");
+
+    res.status(400).redirect("/register");
+
   }
 });
 
@@ -260,6 +268,7 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to login page.
     return res.redirect("/login");
+
   }
   next();
 };
@@ -267,9 +276,115 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString(); // Get current date
+  const today = new Date().toLocaleDateString("en-US", {timeZone: "America/Denver"})
+ // Get current date
   res.render("pages/home", { date: today });
 });
+
+//myworkouts page
+app.post('/myworkouts', async (req, res) =>{
+  let workoutName = req.body.workoutName;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  const username = req.session.user.username;
+
+  const selectedExercises = req.body.exercises;
+  
+
+  try {
+    //adds data into workout database
+    workout_id = await db.one(`
+      INSERT INTO workouts (username, workout_name,time_hours, time_minutes) VALUES ($1, $2, $3, $4) RETURNING workout_id;`, [username, workoutName, hour, min]);
+    
+    //adds the exercises from the workout into the workout_exercises database
+    for (const exercise of selectedExercises) {
+      muscle_group = await db.one(`SELECT muscle_target FROM exercises WHERE exercise_name = $1;`, [exercise]);
+    
+      await db.none(`
+        INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`, [workout_id.workout_id, exercise, muscle_group.muscle_target]);
+    }
+
+    res.redirect('/myworkouts');
+  }
+
+  catch(err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error saving workout. Please try again`,
+      error: true,
+    });
+  }
+});
+
+
+app.get('/myworkouts', async (req, res) => {
+  const username = req.session.user.username;
+
+  try {
+    //gets the workouts for the user to display
+    const workouts = await db.any('SELECT * FROM workouts WHERE username = $1;', [username]);
+
+    for (const workout of workouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target FROM workout_exercises 
+        WHERE workout_id = $1;`, [workout.workout_id]);
+      
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
+    
+    //gets all muscle target groups
+    const muscleTarget = await db.any('SELECT DISTINCT muscle_target FROM exercises;');
+
+    //gets all the exercises within each muscle target group
+    const exercisesByMuscleTarget = [];
+    for (const muscle of muscleTarget) {
+      
+        const exercises = await db.any(`SELECT exercise_name FROM exercises WHERE muscle_target = $1`, [muscle.muscle_target]);
+
+        exercisesByMuscleTarget.push({
+            muscleTarget: muscle.muscle_target,
+            exercises: exercises
+        });
+    }
+  
+    res.render('pages/myworkouts', {
+      workouts,
+      exercisesByMuscleTarget
+    });
+  }
+
+
+  catch(err) {
+    res.status(500).render('pages/myworkouts', {
+      error:true,
+      message: 'Could not load workouts. Please try again'
+    });
+  }
+});
+
+
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.render("pages/home", {
+        message: "Error logging out. Please try again.",
+        error: true, // Indicate an error occurred
+      });
+    }
+    res.render("pages/login", {
+      message: "Logged out Successfully",
+      error: false,
+    });
+  });
+});
+
+
+app.get('/myplan', (req, res) => {
+  res.render('pages/myplan.hbs')
+});
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
