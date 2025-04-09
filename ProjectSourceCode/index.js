@@ -15,7 +15,6 @@ const bcrypt = require("bcryptjs"); //  To hash passwords
 const req = require("express/lib/request");
 const axios = require("axios").default;
 
-
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
 // *****************************************************
@@ -26,6 +25,11 @@ const hbs = handlebars.create({
   layoutsDir: __dirname + "/views/layouts",
   partialsDir: __dirname + "/views/partials",
 });
+
+app.engine("hbs", hbs.engine);
+app.set("view engine", "hbs");
+
+app.use(express.static(path.join(__dirname, "resources")));
 
 // database configuration
 const dbConfig = {
@@ -66,7 +70,7 @@ app.use(
     resave: false,
   })
 );
-app.use((req,res, next)=> {
+app.use((req, res, next) => {
   res.locals.user = req.session.user;
   next();
 });
@@ -77,7 +81,6 @@ app.use(
 );
 
 app.use("/images", express.static(path.join(__dirname, "images")));
-
 
 app.get("/tracking", (req, res) => {
   res.render("pages/tracking");
@@ -90,16 +93,15 @@ app.get("/tracking", (req, res) => {
 
 // TODO - Include your API routes here
 //Register
-app.get('/register', (req, res) => {
-  res.render('pages/register.hbs')
+app.get("/register", (req, res) => {
+  res.render("pages/register.hbs");
 });
 
 app.get("/welcome", (req, res) => {
   res.json({ status: "success", message: "Welcome!" });
 });
 
-
-app.post('/register', async (req, res) =>{
+app.post("/register", async (req, res) => {
   let password = req.body.password;
   let confirmPassword = req.body.confirmPassword;
   let username = req.body.username;
@@ -108,58 +110,121 @@ app.post('/register', async (req, res) =>{
 
   //checks that password and confirm password are the same
   if (password !== confirmPassword) {
-    return res.render('pages/register',{
-      error:true,
-      message: 'Passwords do not match',
+
+    return res.status(400).render("pages/register", {
+
+      error: true,
+      message: "Passwords do not match",
       username: username,
-      email:email,
-      birthday:birthday
+      email: email,
+      birthday: birthday,
     });
   }
 
-  
   const hash = await bcrypt.hash(req.body.password, 10);
 
   try {
     //adds data into user database then redirects user to login page
-    await db.none(`
-      INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`, [username, hash, email, birthday]);
-      res.status(201).redirect('/login');
-  }
+    await db.none(
+      `
+      INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`,
+      [username, hash, email, birthday]
+    );
 
-  catch(err) {
-    if (err.code == '23505') {
-      res.render('pages/register',{
-        error:true,
-        message: 'Username already exists',
+    res.status(200).redirect("/login");
+
+  } catch (err) {
+    if (err.code == "23505") {
+      res.render("pages/register", {
+        error: true,
+        message: "Username already exists",
       });
-    }
-    else {
-    console.error('error', err);
-    res.redirect('/register');
+    } else {
+      console.error("error", err);
+
+      res.status(400).redirect("/register");
+
     }
   }
 });
 
 //login
-app.get('/login', (req, res) => {
-  res.render('pages/login.hbs')
+app.get("/login", (req, res) => {
+  res.render("pages/login.hbs");
 });
 
 app.get("/exercises", async (req, res) => {
   const options = {
     method: "GET",
-    url: "https://exercisedb.p.rapidapi.com/exercises?limit=100",
+    url: "https://exercisedb.p.rapidapi.com/exercises?limit=10",
     headers: {
-      "X-RapidAPI-Key": process.env.API_KEY,
+      "X-RapidAPI-Key": process.env.EX_API_KEY,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
 
   try {
     const { data } = await axios.request(options);
-    console.log(data);
-    res.render("pages/exercises.hbs", { data });
+    // console.log(data);
+    const exerciseNames = data.map((exercise) => exercise.name);
+
+    // console.log(exerciseNames);
+
+    const testerName = "abs workout tutorial";
+
+    const vid_data = [];
+
+    const getVideoId = async (exerciseName) => {
+      const ytOptions = {
+        method: "GET",
+        url: "https://www.googleapis.com/youtube/v3/search",
+        params: {
+          part: "snippet",
+          maxResults: 1,
+          type: "video",
+          q: exerciseName,
+          key: process.env.YT_API_KEY,
+        },
+      };
+
+      try {
+        const response = await axios.request(ytOptions);
+        const videoData = response.data;
+        if (videoData.items && videoData.items.length > 0) {
+          const video = videoData.items[0];
+          const videoId = video.id.videoId;
+          return videoId;
+        } else {
+          console.log("No videos found");
+          return null;
+        }
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
+
+    const videoLinks = async () => {
+      for (let exercise of exerciseNames) {
+        const input = exercise + " workout tutorial";
+        const videoId = await getVideoId(input);
+        vid_data.push({
+          videoId: "https://www.youtube.com/embed/" + videoId,
+        });
+      }
+      // console.log(vid_data);
+      return vid_data;
+    };
+
+    const videoLinkData = await videoLinks();
+    // console.log(videoLinkData);
+    const mergedExercises = data.map((exercise, index) => ({
+      ...exercise,
+      videoId: videoLinkData[index]?.videoId || null, // adds videoId to each object
+    }));
+    console.log(mergedExercises);
+
+    res.render("pages/exercises.hbs", { mergedExercises });
   } catch (error) {
     console.error(error);
     res.status(500).render("pages/exercises.hbs", {
@@ -168,55 +233,56 @@ app.get("/exercises", async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.redirect('/login'); 
+app.get("/", (req, res) => {
+  res.redirect("/login");
 });
 
-app.post('/login', async (req, res) => { 
+app.post("/login", async (req, res) => {
   let username = req.body.username;
 
   try {
-    const user = await db.one(`SELECT * FROM users WHERE username= $1;`, [username]);
-    
+    const user = await db.one(`SELECT * FROM users WHERE username= $1;`, [
+      username,
+    ]);
+
     // check if password from request matches with password in DB
     const match = await bcrypt.compare(req.body.password, user.hash_password);
-
-    res.status(200);
 
     if (match) {
       req.session.user = user;
       req.session.save();
 
       res.redirect("/home");
-    }
 
-    else {
-      res.render("pages/login", {
+      res.status(200);
+    } else {
+      res.status(400).render("pages/login", {
+
         message: `Incorrect password`,
         error: true,
       });
     }
+  } catch (err) {
+
+    res.status(400).redirect("/register");
+
   }
+});
 
-  catch (err) {
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to login page.
+    return res.redirect("/login");
 
-    res.status(401);
-    res.redirect("/register")
   }
-  });
+  next();
+};
 
-  const auth = (req, res, next) => {
-    if (!req.session.user) {
-      // Default to login page.
-      return res.redirect('/login');
-    }
-    next();
-  };
-  
-  app.use(auth);
+app.use(auth);
 
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString(); // Get current date
+  const today = new Date().toLocaleDateString("en-US", {timeZone: "America/Denver"})
+ // Get current date
   res.render("pages/home", { date: today });
 });
 
@@ -418,15 +484,25 @@ app.post('/myplan/add', async (req, res) => {
 //myworkouts page
 app.post('/myworkouts', async (req, res) =>{
   let workoutName = req.body.workoutName;
-  let workoutMuscle = req.body.workoutMuscle;
   let hour = req.body.hour;
   let min = req.body.min;
   const username = req.session.user.username;
 
+  const selectedExercises = req.body.exercises;
+  
+
   try {
-    //adds data into user database then redirects user to login page
-    await db.none(`
-      INSERT INTO workouts (username, workout_name, workout_muscle, time_hours, time_minutes) VALUES ($1, $2, $3, $4, $5);`, [username, workoutName, workoutMuscle, hour, min]);
+    //adds data into workout database
+    workout_id = await db.one(`
+      INSERT INTO workouts (username, workout_name,time_hours, time_minutes) VALUES ($1, $2, $3, $4) RETURNING workout_id;`, [username, workoutName, hour, min]);
+    
+    //adds the exercises from the workout into the workout_exercises database
+    for (const exercise of selectedExercises) {
+      muscle_group = await db.one(`SELECT muscle_target FROM exercises WHERE exercise_name = $1;`, [exercise]);
+    
+      await db.none(`
+        INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`, [workout_id.workout_id, exercise, muscle_group.muscle_target]);
+    }
 
     res.redirect('/myworkouts');
   }
@@ -439,16 +515,45 @@ app.post('/myworkouts', async (req, res) =>{
   }
 });
 
+
 app.get('/myworkouts', async (req, res) => {
   const username = req.session.user.username;
-  
+
   try {
+    //gets the workouts for the user to display
     const workouts = await db.any('SELECT * FROM workouts WHERE username = $1;', [username]);
-    console.log(workouts);
+
+    for (const workout of workouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target FROM workout_exercises 
+        WHERE workout_id = $1;`, [workout.workout_id]);
+      
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
+    
+    //gets all muscle target groups
+    const muscleTarget = await db.any('SELECT DISTINCT muscle_target FROM exercises;');
+
+    //gets all the exercises within each muscle target group
+    const exercisesByMuscleTarget = [];
+    for (const muscle of muscleTarget) {
+      
+        const exercises = await db.any(`SELECT exercise_name FROM exercises WHERE muscle_target = $1`, [muscle.muscle_target]);
+
+        exercisesByMuscleTarget.push({
+            muscleTarget: muscle.muscle_target,
+            exercises: exercises
+        });
+    }
+  
     res.render('pages/myworkouts', {
       workouts,
+      exercisesByMuscleTarget
     });
   }
+
 
   catch(err) {
     res.status(500).render('pages/myworkouts', {
@@ -458,7 +563,29 @@ app.get('/myworkouts', async (req, res) => {
   }
 });
 
-  
+
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.render("pages/home", {
+        message: "Error logging out. Please try again.",
+        error: true, // Indicate an error occurred
+      });
+    }
+    res.render("pages/login", {
+      message: "Logged out Successfully",
+      error: false,
+    });
+  });
+});
+
+
+app.get('/myplan', (req, res) => {
+  res.render('pages/myplan.hbs')
+});
+
+
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************

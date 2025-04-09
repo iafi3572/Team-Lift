@@ -1,0 +1,87 @@
+[
+  {
+    "bodyPart": "shoulders",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/RJnJx0YOnzTwEp",
+    "id": "0148",
+    "name": "cable alternate shoulder press",
+    "target": "delts",
+    "secondaryMuscles": ["triceps", "upper back"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and grasp the handles of the cable machine with an overhand grip.",
+      "Position your hands at shoulder height, with your palms facing forward.",
+      "Keep your core engaged and your back straight.",
+      "Press one handle up and forward until your arm is fully extended.",
+      "Pause for a moment at the top, then slowly lower the handle back to the starting position.",
+      "Repeat with the other arm.",
+      "Alternate between arms for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/g2vF3a22aJ5Zn4",
+    "id": "0154",
+    "name": "cable cross-over revers fly",
+    "target": "delts",
+    "secondaryMuscles": ["rhomboids", "trapezius"],
+    "instructions": [
+      "Attach a D-handle to each low pulley cable and stand in the middle of the cable crossover machine.",
+      "Grasp the handles with a pronated grip (palms facing down) and take a step forward, positioning your feet shoulder-width apart.",
+      "Bend your knees slightly and lean forward at the waist, keeping your back straight and your abs engaged.",
+      "With your arms extended out to the sides and slightly bent at the elbows, exhale and squeeze your shoulder blades together as you pull the cables back and upward in a reverse fly motion.",
+      "Pause for a moment at the peak contraction, then inhale and slowly return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/xl3QrHM-6sEyYk",
+    "id": "0161",
+    "name": "cable forward raise",
+    "target": "delts",
+    "secondaryMuscles": ["triceps", "forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and your knees slightly bent.",
+      "Hold the cable handle with an overhand grip, palms facing down, and your arms fully extended in front of you.",
+      "Keeping your arms straight, raise the cable handle up to shoulder level.",
+      "Pause for a moment at the top, then slowly lower the cable handle back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/DKxrtsc0LpOPoF",
+    "id": "0162",
+    "name": "cable front raise",
+    "target": "delts",
+    "secondaryMuscles": ["triceps", "forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and grasp the cable handle with an overhand grip.",
+      "Keep your back straight and your core engaged.",
+      "Raise the cable handle in front of you, keeping your arms straight and your palms facing down.",
+      "Continue lifting until your arms are parallel to the floor.",
+      "Pause for a moment at the top, then slowly lower the cable handle back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/WQhCyScNwkyWym",
+    "id": "0164",
+    "name": "cable front shoulder raise",
+    "target": "delts",
+    "secondaryMuscles": ["trapezius", "biceps"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and grasp the cable handle with an overhand grip.",
+      "Keep your back straight and your core engaged.",
+      "Raise the cable handle in front of you, keeping your arms straight and your palms facing down.",
+      "Continue lifting until your arms are parallel to the floor.",
+      "Pause for a moment at the top, then slowly lower the cable handle back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]

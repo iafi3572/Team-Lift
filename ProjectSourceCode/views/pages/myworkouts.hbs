@@ -18,7 +18,7 @@
             aria-labelledby="event_modal_label"
             aria-hidden="true"
         >
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="event_modal_label">Workout Information</h5>
@@ -49,25 +49,21 @@
                             />
                         </div>
                         <div class="mb-3">
-                            <label for="workoutMuscle" class="form-label"><strong>Workout Muscle</strong></label>
-                            <select class="form-select" id="workoutMuscle" name="workoutMuscle" required>
-                                <option value="" selected disabled>Select Target Muscle</option>
-                                <option value="Abs">Abs</option>
-                                <option value="Biceps">Biceps</option>
-                                <option value="Calves">Calves</option>
-                                <option value="Cardio">Cardio</option>
-                                <option value="Chest">Chest</option>
-                                <option value="Shoulders">Shoulders</option>
-                                <option value="Forearms">Forearms</option>
-                                <option value="Legs">Legs</option>
-                                <option value="Hamstrings">Hamstrings</option>
-                                <option value="Back">Back</option>
-                                <option value="Quads">Quads</option>
-                                <option value="Traps">Traps</option>
-                                <option value="Triceps">Triceps</option>
-                                <option value="Upper Back">Upper Back</option>
-                            </select>
+                            <label for="workoutMuscle" class="form-label"><strong>Exercises</strong></label>
+                            {{#each exercisesByMuscleTarget}}
+                                <h6><strong>{{muscleTarget}}</strong></h6>
+                                {{#each exercises}}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{exercise_name}}" id="{{exercise_name}}" name="exercises[]">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{exercise_name}}
+                                    </label>
+                                </div>
+                                {{/each}}
+                            {{/each}}
+            
                         </div>
+                
                         <div class="mb-3">
                             <label for="avg_time" class="form-label"><strong>Time for Completion</strong></label>
                             <div>
@@ -92,55 +88,68 @@
 
         <div class="d-flex justify-content-center">
             <div class="row w-100" style="max-width: 1140px;">
-                {{#each workouts}}
-                <div class="col-md-4 col-sm-6 mb-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{workout_name}}</h5>
-                            <p class="card-text"><strong>Target Muscles:</strong> {{workout_muscle}}</p>
-                            <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
-                            <div>
-                                <button
-                                class="btn btn-light mt-3"
-                                data-bs-toggle="modal"
-                                data-bs-target="#info_modal_{{@index}}"
-                                >
-                                View More
-                                </button>
+                {{#if workouts.length}}
+                    {{#each workouts}}
+                    <div class="col-md-4 col-sm-6 mb-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{workout_name}}</h5>
+                                <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
+                                <p class="card-text"><strong>Number of Exercises:</strong> {{exercises.length}}</p>
+                                <div>
+                                    <button
+                                    class="btn btn-light mt-3"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#info_modal_{{@index}}"
+                                    >
+                                    View More
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal for  workout -->
+                    <div
+                    class="modal fade"
+                    id="info_modal_{{@index}}"
+                    tabindex="-1"
+                    aria-labelledby="info_modal_label_{{@index}}"
+                    aria-hidden="true"
+                    >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="info_modal_label_{{@index}}">Workout Information</h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h1>{{workout_name}}</h1>
+                                    <p><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
+                                    <p><strong>Exercises:</strong></p>
+                                    <ul>
+                                        {{#each exercises}}
+                                            <li>{{exercise_name}} - {{muscle_target}}</li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
                 </div>
 
-                <!-- Modal for  workout -->
-                <div
-                class="modal fade"
-                id="info_modal_{{@index}}"
-                tabindex="-1"
-                aria-labelledby="info_modal_label_{{@index}}"
-                aria-hidden="true"
-                >
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="info_modal_label_{{@index}}">Workout Information</h5>
-                                <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                ></button>
-                            </div>
-                            <div class="modal-body">
-                                <h1>{{workout_name}}</h1>
-                                <p><strong>Target Muscle:</strong> {{workout_muscle}}</p>
-                                <p><strong>Time:</strong> {{time_hour}} hours {{time_minutes}} minutes</p>
-                                <button class="btn btn-danger">Delete Workout</button>
-                            </div>
-                        </div>
+
+                {{else}}
+                    <div class="text-center mt-5 text-secondary">
+                        <h2>Your workout list is empty. Add one to begin.</h2>
                     </div>
-                </div>
-                {{/each}}
+                {{/if}}
             </div>
         </div>
     </div>

@@ -1,16 +1,61 @@
 <div class="container mt-4">
-  <!-- Page Title -->
   <h1 class="text-center mb-5 mt-5 fw-bold display-5">Exercise Library</h1>
 
   <div class="row">
-    {{#each data}}
-      <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card" style="width: 18rem;">
+    {{#each mergedExercises}}
+      <div class="col-md-4 col-sm-6 mb-3">
+        <!-- Reduced space between cards -->
+        <button
+          class="card btn btn-outline-none w-100"
+          data-bs-toggle="modal"
+          data-bs-target="#exerciseModal{{@index}}"
+        >
           <img src="{{gifUrl}}" class="card-img-top" alt="{{name}}" />
           <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text"><strong>Equipment:</strong> {{equipment}}</p>
             <p class="card-text"><strong>Target Muscles:</strong> {{target}}</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- Modal for each exercise -->
+      <div
+        class="modal fade"
+        id="exerciseModal{{@index}}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{name}}</h5>
+            </div>
+            <div class="modal-body">
+              <img src="{{gifUrl}}" class="card-img-top mb-3" alt="{{name}}" />
+              <p><strong>Name:</strong> {{name}}</p>
+              <p><strong>Target Muscles:</strong> {{target}}</p>
+              <p><strong>Equipment:</strong> {{equipment}}</p>
+              <p>{{instructions}}</p>
+              <div class="ratio ratio-16x9 mb-3">
+                <iframe
+                  src="{{videoId}}"
+                  title="YouTube video player"
+                  allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                ></iframe>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >Close</button>
+            </div>
           </div>
         </div>
       </div>

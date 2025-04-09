@@ -1,0 +1,87 @@
+[
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/u0MHQ7k5nIAlOH",
+    "id": "0027",
+    "name": "barbell bent over row",
+    "target": "upper back",
+    "secondaryMuscles": ["biceps", "forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and knees slightly bent.",
+      "Bend forward at the hips while keeping your back straight and chest up.",
+      "Grasp the barbell with an overhand grip, hands slightly wider than shoulder-width apart.",
+      "Pull the barbell towards your lower chest by retracting your shoulder blades and squeezing your back muscles.",
+      "Pause for a moment at the top, then slowly lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/SdJttrpNjMz1ar",
+    "id": "0049",
+    "name": "barbell incline row",
+    "target": "upper back",
+    "secondaryMuscles": ["biceps", "forearms"],
+    "instructions": [
+      "Set up an incline bench at a 45-degree angle.",
+      "Lie face down on the bench with your chest against the pad and your feet flat on the ground.",
+      "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+      "Keep your back straight and your core engaged.",
+      "Pull the barbell towards your chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the top, then slowly lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/SdcnNnnMKFhCPW",
+    "id": "0064",
+    "name": "barbell one arm bent over row",
+    "target": "upper back",
+    "secondaryMuscles": ["biceps", "forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, knees slightly bent, and hold a barbell with one hand using an overhand grip.",
+      "Bend forward at the hips, keeping your back straight and your head in a neutral position.",
+      "Pull the barbell up towards your chest, keeping your elbow close to your body and squeezing your shoulder blades together.",
+      "Lower the barbell back down to the starting position in a controlled manner.",
+      "Repeat for the desired number of repetitions, then switch to the other arm."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/rDSrKh5xcbus5q",
+    "id": "0118",
+    "name": "barbell reverse grip bent over row",
+    "target": "upper back",
+    "secondaryMuscles": ["biceps", "forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and knees slightly bent.",
+      "Hold a barbell with an overhand grip, palms facing down, and hands slightly wider than shoulder-width apart.",
+      "Bend forward at the hips, keeping your back straight and chest up, until your torso is almost parallel to the floor.",
+      "Pull the barbell towards your lower chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the top, then slowly lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "cable",
+    "gifUrl": "https://v2.exercisedb.io/image/WemYXl-yipyNlN",
+    "id": "0159",
+    "name": "cable decline seated wide-grip row",
+    "target": "upper back",
+    "secondaryMuscles": ["biceps", "forearms"],
+    "instructions": [
+      "Sit on the decline bench facing the cable machine with your feet securely placed on the footrests.",
+      "Grasp the cable attachment with a wide overhand grip, palms facing down.",
+      "Lean back slightly, keeping your back straight and your core engaged.",
+      "Pull the cable towards your lower chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the peak of the contraction, then slowly release the cable back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]
