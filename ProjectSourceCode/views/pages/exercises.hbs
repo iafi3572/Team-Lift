@@ -2,7 +2,7 @@
   <h1 class="text-center mb-5 mt-5 fw-bold display-5">Exercise Library</h1>
 
   <div class="row">
-    {{#each data}}
+    {{#each mergedExercises}}
       <div class="col-md-4 col-sm-6 mb-3">
         <!-- Reduced space between cards -->
         <button
@@ -39,6 +39,15 @@
               <p><strong>Target Muscles:</strong> {{target}}</p>
               <p><strong>Equipment:</strong> {{equipment}}</p>
               <p>{{instructions}}</p>
+              <div class="ratio ratio-16x9 mb-3">
+                <iframe
+                  src="{{videoId}}"
+                  title="YouTube video player"
+                  allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                ></iframe>
+              </div>
             </div>
             <div class="modal-footer">
               <button
