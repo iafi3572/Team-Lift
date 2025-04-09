@@ -105,7 +105,9 @@ app.post("/register", async (req, res) => {
 
   //checks that password and confirm password are the same
   if (password !== confirmPassword) {
+
     return res.status(400).render("pages/register", {
+
       error: true,
       message: "Passwords do not match",
       username: username,
@@ -123,7 +125,9 @@ app.post("/register", async (req, res) => {
       INSERT INTO users (username, hash_password, email, birthday) VALUES ($1, $2, $3, $4);`,
       [username, hash, email, birthday]
     );
+
     res.status(200).redirect("/login");
+
   } catch (err) {
     if (err.code == "23505") {
       res.render("pages/register", {
@@ -132,7 +136,9 @@ app.post("/register", async (req, res) => {
       });
     } else {
       console.error("error", err);
+
       res.status(400).redirect("/register");
+
     }
   }
 });
@@ -145,17 +151,75 @@ app.get("/login", (req, res) => {
 app.get("/exercises", async (req, res) => {
   const options = {
     method: "GET",
-    url: "https://exercisedb.p.rapidapi.com/exercises?limit=100",
+    url: "https://exercisedb.p.rapidapi.com/exercises?limit=10",
     headers: {
-      "X-RapidAPI-Key": process.env.API_KEY,
+      "X-RapidAPI-Key": process.env.EX_API_KEY,
       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
     },
   };
 
   try {
     const { data } = await axios.request(options);
-    console.log(data);
-    res.render("pages/exercises.hbs", { data });
+    // console.log(data);
+    const exerciseNames = data.map((exercise) => exercise.name);
+
+    // console.log(exerciseNames);
+
+    const testerName = "abs workout tutorial";
+
+    const vid_data = [];
+
+    const getVideoId = async (exerciseName) => {
+      const ytOptions = {
+        method: "GET",
+        url: "https://www.googleapis.com/youtube/v3/search",
+        params: {
+          part: "snippet",
+          maxResults: 1,
+          type: "video",
+          q: exerciseName,
+          key: process.env.YT_API_KEY,
+        },
+      };
+
+      try {
+        const response = await axios.request(ytOptions);
+        const videoData = response.data;
+        if (videoData.items && videoData.items.length > 0) {
+          const video = videoData.items[0];
+          const videoId = video.id.videoId;
+          return videoId;
+        } else {
+          console.log("No videos found");
+          return null;
+        }
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
+
+    const videoLinks = async () => {
+      for (let exercise of exerciseNames) {
+        const input = exercise + " workout tutorial";
+        const videoId = await getVideoId(input);
+        vid_data.push({
+          videoId: "https://www.youtube.com/embed/" + videoId,
+        });
+      }
+      // console.log(vid_data);
+      return vid_data;
+    };
+
+    const videoLinkData = await videoLinks();
+    // console.log(videoLinkData);
+    const mergedExercises = data.map((exercise, index) => ({
+      ...exercise,
+      videoId: videoLinkData[index]?.videoId || null, // adds videoId to each object
+    }));
+    console.log(mergedExercises);
+
+    res.render("pages/exercises.hbs", { mergedExercises });
   } catch (error) {
     console.error(error);
     res.status(500).render("pages/exercises.hbs", {
@@ -184,15 +248,19 @@ app.post("/login", async (req, res) => {
       req.session.save();
 
       res.redirect("/home");
+
       res.status(200);
     } else {
       res.status(400).render("pages/login", {
+
         message: `Incorrect password`,
         error: true,
       });
     }
   } catch (err) {
+
     res.status(400).redirect("/register");
+
   }
 });
 
@@ -200,6 +268,7 @@ const auth = (req, res, next) => {
   if (!req.session.user) {
     // Default to login page.
     return res.redirect("/login");
+
   }
   next();
 };
@@ -285,6 +354,7 @@ app.get('/myworkouts', async (req, res) => {
     });
   }
 
+
   catch(err) {
     res.status(500).render('pages/myworkouts', {
       error:true,
@@ -292,6 +362,7 @@ app.get('/myworkouts', async (req, res) => {
     });
   }
 });
+
 
 
 app.get("/logout", (req, res) => {
@@ -313,6 +384,7 @@ app.get("/logout", (req, res) => {
 app.get('/myplan', (req, res) => {
   res.render('pages/myplan.hbs')
 });
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
