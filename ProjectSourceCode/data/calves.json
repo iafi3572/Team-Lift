@@ -1,0 +1,80 @@
+[
+  {
+    "bodyPart": "lower legs",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/NBIMUI3fSjyfmU",
+    "id": "0088",
+    "name": "barbell seated calf raise",
+    "target": "calves",
+    "secondaryMuscles": ["hamstrings", "quadriceps"],
+    "instructions": [
+      "Sit on a bench with your feet flat on the floor and a barbell resting on your thighs.",
+      "Place the balls of your feet on a raised platform, such as a block or step.",
+      "Position the barbell across your thighs and hold it securely with your hands.",
+      "Keeping your back straight and your core engaged, lift your heels off the ground by extending your ankles.",
+      "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/ZLlg7yPL0PgPyU",
+    "id": "0108",
+    "name": "barbell standing leg calf raise",
+    "target": "calves",
+    "secondaryMuscles": ["hamstrings", "glutes"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and place a barbell across your upper back.",
+      "Raise your heels off the ground as high as possible, using your calves.",
+      "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/9MVV3NHf7G7c7K",
+    "id": "0111",
+    "name": "barbell standing rocking leg calf raise",
+    "target": "calves",
+    "secondaryMuscles": ["hamstrings", "quadriceps"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and hold a barbell across your upper back.",
+      "Raise your heels off the ground as high as possible, balancing on the balls of your feet.",
+      "Slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "body weight",
+    "gifUrl": "https://v2.exercisedb.io/image/SZ6iLDGFqbdxUP",
+    "id": "0257",
+    "name": "circles knee stretch",
+    "target": "calves",
+    "secondaryMuscles": ["hamstrings", "quadriceps"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and your hands on your hips.",
+      "Bend your knees slightly and lift your heels off the ground, balancing on the balls of your feet.",
+      "Keeping your knees bent, rotate your knees in a circular motion, first clockwise and then counterclockwise.",
+      "Perform the movement for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "body weight",
+    "gifUrl": "https://v2.exercisedb.io/image/jFApC0Ym0Pa1Of",
+    "id": "0284",
+    "name": "donkey calf raise",
+    "target": "calves",
+    "secondaryMuscles": ["hamstrings", "glutes"],
+    "instructions": [
+      "Stand with your toes on an elevated surface, such as a step or block.",
+      "Place your hands on a stable support, such as a wall or railing, for balance.",
+      "Raise your heels as high as possible, lifting your body weight onto the balls of your feet.",
+      "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]
