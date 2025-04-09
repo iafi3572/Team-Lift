@@ -24,6 +24,9 @@
 - **Kirin**:
 - **Ian**:
 
+  - Myplan page layout
+  - Started on adding "Today's workout" on home page
+
 ### Other Notes / Known Issues
 
 
