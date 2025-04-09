@@ -1,0 +1,86 @@
+[
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/PEZ5Lr47C6gieX",
+    "id": "0023",
+    "name": "barbell alternate biceps curl",
+    "target": "biceps",
+    "secondaryMuscles": ["forearms"],
+    "instructions": [
+      "Stand up straight with your feet shoulder-width apart and hold a barbell in each hand, palms facing forward.",
+      "Keep your upper arms stationary and exhale as you curl the weights while contracting your biceps.",
+      "Continue to raise the barbells until your biceps are fully contracted and the barbells are at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale as you slowly begin to lower the barbells back to the starting position.",
+      "Repeat for the desired number of repetitions, alternating arms."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/14xV7RKDO5p3WT",
+    "id": "0031",
+    "name": "barbell curl",
+    "target": "biceps",
+    "secondaryMuscles": ["forearms"],
+    "instructions": [
+      "Stand up straight with your feet shoulder-width apart and hold a barbell with an underhand grip, palms facing forward.",
+      "Keep your elbows close to your torso and exhale as you curl the weights while contracting your biceps.",
+      "Continue to raise the bar until your biceps are fully contracted and the bar is at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale as you slowly begin to lower the bar back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/JlUf15qO5YYzDx",
+    "id": "0038",
+    "name": "barbell drag curl",
+    "target": "biceps",
+    "secondaryMuscles": ["forearms"],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and hold a barbell with an underhand grip, palms facing up.",
+      "Let the barbell hang at arm's length in front of your thighs.",
+      "Keeping your upper arms stationary, curl the barbell up towards your chest by contracting your biceps.",
+      "Pause for a moment at the top, then slowly lower the barbell back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/GR9ip9KybUwSr8",
+    "id": "0059",
+    "name": "barbell lying preacher curl",
+    "target": "biceps",
+    "secondaryMuscles": ["forearms"],
+    "instructions": [
+      "Sit on a preacher bench with your chest against the pad and your arms extended over the edge, holding a barbell with an underhand grip.",
+      "Keeping your upper arms stationary, exhale and curl the weights while contracting your biceps.",
+      "Continue to raise the bar until your biceps are fully contracted and the bar is at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale and slowly begin to lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "https://v2.exercisedb.io/image/q2DEiqobukXEYK",
+    "id": "0070",
+    "name": "barbell preacher curl",
+    "target": "biceps",
+    "secondaryMuscles": ["forearms"],
+    "instructions": [
+      "Sit on a preacher bench with your upper arms resting on the pad and your chest against the support.",
+      "Grasp the barbell with an underhand grip, slightly wider than shoulder-width apart.",
+      "Keeping your upper arms stationary, exhale and curl the barbell up towards your shoulders.",
+      "Pause for a moment at the top, squeezing your biceps.",
+      "Inhale and slowly lower the barbell back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]
