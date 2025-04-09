@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS workouts (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
+
 CREATE TABLE IF NOT EXISTS workout_exercises (
     workout_id INT,
     exercise_name VARCHAR(255),
@@ -21,6 +22,7 @@ CREATE TABLE IF NOT EXISTS workout_exercises (
     PRIMARY KEY (workout_id, exercise_name),
     FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
 );
+
 
 CREATE TABLE exercises (
   bodyPart VARCHAR(50),
