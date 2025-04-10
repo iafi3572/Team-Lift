@@ -1,3 +1,23 @@
+# 4/9 Standup
+
+## Demo Feedback:
+
+- Most of our features are complete, which is good.
+- Work on styling for the entire website.
+- **Suggestions**:
+  - Track other analytic features like BMI, weight, etc.
+  - Add download functionality to calendar
+  - Add compatibility to different window sizes and work for mobile UI.
+
+## Tasks:
+
+- **Sam**: Worked on the exercise page UI, added the YouTube API functionality.
+- **Kirin**: Work on calendar UI, implementing users being able to add custom workouts to calendar. Will implement edit/delete functionality to calendar/schedule.
+- **Lana**: Worked on workouts page, letting users create custom workouts using exercises from workout API. Will implement edit and delete functionality for custom workouts.
+- **Ian**: Worked on the template for the schedule page and added button functionality. Will work on today’s workout on home page, interacting with the calendar on the my plan page.
+- **Matthew**: Worked on all the tracking and analytics front end. Will implement the backend databases and routes.
+
+
 
 # 4/2 Standup
 
