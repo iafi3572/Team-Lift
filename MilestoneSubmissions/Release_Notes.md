@@ -22,6 +22,11 @@
   - visuals for today's exercise
   
 - **Kirin**:
+
+  - My plan workout calender visual
+  - Workout calendar database
+  - Adding workouts to calendar (UI and Routes)
+    
 - **Ian**:
 
   - Myplan page layout
