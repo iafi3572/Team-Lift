@@ -10,6 +10,81 @@
             <br>
             <br>
         </div>
+        <div class="col-auto" >
+            <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#default_modal">
+                Add a Default Workout
+            </button>
+            <br>
+            <br>
+            <br>
+        </div>
+
+         <div
+            class="modal fade"
+            id="default_modal"
+            tabindex="-1"
+            aria-labelledby="default_modal_label"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="default_modal_label">Default Workouts</h5>
+                        <button
+                            type="submit"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        >
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form
+                        id="data-form"
+                        class="needs-validation"
+                        method="post"
+                        action="/add_default_workout"
+                        >
+                        <div class="list-group">
+                            {{#each defaultWorkouts}}
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5>{{workout_name}} ({{time_hours}} hours {{time_minutes}} minutes)</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            {{#each exercises}}
+                                                <li class="list-group-item">
+                                                    <p><strong>{{exercise_name}}</strong> - {{muscle_target}}</p>
+                                                </li>
+                                            {{/each}}
+                                        </ul>
+                                        <div class="form-check mt-3">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="radio" 
+                                                name="workouts" 
+                                                value="{{workout_name}}" 
+                                                id="workout-{{workout_name}}"
+                                                required
+                                            >
+                                            <label class="form-check-label" for="workout-{{workout_name}}">
+                                               Select
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+
+                         <button class="btn btn-primary" type="submit">
+                            Add Workout
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div
             class="modal fade"
