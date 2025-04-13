@@ -1,3 +1,57 @@
+:root {
+  --charcoal: #1c1c1e;
+  --graphite: #2c2c2e;
+  --steel: #3a3a3c;
+  --steel-light: #5a5a5c;
+  --light-green: #7bb274;
+}
+
+.bg-charcoal {
+  background-color: var(--charcoal) !important;
+}
+.bg-steel {
+  background-color: var(--steel) !important;
+}
+.bg-light-green {
+  background-color: var(--light-green) !important;
+}
+.bg-light-green:hover {
+  background-color: rgb(177, 235, 119) !important;
+}
+.btn-outline-light-green {
+  border-color: var(--light-green) !important;
+}
+.btn-outline-light-green:hover {
+  border-color: rgb(177, 235, 119) !important;
+}
+.login-secondary-btn-green {
+  color: var(--light-green) !important;
+}
+.login-secondary-btn-green:hover {
+  color: rgb(177, 235, 119) !important;
+}
+.form-control {
+  background-color: var(--steel);
+  border: 1px solid #666666;
+  color: white;
+  border: none;
+}
+.form-control:focus {
+  background-color: var(--steel-light);
+  border: 1px solid #666666;
+  color: white;
+  border: none;
+}
+.exercise_cards {
+  background-color: var(--steel) !important;
+  color: white;
+}
+
+body {
+  background-color: var(--charcoal) !important;
+  color: white;
+}
+
 .navbar {
   background-color: #333;
 }
@@ -41,4 +95,8 @@
 }
 .dropdown:hover .dropbtn {
   background-color: #b9b9b9;
+}
+
+.register-form {
+  min-height: 100vh;
 }
