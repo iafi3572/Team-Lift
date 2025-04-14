@@ -1,63 +1,48 @@
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div
-      class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2"
-    >
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          {{#if user}}
-            <a class="nav-link" href="/"><img
-                src="../../images/Lift_track_logo_no_background.png"
-                style="width:64px;height:64px;"
-              /></a>
-          {{else}}
-            <a class="nav-link" href="/login"><img
-                src="../../images/Lift_track_logo_no_background.png"
-                style="width:64px;height:64px;"
-              /></a>
-          {{/if}}
-        </li>
-        <li class="nav-item">
-          {{#if user}}
-            <a class="nav-link" href="/exercises">Exercises</a>
-          {{else}}
-            <a class="nav-link" href="/login">Exercises</a>
-          {{/if}}
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">My Fitness</button>
-          <div class="dropdown-content">
+  <nav class="navbar navbar-expand-lg" style="background: white; border-bottom: 2px solid #e0e3eb; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 0 1rem;">
+    <div class="navbar-collapse collapse w-100 dual-collapse2" style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 1.5rem; flex-grow: 1;">
+        {{#if user}}
+          <a class="nav-link" href="/">
+            <img src="../../images/Lift_track_logo_no_background.png" 
+                 style="width:64px;height:64px; transition: transform 0.2s;"
+                 class="hover-scale">
+          </a>
+        {{else}}
+          <a class="nav-link" href="/login">
+            <img src="../../images/Lift_track_logo_no_background.png" 
+                 style="width:64px;height:64px; transition: transform 0.2s;"
+                 class="hover-scale">
+          </a>
+        {{/if}}
+        <a class="nav-link" href="{{#if user}}/exercises{{else}}/login{{/if}}" 
+           style="color: #2d3436; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;">
+          Exercises
+        </a>
+        <div class="dropdown" style="position: relative;">
+          <button class="dropbtn" style="background: none; border: none; color: #2d3436; font-weight: 500; 
+                  padding: 8px 12px; border-radius: 8px; transition: all 0.2s;">
+            My Fitness ▼
+          </button>
+          <div class="dropdown-content" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e0e3eb;">
             {{#if user}}
-              <a class="nav-link" href="/myplan">My Plan</a>
+              <a class="nav-link" href="/myplan" style="color: #2d3436; padding: 10px 16px;">My Plan</a>
+              <a class="nav-link" href="/tracking" style="color: #2d3436; padding: 10px 16px;">Tracking/Analytics</a>
+              <a class="nav-link" href="/myworkouts" style="color: #2d3436; padding: 10px 16px;">My Workouts</a>
             {{else}}
-              <a class="nav-link" href="/login">My Plan</a>
-            {{/if}}
-            {{#if user}}
-              <a class="nav-link" href="/tracking">Tracking/Analytics</a>
-            {{else}}
-              <a class="nav-link" href="/login">Tracking/Analytics</a>
-            {{/if}}
-            {{#if user}}
-              <a class="nav-link" href="/myworkouts">My Workouts</a>
-            {{else}}
-              <a class="nav-link" href="/login">My Workouts</a>
+              <a class="nav-link" href="/login" style="color: #2d3436; padding: 10px 16px;">My Plan</a>
+              <a class="nav-link" href="/login" style="color: #2d3436; padding: 10px 16px;">Tracking/Analytics</a>
+              <a class="nav-link" href="/login" style="color: #2d3436; padding: 10px 16px;">My Workouts</a>
             {{/if}}
           </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="navbar-collapse collapse order-3 dual-collapse2">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            {{user.email}}
-          </a>
-        </li>
-      </ul>
+        </div>
+      </div>
+      <div style="flex-shrink: 0; margin-left: auto;">
+        <a href="/logout" class="nav-link" 
+           style="background: #0984e3; color: white; padding: 8px 16px; border-radius: 8px; transition: all 0.2s;">
+          Logout
+        </a>
+      </div>
     </div>
   </nav>
 </header>
