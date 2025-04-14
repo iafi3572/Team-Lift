@@ -272,13 +272,69 @@ const auth = (req, res, next) => {
 
 app.use(auth);
 
-app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString("en-US", {
-    timeZone: "America/Denver",
-  });
-  // Get current date
-  res.render("pages/home", { date: today });
+const weekLabels = [
+  { id: 'sun', label: 'Sunday' },
+  { id: 'mon', label: 'Monday' },
+  { id: 'tues', label: 'Tuesday' },
+  { id: 'wed', label: 'Wednesday' },
+  { id: 'thurs', label: 'Thursday' },
+  { id: 'fri', label: 'Friday' },
+  { id: 'sat', label: 'Saturday' }
+];
+
+app.get('/home', async (req, res) => {
+  const username = req.session.user?.username;
+  if (!username) return res.redirect('/login');
+
+  try {
+    const date = new Date().toLocaleDateString('en-US', { timeZone: "America/Denver" });
+    const today = new Date().toLocaleDateString('en-US', { timeZone: "America/Denver", weekday: 'long' });
+
+    // Get today's scheduled workouts
+    const scheduledSets = await db.any(`
+      SELECT
+        ws.start_time,
+        w.workout_name,
+        w.time_hours AS duration_hours,
+        w.time_minutes AS duration_minutes,
+        w.workout_id
+      FROM workout_schedule ws
+      JOIN workouts w ON ws.workout_id = w.workout_id
+      WHERE ws.username = $1 AND ws.day_of_week = $2
+      ORDER BY ws.start_time;
+    `, [username, today]);
+
+    // Add exercises to each workout
+    for (const set of scheduledSets) {
+      const exercises = await db.any(`
+        SELECT exercise_name, muscle_target
+        FROM workout_exercises
+        WHERE workout_id = $1;
+      `, [set.workout_id]);
+
+      set.exercises = exercises;
+      set.start_time = set.start_time.slice(0, 5); // format time
+    }
+
+    res.render('pages/home', {
+      date: date,
+      scheduledSets
+    });
+
+  } catch (err) {
+    console.error('Error loading home page:', err);
+    res.render('pages/home', {
+      date: '',
+      scheduledSets: [],
+      message: 'Error loading today’s plan.',
+      error: true
+    });
+  }
 });
+
+
+
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
@@ -314,15 +370,7 @@ app.get('/logout', (req, res) => {
   
 // });
 
-const weekLabels = [
-  { id: 'sun', label: 'Sunday' },
-  { id: 'mon', label: 'Monday' },
-  { id: 'tues', label: 'Tuesday' },
-  { id: 'wed', label: 'Wednesday' },
-  { id: 'thurs', label: 'Thursday' },
-  { id: 'fri', label: 'Friday' },
-  { id: 'sat', label: 'Saturday' }
-];
+
 
 
 app.get('/myplan', async (req, res) => {
