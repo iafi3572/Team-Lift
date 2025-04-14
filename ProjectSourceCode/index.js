@@ -82,11 +82,6 @@ app.use(
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.get("/tracking", (req, res) => {
-  res.render("pages/tracking");
-  //do something
-});
-
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
@@ -548,6 +543,124 @@ app.get("/logout", (req, res) => {
 
 app.get("/myplan", (req, res) => {
   res.render("pages/myplan.hbs");
+});
+
+// Goals endpoints
+app.get('/api/goals', async (req, res) => {
+  try {
+      const goals = await db.any(
+          'SELECT * FROM goals WHERE username = $1 ORDER BY created_at DESC',
+          [req.session.user.username]
+      );
+      res.json(goals);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/goals', async (req, res) => {
+  try {
+      const newGoal = await db.one(
+          'INSERT INTO goals (username, goal_text) VALUES ($1, $2) RETURNING *',
+          [req.session.user.username, req.body.goalText]
+      );
+      res.json(newGoal);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/goals/:id', async (req, res) => {
+  try {
+      await db.none(
+          'UPDATE goals SET completed = $1 WHERE goal_id = $2 AND username = $3',
+          [req.body.completed, req.params.id, req.session.user.username]
+      );
+      res.sendStatus(200);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/goals/:id', async (req, res) => {
+  try {
+      await db.none(
+          'DELETE FROM goals WHERE goal_id = $1 AND username = $2',
+          [req.params.id, req.session.user.username]
+      );
+      res.sendStatus(200);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+// Exercise log endpoints
+app.post('/api/exercise-log', async (req, res) => {
+  try {
+      await db.none(
+          `INSERT INTO exercise_log (username, exercise_name, reps, weight)
+           VALUES ($1, $2, $3, $4)`,
+          [req.session.user.username, req.body.name, req.body.reps, req.body.weight]
+      );
+      
+      // Force refresh the averages calculation
+      await db.none('NOTIFY refresh_averages');
+      
+      res.sendStatus(201);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/averages/:exercise', async (req, res) => {
+  try {
+      const avg = await db.oneOrNone(
+          `SELECT AVG(reps) as avg_reps, AVG(weight) as avg_weight 
+           FROM exercise_log 
+           WHERE username = $1 AND exercise_name = $2`,
+          [req.session.user.username, req.params.exercise]
+      );
+      res.json(avg);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/tracking", async (req, res) => {
+  try {
+      const username = req.session.user.username;
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      
+      // Get today's scheduled workouts
+      const scheduledWorkouts = await db.any(`
+          SELECT we.exercise_name
+          FROM workout_schedule ws
+          JOIN workout_exercises we ON ws.workout_id = we.workout_id
+          WHERE ws.username = $1 AND ws.day_of_week = $2
+      `, [username, today]);
+
+      res.render("pages/tracking", {
+          exercises: scheduledWorkouts.map(w => w.exercise_name)
+      });
+  } catch (error) {
+      console.error(error);
+      res.render("pages/tracking", { exercises: [] });
+  }
+});
+
+app.get('/api/history/:exercise', async (req, res) => {
+  try {
+      const history = await db.any(
+          `SELECT reps, weight, log_date 
+           FROM exercise_log 
+           WHERE username = $1 AND exercise_name = $2
+           ORDER BY log_date ASC`,
+          [req.session.user.username, req.params.exercise]
+      );
+      res.json(history);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 });
 
 // *****************************************************
