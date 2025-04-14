@@ -49,7 +49,7 @@
                             {{#each defaultWorkouts}}
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        <h5>{{workout_name}} ({{time_hours}} hours {{time_minutes}} minutes)</h5>
+                                        <h5>{{workout_name}} ({{time_hours}} hour(s) {{time_minutes}} minutes)</h5>
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-group">
@@ -169,7 +169,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{workout_name}}</h5>
-                                <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
+                                <p class="card-text"><strong>Time:</strong> {{time_hours}} hour(s) {{time_minutes}} minutes</p>
                                 <p class="card-text"><strong>Number of Exercises:</strong> {{exercises.length}}</p>
                                 <div>
                                     <button
@@ -205,13 +205,19 @@
                                 </div>
                                 <div class="modal-body">
                                     <h1>{{workout_name}}</h1>
-                                    <p><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
+                                    <p><strong>Time:</strong> {{time_hours}} hour(s) {{time_minutes}} minutes</p>
                                     <p><strong>Exercises:</strong></p>
                                     <ul>
                                         {{#each exercises}}
                                             <li>{{exercise_name}} - {{muscle_target}}</li>
                                         {{/each}}
                                     </ul>
+                                    <form action="/deleteWorkout" method="POST">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="workoutId" value="{{workout_id}}">
+                                        <button type="submit" class="btn btn-danger">Delete Workout</button>
+                                    </form>
+                                    
                                 </div>
                             </div>
                         </div>

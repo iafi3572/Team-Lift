@@ -523,6 +523,7 @@ app.post("/myworkouts", async (req, res) => {
 });
 
 app.get("/myworkouts", async (req, res) => {
+  const message = req.query.message;
   const username = req.session.user.username;
  
   try {
@@ -597,13 +598,31 @@ app.get("/myworkouts", async (req, res) => {
     res.render("pages/myworkouts", {
       workouts,
       exercisesByMuscleTarget,
-      defaultWorkouts
+      defaultWorkouts,
+      message
     });
   } catch (err) {
     res.status(500).render("pages/myworkouts", {
       error: true,
       message: "Could not load workouts. Please try again",
     });
+  }
+});
+
+//delete a workout
+app.post('/deleteWorkout', async (req, res) => {
+  const { workoutId } = req.body;
+  try {
+    await db.query('DELETE FROM workout_exercises WHERE workout_id = $1', [workoutId]);
+    await db.query('DELETE FROM workouts WHERE workout_id = $1', [workoutId]);
+    
+    res.redirect('/myworkouts?message=Workout Deleted');
+  
+  } catch (err) {
+      res.status(500).render("pages/myworkouts", {
+      message: `Error deleting workout. Please try again`,
+      error: true,
+  })
   }
 });
 
