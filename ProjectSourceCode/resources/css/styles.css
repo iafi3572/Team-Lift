@@ -17,6 +17,7 @@
 }
 .bg-light-green:hover {
   background-color: rgb(177, 235, 119) !important;
+  color: #2c2c2e;
 }
 .btn-outline-light-green {
   border-color: var(--light-green) !important;
@@ -29,6 +30,19 @@
 }
 .login-secondary-btn-green:hover {
   color: rgb(177, 235, 119) !important;
+}
+.box-outline-lime {
+  border: 2px solid var(--light-green) !important;
+}
+.text-white {
+  color: whitesmoke !important;
+}
+.text-white::placeholder {
+  color: white !important;
+  opacity: 0.7;
+}
+.btn-close {
+  filter: brightness(0) invert(1);
 }
 
 .form-control {
@@ -78,24 +92,22 @@ body {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(37, 37, 37, 0.2);
   z-index: 1;
 }
 .dropdown-content a {
   color: black;
-  padding: 16px;
   text-decoration: none;
   display: block;
 }
 .dropdown-content a:hover {
-  background-color: #b9b9b9;
+  background-color: rgb(232, 229, 229);
+  color: #2c2c2e;
+  border-radius: 8px;
 }
 .dropdown:hover .dropdown-content {
   display: block;
-}
-.dropdown:hover .dropbtn {
-  background-color: #b9b9b9;
+  border-radius: 8px;
 }
 
 .register-form {

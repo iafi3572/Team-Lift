@@ -16,12 +16,12 @@
           </a>
         {{/if}}
 
-        <a class="text-light" href="{{#if user}}/exercises{{else}}/login{{/if}}" id="nav_links">
+        <a class="text-light fs-5" href="{{#if user}}/exercises{{else}}/login{{/if}}" id="nav_links">
           Exercises
         </a>
 
         <div class="dropdown position-relative">
-          <button class="dropbtn nav-link text-white">My Fitness ▼</button>
+          <button class="dropbtn nav-link text-white fs-5">My Fitness ▼</button>
           <div class="dropdown-content">
             {{#if user}}
               <a class="nav-link" href="/myplan">My Plan</a>
@@ -36,9 +36,11 @@
         </div>
       </div>
 
+      {{#if user}}
       <div>
         <a href="/logout" class="me-4 btn btn-outline-light-green login-secondary-btn-green">Logout</a>
       </div>
+      {{/if}}
     </div>
   </nav>
 </header>
