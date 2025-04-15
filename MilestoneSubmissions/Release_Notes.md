@@ -1,5 +1,31 @@
 # Release Notes
 
+## Updates Since Last Meeting (4/9 - 4/15)
+
+- **Lana**:
+
+  - Added Default Workouts
+  - Functionality to Edit Workouts
+  - Functionality to Delete Workouts
+
+- **Sam**:
+
+  -
+
+- **Matthew**:
+
+  -
+
+- **Kirin**:
+
+  -
+
+- **Ian**:
+
+  -
+
+### Other Notes / Known Issues
+
 ## Updates Since Last Meeting (4/2 - 4/9)
 
 - **Lana**:
@@ -10,30 +36,29 @@
 
 - **Sam**:
 
-  - Implemented the YouTube API Routes 
+  - Implemented the YouTube API Routes
   - Added the YouTube data to the exercises page
   - Exercises Database
   - Styles page
-    
+
 - **Matthew**:
 
   - visuals for goals
   - visuals for average
   - visuals for today's exercise
-  
+
 - **Kirin**:
 
   - My plan workout calender visual
   - Workout calendar database
   - Adding workouts to calendar (UI and Routes)
-    
+
 - **Ian**:
 
   - Myplan page layout
   - Started on adding "Today's workout" on home page
 
 ### Other Notes / Known Issues
-
 
 ## Updates Since Last Meeting (3/19 - 4/2)
 
