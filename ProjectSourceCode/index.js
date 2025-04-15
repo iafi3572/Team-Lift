@@ -612,6 +612,7 @@ app.get("/myworkouts", async (req, res) => {
 //delete a workout
 app.post('/deleteWorkout', async (req, res) => {
   const { workoutId } = req.body;
+  
   try {
     await db.query('DELETE FROM workout_exercises WHERE workout_id = $1', [workoutId]);
     await db.query('DELETE FROM workouts WHERE workout_id = $1', [workoutId]);
@@ -625,6 +626,28 @@ app.post('/deleteWorkout', async (req, res) => {
   })
   }
 });
+
+//edit a workout
+app.post('/editWorkout', async (req, res) => {
+  const { workoutId } = req.body;
+  let workoutName = req.body.workoutName;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  console.log(workoutId, workoutName, hour, min);
+  try {
+
+    await db.query(`UPDATE workouts SET workout_name = $1, time_hours = $2, time_minutes = $3 WHERE workout_id = $4`, [workoutName, hour, min, workoutId]);
+    
+    res.redirect('/myworkouts?message=Workout Edited');
+  
+  } catch (err) {
+      res.status(500).render("pages/myworkouts", {
+      message: `Error editing workout. Please try again`,
+      error: true,
+  })
+  }
+});
+
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {

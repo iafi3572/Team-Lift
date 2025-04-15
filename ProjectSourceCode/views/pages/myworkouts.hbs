@@ -1,4 +1,5 @@
 {{>message}}
+            
 <div class="container mt-4">
     <h1 class="text-center">My Workouts</h1>
     <div class="row justify-content-center">
@@ -212,19 +213,90 @@
                                             <li>{{exercise_name}} - {{muscle_target}}</li>
                                         {{/each}}
                                     </ul>
-                                    <form action="/deleteWorkout" method="POST">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="workoutId" value="{{workout_id}}">
-                                        <button type="submit" class="btn btn-danger">Delete Workout</button>
-                                    </form>
-                                    
+                                
+                                    <div class="d-flex justify-content-start gap-2 mt-3">
+                                        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit_modal_{{@index}}">Edit Workout</button>
+                
+                                        <br>
+                                        <form action="/deleteWorkout" method="POST">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="workoutId" value="{{workout_id}}">
+                                            <button type="submit" class="btn btn-outline-danger">Delete Workout</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>  
+                         
+                    <div
+                        class="modal fade"
+                        id="edit_modal_{{@index}}"
+                        tabindex="-1"
+                        aria-labelledby="edit_modal_label"
+                        aria-hidden="true"
+                    >
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="edit_modal_{{@index}}">Edit Workout</h5>
+                                    <button
+                                        type="submit"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    >
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form
+                                    id="data-form"
+                                    class="needs-validation"
+                                    method="post"
+                                    action="/editWorkout"
+                                    >
+                                        <input type="hidden" name="workoutId" value="{{workout_id}}">
+                                        <div class="mb-3">
+                                            <label for="workoutName" class="form-label"><strong>Workout Name</strong></label>
+                                            <input
+                                            type="text"
+                                            class="form-control"
+                                            id="workoutName"
+                                            name="workoutName"
+                                            value="{{workout_name}}"
+                                            required
+                                            />
+                                        </div>
+                                
+                                        <div class="mb-3">
+                                            <label for="avg_time" class="form-label"><strong>Time for Completion</strong></label>
+                                            <div>
+                                                <label for="hour" class="form-label">Hour</label>
+                                                <input type="number" class="form-control" id="hour" name="hour" min="0" max="23" placeholder="HH" value="{{time_hours}}"required>
+                                            </div>
+                                            <div>
+                                                <label for="minute" class="form-label">Minute</label>
+                                                <input type="number" class="form-control" id="min" name="min" min="0" max="59" placeholder="MM" value="{{time_minutes}}"required>
+                                            </div>
+
+                                        </div>
+                                        <p><strong>Exercises:</strong></p>
+                                        <div class="mb-3">
+                                            {{#each exercises}}
+                                                <li>{{exercise_name}} - {{muscle_target}}</li>
+                                            {{/each}}
+                                        </ul>
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">
+                                            Submit Edit
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> 
                     </div>
                     {{/each}}
                 </div>
-
 
                 {{else}}
                     <div class="text-center mt-5 text-secondary">
@@ -235,3 +307,4 @@
         </div>
     </div>
 </div>
+
