@@ -80,7 +80,7 @@ app.use(
   })
 );
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/img", express.static(path.join(__dirname, "resources/img")));
 
 app.get("/tracking", (req, res) => {
   res.render("pages/tracking");
@@ -280,16 +280,16 @@ app.get("/home", async (req, res) => {
   res.render("pages/home", { date: today });
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy(err => {
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
     if (err) {
-      return res.render('pages/home', {
-        message: 'Error logging out. Please try again.',
+      return res.render("pages/home", {
+        message: "Error logging out. Please try again.",
         error: true, // Indicate an error occurred
       });
     }
-    res.render('pages/login', {
-      message: 'Logged out Successfully',
+    res.render("pages/login", {
+      message: "Logged out Successfully",
       error: false,
     });
   });
@@ -311,27 +311,27 @@ app.get('/logout', (req, res) => {
 //     ],
 //     allWorkouts: [] // make sure this is included too
 //   });
-  
+
 // });
 
 const weekLabels = [
-  { id: 'sun', label: 'Sunday' },
-  { id: 'mon', label: 'Monday' },
-  { id: 'tues', label: 'Tuesday' },
-  { id: 'wed', label: 'Wednesday' },
-  { id: 'thurs', label: 'Thursday' },
-  { id: 'fri', label: 'Friday' },
-  { id: 'sat', label: 'Saturday' }
+  { id: "sun", label: "Sunday" },
+  { id: "mon", label: "Monday" },
+  { id: "tues", label: "Tuesday" },
+  { id: "wed", label: "Wednesday" },
+  { id: "thurs", label: "Thursday" },
+  { id: "fri", label: "Friday" },
+  { id: "sat", label: "Saturday" },
 ];
 
-
-app.get('/myplan', async (req, res) => {
+app.get("/myplan", async (req, res) => {
   const username = req.session.user?.username;
-  if (!username) return res.redirect('/login');
+  if (!username) return res.redirect("/login");
 
   try {
     // Step 1: Get scheduled workouts for the user
-    const scheduledWorkouts = await db.any(`
+    const scheduledWorkouts = await db.any(
+      `
       SELECT
         ws.day_of_week,
         ws.start_time,
@@ -343,15 +343,20 @@ app.get('/myplan', async (req, res) => {
       JOIN workouts w ON ws.workout_id = w.workout_id
       WHERE ws.username = $1
       ORDER BY ws.day_of_week, ws.start_time;
-    `, [username]);
+    `,
+      [username]
+    );
 
     // Step 2: Attach exercises to each scheduled workout individually
     for (const workout of scheduledWorkouts) {
-      const exercises = await db.any(`
+      const exercises = await db.any(
+        `
         SELECT exercise_name, muscle_target
         FROM workout_exercises
         WHERE workout_id = $1;
-      `, [workout.workout_id]);
+      `,
+        [workout.workout_id]
+      );
 
       workout.exercises = exercises;
       workout.start_time = workout.start_time.slice(0, 5); // format to HH:MM
@@ -367,13 +372,14 @@ app.get('/myplan', async (req, res) => {
     }
 
     // Step 4: Map into final format using external weekLabels
-    const weekdays = weekLabels.map(day => ({
+    const weekdays = weekLabels.map((day) => ({
       ...day,
-      scheduledWorkouts: scheduleByDay[day.label] || []
+      scheduledWorkouts: scheduleByDay[day.label] || [],
     }));
 
     // Step 5: Fetch user-created workouts
-    const allWorkouts = await db.any(`
+    const allWorkouts = await db.any(
+      `
       SELECT workout_id, workout_name
       FROM workouts
       WHERE username = $1
@@ -382,39 +388,34 @@ app.get('/myplan', async (req, res) => {
           WHERE workout_exercises.workout_id = workouts.workout_id
         )
       ORDER BY workout_name;
-    `, [username]);
-    
+    `,
+      [username]
+    );
 
-    res.render('pages/myplan', {
+    res.render("pages/myplan", {
       weekdays,
-      allWorkouts
+      allWorkouts,
     });
-
   } catch (err) {
-    console.error('Error loading schedule:', err);
-    res.render('pages/myplan', {
+    console.error("Error loading schedule:", err);
+    res.render("pages/myplan", {
       weekdays: [],
       allWorkouts: [],
-      message: 'Failed to load schedule.',
-      error: true
+      message: "Failed to load schedule.",
+      error: true,
     });
   }
 });
 
-
-app.post('/myplan/add', async (req, res) => {
+app.post("/myplan/add", async (req, res) => {
   try {
     const username = req.session.user?.username;
-    if (!username) return res.redirect('/login');
+    if (!username) return res.redirect("/login");
 
-    const {
-      day_of_week,
-      start_time,
-      workout_id
-    } = req.body;
+    const { day_of_week, start_time, workout_id } = req.body;
 
     if (!day_of_week || !start_time || !workout_id) {
-      throw new Error('Missing required fields');
+      throw new Error("Missing required fields");
     }
 
     await db.none(
@@ -423,19 +424,17 @@ app.post('/myplan/add', async (req, res) => {
       [username, workout_id, day_of_week, start_time]
     );
 
-    res.redirect('/myplan');
-
+    res.redirect("/myplan");
   } catch (err) {
-    console.error('Error adding workout to schedule:', err);
-    res.status(400).render('pages/myplan', {
-      message: 'Failed to add workout. Please check your inputs.',
+    console.error("Error adding workout to schedule:", err);
+    res.status(400).render("pages/myplan", {
+      message: "Failed to add workout. Please check your inputs.",
       error: true,
       weekdays: [],
-      allWorkouts: []
+      allWorkouts: [],
     });
   }
 });
-
 
 //myworkouts page
 app.post("/myworkouts", async (req, res) => {
