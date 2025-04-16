@@ -24,10 +24,13 @@ const hbs = handlebars.create({
   extname: "hbs",
   layoutsDir: __dirname + "/views/layouts",
   partialsDir: __dirname + "/views/partials",
+  helpers: {
+    ifEquals: function (a, b, options) {
+      return a === b ? options.fn(this) : options.inverse(this);
+    }
+    // You can add more helpers here
+  },
 });
-
-app.engine("hbs", hbs.engine);
-app.set("view engine", "hbs");
 
 app.use(express.static(path.join(__dirname, "resources")));
 
@@ -333,6 +336,7 @@ app.get('/myplan', async (req, res) => {
     // Step 1: Get scheduled workouts for the user
     const scheduledWorkouts = await db.any(`
       SELECT
+        ws.schedule_id,
         ws.day_of_week,
         ws.start_time,
         w.workout_id,
@@ -433,6 +437,43 @@ app.post('/myplan/add', async (req, res) => {
       weekdays: [],
       allWorkouts: []
     });
+  }
+});
+
+//delete a workout from schedule
+app.post('/myplan/deleteWorkout', async (req, res) => {
+  const { scheduleId } = req.body;
+  
+  try {
+    await db.query('DELETE FROM workout_schedule WHERE schedule_id = $1', [scheduleId]);
+    
+    res.redirect('/myplan?message=Workout Deleted from Schedule');
+  
+  } catch (err) {
+      res.status(500).render("pages/myplan", {
+      message: `Error deleting workout from workout. Please try again`,
+      error: true,
+  })
+  }
+});
+
+//edit workout date/time
+app.post('/myplan/editWorkout', async (req, res) => {
+  const { scheduleId } = req.body;
+  let day_of_week = req.body.day_of_week;
+  let start_time = req.body.start_time;
+
+  try {
+
+    await db.query(`UPDATE workout_schedule SET day_of_week = $1, start_time = $2 WHERE schedule_id = $3`, [day_of_week, start_time, scheduleId]);
+    
+    res.redirect('/myplan?message=Workout Edited');
+  
+  } catch (err) {
+      res.status(500).render("pages/myplan", {
+      message: `Error editing workout in schedule. Please try again`,
+      error: true,
+  })
   }
 });
 
