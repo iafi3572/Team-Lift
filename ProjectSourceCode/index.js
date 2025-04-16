@@ -614,6 +614,7 @@ app.post('/deleteWorkout', async (req, res) => {
   const { workoutId } = req.body;
   
   try {
+    await db.query('DELETE FROM workout_schedule WHERE workout_id = $1', [workoutId]);
     await db.query('DELETE FROM workout_exercises WHERE workout_id = $1', [workoutId]);
     await db.query('DELETE FROM workouts WHERE workout_id = $1', [workoutId]);
     
