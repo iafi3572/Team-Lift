@@ -80,12 +80,7 @@ app.use(
   })
 );
 
-app.use("/images", express.static(path.join(__dirname, "images")));
-
-app.get("/tracking", (req, res) => {
-  res.render("pages/tracking");
-  //do something
-});
+app.use("/img", express.static(path.join(__dirname, "resources/img")));
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
@@ -272,24 +267,86 @@ const auth = (req, res, next) => {
 
 app.use(auth);
 
+const weekLabels = [
+  { id: "sun", label: "Sunday" },
+  { id: "mon", label: "Monday" },
+  { id: "tues", label: "Tuesday" },
+  { id: "wed", label: "Wednesday" },
+  { id: "thurs", label: "Thursday" },
+  { id: "fri", label: "Friday" },
+  { id: "sat", label: "Saturday" },
+];
+
 app.get("/home", async (req, res) => {
-  const today = new Date().toLocaleDateString("en-US", {
-    timeZone: "America/Denver",
-  });
-  // Get current date
-  res.render("pages/home", { date: today });
+  const username = req.session.user?.username;
+  if (!username) return res.redirect("/login");
+
+  try {
+    const date = new Date().toLocaleDateString("en-US", {
+      timeZone: "America/Denver",
+    });
+    const today = new Date().toLocaleDateString("en-US", {
+      timeZone: "America/Denver",
+      weekday: "long",
+    });
+
+    // Get today's scheduled workouts
+    const scheduledSets = await db.any(
+      `
+      SELECT
+        ws.start_time,
+        w.workout_name,
+        w.time_hours AS duration_hours,
+        w.time_minutes AS duration_minutes,
+        w.workout_id
+      FROM workout_schedule ws
+      JOIN workouts w ON ws.workout_id = w.workout_id
+      WHERE ws.username = $1 AND ws.day_of_week = $2
+      ORDER BY ws.start_time;
+    `,
+      [username, today]
+    );
+
+    // Add exercises to each workout
+    for (const set of scheduledSets) {
+      const exercises = await db.any(
+        `
+        SELECT exercise_name, muscle_target
+        FROM workout_exercises
+        WHERE workout_id = $1;
+      `,
+        [set.workout_id]
+      );
+
+      set.exercises = exercises;
+      set.start_time = set.start_time.slice(0, 5); // format time
+    }
+
+    res.render("pages/home", {
+      date: date,
+      scheduledSets,
+    });
+  } catch (err) {
+    console.error("Error loading home page:", err);
+    res.render("pages/home", {
+      date: "",
+      scheduledSets: [],
+      message: "Error loading today’s plan.",
+      error: true,
+    });
+  }
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy(err => {
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
     if (err) {
-      return res.render('pages/home', {
-        message: 'Error logging out. Please try again.',
+      return res.render("pages/home", {
+        message: "Error logging out. Please try again.",
         error: true, // Indicate an error occurred
       });
     }
-    res.render('pages/login', {
-      message: 'Logged out Successfully',
+    res.render("pages/login", {
+      message: "Logged out Successfully",
       error: false,
     });
   });
@@ -311,27 +368,17 @@ app.get('/logout', (req, res) => {
 //     ],
 //     allWorkouts: [] // make sure this is included too
 //   });
-  
+
 // });
 
-const weekLabels = [
-  { id: 'sun', label: 'Sunday' },
-  { id: 'mon', label: 'Monday' },
-  { id: 'tues', label: 'Tuesday' },
-  { id: 'wed', label: 'Wednesday' },
-  { id: 'thurs', label: 'Thursday' },
-  { id: 'fri', label: 'Friday' },
-  { id: 'sat', label: 'Saturday' }
-];
-
-
-app.get('/myplan', async (req, res) => {
+app.get("/myplan", async (req, res) => {
   const username = req.session.user?.username;
-  if (!username) return res.redirect('/login');
+  if (!username) return res.redirect("/login");
 
   try {
     // Step 1: Get scheduled workouts for the user
-    const scheduledWorkouts = await db.any(`
+    const scheduledWorkouts = await db.any(
+      `
       SELECT
         ws.day_of_week,
         ws.start_time,
@@ -343,15 +390,20 @@ app.get('/myplan', async (req, res) => {
       JOIN workouts w ON ws.workout_id = w.workout_id
       WHERE ws.username = $1
       ORDER BY ws.day_of_week, ws.start_time;
-    `, [username]);
+    `,
+      [username]
+    );
 
     // Step 2: Attach exercises to each scheduled workout individually
     for (const workout of scheduledWorkouts) {
-      const exercises = await db.any(`
+      const exercises = await db.any(
+        `
         SELECT exercise_name, muscle_target
         FROM workout_exercises
         WHERE workout_id = $1;
-      `, [workout.workout_id]);
+      `,
+        [workout.workout_id]
+      );
 
       workout.exercises = exercises;
       workout.start_time = workout.start_time.slice(0, 5); // format to HH:MM
@@ -367,13 +419,14 @@ app.get('/myplan', async (req, res) => {
     }
 
     // Step 4: Map into final format using external weekLabels
-    const weekdays = weekLabels.map(day => ({
+    const weekdays = weekLabels.map((day) => ({
       ...day,
-      scheduledWorkouts: scheduleByDay[day.label] || []
+      scheduledWorkouts: scheduleByDay[day.label] || [],
     }));
 
     // Step 5: Fetch user-created workouts
-    const allWorkouts = await db.any(`
+    const allWorkouts = await db.any(
+      `
       SELECT workout_id, workout_name
       FROM workouts
       WHERE username = $1
@@ -382,39 +435,34 @@ app.get('/myplan', async (req, res) => {
           WHERE workout_exercises.workout_id = workouts.workout_id
         )
       ORDER BY workout_name;
-    `, [username]);
-    
+    `,
+      [username]
+    );
 
-    res.render('pages/myplan', {
+    res.render("pages/myplan", {
       weekdays,
-      allWorkouts
+      allWorkouts,
     });
-
   } catch (err) {
-    console.error('Error loading schedule:', err);
-    res.render('pages/myplan', {
+    console.error("Error loading schedule:", err);
+    res.render("pages/myplan", {
       weekdays: [],
       allWorkouts: [],
-      message: 'Failed to load schedule.',
-      error: true
+      message: "Failed to load schedule.",
+      error: true,
     });
   }
 });
 
-
-app.post('/myplan/add', async (req, res) => {
+app.post("/myplan/add", async (req, res) => {
   try {
     const username = req.session.user?.username;
-    if (!username) return res.redirect('/login');
+    if (!username) return res.redirect("/login");
 
-    const {
-      day_of_week,
-      start_time,
-      workout_id
-    } = req.body;
+    const { day_of_week, start_time, workout_id } = req.body;
 
     if (!day_of_week || !start_time || !workout_id) {
-      throw new Error('Missing required fields');
+      throw new Error("Missing required fields");
     }
 
     await db.none(
@@ -423,30 +471,29 @@ app.post('/myplan/add', async (req, res) => {
       [username, workout_id, day_of_week, start_time]
     );
 
-    res.redirect('/myplan');
-
+    res.redirect("/myplan");
   } catch (err) {
-    console.error('Error adding workout to schedule:', err);
-    res.status(400).render('pages/myplan', {
-      message: 'Failed to add workout. Please check your inputs.',
+    console.error("Error adding workout to schedule:", err);
+    res.status(400).render("pages/myplan", {
+      message: "Failed to add workout. Please check your inputs.",
       error: true,
       weekdays: [],
-      allWorkouts: []
+      allWorkouts: [],
     });
   }
 });
-
 
 //myworkouts page
 //adds default workouts
 app.post("/add_default_workout", async (req, res) => {
   try {
-    const workouts = req.body; 
+    const workouts = req.body;
     const username = req.session.user.username;
 
-    let defaultWorkout= await db.one(
-      `SELECT * FROM default_workouts WHERE workout_name = $1;`, [workouts.workouts]);
-    
+    let defaultWorkout = await db.one(
+      `SELECT * FROM default_workouts WHERE workout_name = $1;`,
+      [workouts.workouts]
+    );
 
     let workoutName = defaultWorkout.workout_name;
     let hour = defaultWorkout.time_hours;
@@ -458,11 +505,11 @@ app.post("/add_default_workout", async (req, res) => {
 
     const exercises = await db.any(
       `SELECT exercise_name, muscle_target FROM default_workout_exercises 
-      WHERE workout_name = $1;`,[workoutName]
+      WHERE workout_name = $1;`,
+      [workoutName]
     );
 
     for (const exercise of exercises) {
-
       await db.none(
         `
         INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`,
@@ -471,15 +518,10 @@ app.post("/add_default_workout", async (req, res) => {
     }
 
     res.redirect("/myworkouts");
-  
-    
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     res.redirect("/myworkouts");
-
   }
-
 });
 
 //adds new workouts
@@ -525,7 +567,7 @@ app.post("/myworkouts", async (req, res) => {
 app.get("/myworkouts", async (req, res) => {
   const message = req.query.message;
   const username = req.session.user.username;
- 
+
   try {
     //gets the workouts for the user to display
     const workouts = await db.any(
@@ -553,7 +595,7 @@ app.get("/myworkouts", async (req, res) => {
 
     //gets all the exercises within each muscle target group
     const exercisesByMuscleTarget = [];
-     for (const workout of workouts) {
+    for (const workout of workouts) {
       // gets the exercises for each workout based on workout_id
       const exercises = await db.any(
         `
@@ -575,11 +617,9 @@ app.get("/myworkouts", async (req, res) => {
         muscleTarget: muscle.muscle_target,
         exercises: exercises,
       });
-    }  
+    }
     //gets all default workouts
-    const defaultWorkouts = await db.any(
-      `SELECT * FROM default_workouts;`,
-    );
+    const defaultWorkouts = await db.any(`SELECT * FROM default_workouts;`);
 
     //gets exercises for default workouts
     for (const workout of defaultWorkouts) {
@@ -593,13 +633,12 @@ app.get("/myworkouts", async (req, res) => {
       // Add the exercises to the workout
       workout.exercises = exercises;
     }
-    
 
     res.render("pages/myworkouts", {
       workouts,
       exercisesByMuscleTarget,
       defaultWorkouts,
-      message
+      message,
     });
   } catch (err) {
     res.status(500).render("pages/myworkouts", {
@@ -610,45 +649,48 @@ app.get("/myworkouts", async (req, res) => {
 });
 
 //delete a workout
-app.post('/deleteWorkout', async (req, res) => {
+app.post("/deleteWorkout", async (req, res) => {
   const { workoutId } = req.body;
-  
+
   try {
-    await db.query('DELETE FROM workout_schedule WHERE workout_id = $1', [workoutId]);
-    await db.query('DELETE FROM workout_exercises WHERE workout_id = $1', [workoutId]);
-    await db.query('DELETE FROM workouts WHERE workout_id = $1', [workoutId]);
-    
-    res.redirect('/myworkouts?message=Workout Deleted');
-  
+    await db.query("DELETE FROM workout_schedule WHERE workout_id = $1", [
+      workoutId,
+    ]);
+    await db.query("DELETE FROM workout_exercises WHERE workout_id = $1", [
+      workoutId,
+    ]);
+    await db.query("DELETE FROM workouts WHERE workout_id = $1", [workoutId]);
+
+    res.redirect("/myworkouts?message=Workout Deleted");
   } catch (err) {
-      res.status(500).render("pages/myworkouts", {
+    res.status(500).render("pages/myworkouts", {
       message: `Error deleting workout. Please try again`,
       error: true,
-  })
+    });
   }
 });
 
 //edit a workout
-app.post('/editWorkout', async (req, res) => {
+app.post("/editWorkout", async (req, res) => {
   const { workoutId } = req.body;
   let workoutName = req.body.workoutName;
   let hour = req.body.hour;
   let min = req.body.min;
   console.log(workoutId, workoutName, hour, min);
   try {
+    await db.query(
+      `UPDATE workouts SET workout_name = $1, time_hours = $2, time_minutes = $3 WHERE workout_id = $4`,
+      [workoutName, hour, min, workoutId]
+    );
 
-    await db.query(`UPDATE workouts SET workout_name = $1, time_hours = $2, time_minutes = $3 WHERE workout_id = $4`, [workoutName, hour, min, workoutId]);
-    
-    res.redirect('/myworkouts?message=Workout Edited');
-  
+    res.redirect("/myworkouts?message=Workout Edited");
   } catch (err) {
-      res.status(500).render("pages/myworkouts", {
+    res.status(500).render("pages/myworkouts", {
       message: `Error editing workout. Please try again`,
       error: true,
-  })
+    });
   }
 });
-
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -667,6 +709,124 @@ app.get("/logout", (req, res) => {
 
 app.get("/myplan", (req, res) => {
   res.render("pages/myplan.hbs");
+});
+
+// Goals endpoints
+app.get('/api/goals', async (req, res) => {
+  try {
+      const goals = await db.any(
+          'SELECT * FROM goals WHERE username = $1 ORDER BY created_at DESC',
+          [req.session.user.username]
+      );
+      res.json(goals);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/goals', async (req, res) => {
+  try {
+      const newGoal = await db.one(
+          'INSERT INTO goals (username, goal_text) VALUES ($1, $2) RETURNING *',
+          [req.session.user.username, req.body.goalText]
+      );
+      res.json(newGoal);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/goals/:id', async (req, res) => {
+  try {
+      await db.none(
+          'UPDATE goals SET completed = $1 WHERE goal_id = $2 AND username = $3',
+          [req.body.completed, req.params.id, req.session.user.username]
+      );
+      res.sendStatus(200);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/goals/:id', async (req, res) => {
+  try {
+      await db.none(
+          'DELETE FROM goals WHERE goal_id = $1 AND username = $2',
+          [req.params.id, req.session.user.username]
+      );
+      res.sendStatus(200);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+// Exercise log endpoints
+app.post('/api/exercise-log', async (req, res) => {
+  try {
+      await db.none(
+          `INSERT INTO exercise_log (username, exercise_name, reps, weight)
+           VALUES ($1, $2, $3, $4)`,
+          [req.session.user.username, req.body.name, req.body.reps, req.body.weight]
+      );
+      
+      // Force refresh the averages calculation
+      await db.none('NOTIFY refresh_averages');
+      
+      res.sendStatus(201);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/averages/:exercise', async (req, res) => {
+  try {
+      const avg = await db.oneOrNone(
+          `SELECT AVG(reps) as avg_reps, AVG(weight) as avg_weight 
+           FROM exercise_log 
+           WHERE username = $1 AND exercise_name = $2`,
+          [req.session.user.username, req.params.exercise]
+      );
+      res.json(avg);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/tracking", async (req, res) => {
+  try {
+      const username = req.session.user.username;
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      
+      // Get today's scheduled workouts
+      const scheduledWorkouts = await db.any(`
+          SELECT we.exercise_name
+          FROM workout_schedule ws
+          JOIN workout_exercises we ON ws.workout_id = we.workout_id
+          WHERE ws.username = $1 AND ws.day_of_week = $2
+      `, [username, today]);
+
+      res.render("pages/tracking", {
+          exercises: scheduledWorkouts.map(w => w.exercise_name)
+      });
+  } catch (error) {
+      console.error(error);
+      res.render("pages/tracking", { exercises: [] });
+  }
+});
+
+app.get('/api/history/:exercise', async (req, res) => {
+  try {
+      const history = await db.any(
+          `SELECT reps, weight, log_date 
+           FROM exercise_log 
+           WHERE username = $1 AND exercise_name = $2
+           ORDER BY log_date ASC`,
+          [req.session.user.username, req.params.exercise]
+      );
+      res.json(history);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 });
 
 // *****************************************************
