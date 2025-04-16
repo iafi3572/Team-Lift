@@ -1,51 +1,67 @@
-{{>message}}
-<div class="container mt-4">
-        <div class="row">
-            <!-- Left Panel -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                    <h3>Date</h3>
-                    <h4> {{date}}</h2>
-                    </div>
-                </div>
-                <br>  </br>
-                <br>  </br>
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Stats</h3>
-                        
-                        <div class="stats-content">
-                            <img src="stats.jpg" alt="Stats" width="500" height="600">
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">Stats 1: GET from database</li>
-                            <li class="list-group-item">Stats 2: GET from database</li>
-                            <li class="list-group-item">Stats 3: GET from database</li>
-                            <li class="list-group-item">Stats 4: GET from database</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Panel -->
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Today's Workout</h3>
-                        <h4 >Day Name</h4>
-                        <ul class="list-group">
-                            <li class="list-group-item">Exercise 1: GET from database</li>
-                            <li class="list-group-item">Exercise 2: GET from database</li>
-                            <li class="list-group-item">Exercise 3: GET from database</li>
-                            <li class="list-group-item">Exercise 4: GET from database</li>
-                            <li class="list-group-item">Exercise 5: GET from database</li>
-                            <li class="list-group-item">Exercise 6: GET from database</li> 
-                        </ul>
-                    </div>
-                </div>
-            </div>
+{{> message}}
+
+<div class="container my-4">
+  <div class="row">
+    <!-- Left Panel -->
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3>Date</h3>
+          <h4>{{date}}</h4>
         </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Stats</h3>
+          <div class="stats-content mb-3">
+            <img src="stats.jpg" alt="Stats" width="100%" />
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">Stats 1: GET from database</li>
+            <li class="list-group-item">Stats 2: GET from database</li>
+            <li class="list-group-item">Stats 3: GET from database</li>
+            <li class="list-group-item">Stats 4: GET from database</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Right Panel -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body py-3">
+          <h3 class="card-title mb-3">Today's Workout</h3>
+
+          {{#if scheduledSets.length}}
+            {{#each scheduledSets}}
+              <div class="mb-3 p-2 border rounded">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="mb-0">{{workout_name}}</h6>
+                  <small class="text-muted">{{start_time}} ({{duration_hours}}h {{duration_minutes}}m)</small>
+                </div>
+
+                {{#if exercises.length}}
+                  <ul class="list-unstyled mb-0 small">
+                    {{#each exercises}}
+                      <li>• <strong>{{exercise_name}}</strong> ({{muscle_target}})</li>
+                    {{/each}}
+                  </ul>
+                {{else}}
+                  <p class="text-muted small mb-0">No exercises found.</p>
+                {{/if}}
+              </div>
+            {{/each}}
+          {{else}}
+            <p class="text-muted">No workouts scheduled for today.</p>
+          {{/if}}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
