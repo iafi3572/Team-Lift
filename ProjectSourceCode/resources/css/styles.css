@@ -12,6 +12,9 @@
 .bg-steel {
   background-color: var(--steel) !important;
 }
+.text-light-green {
+  color: var(--light-green);
+}
 .bg-light-green {
   background-color: var(--light-green) !important;
 }
@@ -43,6 +46,10 @@
 }
 .btn-close {
   filter: brightness(0) invert(1);
+}
+
+.h-100 {
+  height: 100%;
 }
 
 .form-control {
