@@ -1,93 +1,12 @@
 {{>message}}
-    {{!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Plan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script>
-        function addWorkout(dayId) {
-            const dayDiv = document.getElementById(dayId);
-            const workout = document.createElement("div");
-            workout.className = "workout border p-2 mt-2";
-            workout.innerText = "New Workout";
-            dayDiv.appendChild(workout);
-        }
-    </script>
-    <style>
-        .plan-container {
-            margin-top: 20px;
-        }
-        .day {
-            border: 1px solid black;
-            text-align: center;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .workout {
-            border: 1px solid black;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <h2 class="mt-3 ms-3">My Plan</h2>
-        <div class="row text-center plan-container">
-            <div class="col day" id="sun">Sun <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('sun')">+</button></div>
-            <div class="col day" id="mon">Mon <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('mon')">+</button></div>
-            <div class="col day" id="tues">Tues <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('tues')">+</button></div>
-            <div class="col day" id="wed">Wed <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('wed')">+</button></div>            
-            <div class="col day" id="thurs">Thurs <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('thurs')">+</button></div>
-            <div class="col day" id="fri">Fri <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('fri')">+</button></div>
-            <div class="col day" id="sat">Sat <button class="btn btn-secondary btn-sm mt-2" onclick="addWorkout('sat')">+</button></div>
-        </div>
-    </div>
-</body> --}}
-
-{{!-- Extends your layout --}}
-{{!-- {{> title title="My Plan" }} --}}
-
-{{!-- <div class="container-fluid my-4">
-  <h2 class="mb-4">My Plan</h2>
-
-  <div class="row text-center plan-container">
-    {{#each weekdays}}
-    <div class="col day border" id="{{this.id}}">
-      <strong>{{this.label}}</strong>
-      {{#each this.scheduledSets}}
-        <div class="workout border p-2 mt-2">
-          <strong>{{set_name}}</strong><br />
-          <small>{{start_time}} ({{duration_hours}}h {{duration_minutes}}m)</small>
-          <ul class="text-start ps-4">
-            {{#each workouts}}
-              <li>{{workout_name}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/each}}
-
-      <div class="mt-auto">
-        <button class="btn btn-outline-primary btn-sm mt-3"
-                data-bs-toggle="modal"
-                data-bs-target="#addSetModal"
-                data-day="{{this.label}}">
-          + Add
-        </button>
-      </div>
-    </div>
-    {{/each}}
-  </div>
-</div> --}}
 
 <div class="container-fluid my-4">
-  <h2 class="mb-4">My Plan</h2>
+  <h2 class="text-center my-4 fs-1">My Weekly Plan</h2>
 
-  <div class="row text-center plan-container">
+  <div class="row text-center plan-container mx-5 ">
     {{#each weekdays}}
-    <div class="col day border" id="{{this.id}}">
-      <strong>{{this.label}}</strong>
+    <div class="my-4 col day border rounded mx-1" id="{{this.id}}">
+      <strong class="fs-4">{{this.label}}</strong>
 
       {{#each this.scheduledWorkouts}}
         <div class="card mt-3">
@@ -96,7 +15,7 @@
             <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
             <p class="card-text"><strong>Exercises:</strong> {{exercises.length}}</p>
             <p class="card-text"><strong>Start Time:</strong> {{start_time}}</p>
-            <button class="btn btn-light mt-2"
+            <button class="btn btn-light"
                     data-bs-toggle="modal"
                     data-bs-target="#info_modal_{{@index}}">
               View More
@@ -128,12 +47,12 @@
         </div>
       {{/each}}
 
-      <div class="mt-auto">
-        <button class="btn btn-outline-primary btn-sm mt-3"
+      <div class="mt-4 mb-2">
+        <button class="btn box-outline-lime text-light-green btn-sm px-3 py-2 fs-3"
                 data-bs-toggle="modal"
                 data-bs-target="#addSetModal"
                 data-day="{{this.label}}">
-          + Add
+          +
         </button>
       </div>
     </div>

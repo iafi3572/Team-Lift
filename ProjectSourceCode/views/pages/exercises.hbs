@@ -6,11 +6,11 @@
       <div class="col-md-4 col-sm-6 mb-3">
         <!-- Reduced space between cards -->
         <button
-          class="card btn btn-outline-none w-100"
+          class="card btn btn-outline-none w-100 exercise_cards px-3 py-4"
           data-bs-toggle="modal"
           data-bs-target="#exerciseModal{{@index}}"
         >
-          <img src="{{gifUrl}}" class="card-img-top" alt="{{name}}" />
+          <img src="{{gifUrl}}" class="card-img" alt="{{name}}" />
           <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text"><strong>Equipment:</strong> {{equipment}}</p>
@@ -29,30 +29,38 @@
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div class="modal-content bg-steel">
             <div class="modal-header">
-              <h5 class="modal-title">{{name}}</h5>
+              <h5 class="modal-title display-4"><strong>{{name}}</strong></h5>
             </div>
             <div class="modal-body">
-              <img src="{{gifUrl}}" class="card-img-top mb-3" alt="{{name}}" />
-              <p><strong>Name:</strong> {{name}}</p>
-              <p><strong>Target Muscles:</strong> {{target}}</p>
-              <p><strong>Equipment:</strong> {{equipment}}</p>
-              <p>{{instructions}}</p>
-              <div class="ratio ratio-16x9 mb-3">
-                <iframe
-                  src="{{videoId}}"
-                  title="YouTube video player"
-                  allowfullscreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                ></iframe>
+              <div class="bg-steel">
+                <img
+                  src="{{gifUrl}}"
+                  class="card-img-top mb-3 rounded"
+                  alt="{{name}}"
+                />
+                <p class="text-white"><strong>Target Muscles:</strong>
+                  {{target}}</p>
+                <p class="text-white"><strong>Equipment:</strong>
+                  {{equipment}}</p>
+                <p class="text-white"><strong>Instructions:</strong>
+                <p class="text-white">{{instructions}}</p>
+                <div class="ratio ratio-16x9 mb-3">
+                  <iframe
+                    src="{{videoId}}"
+                    title="YouTube video player"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                  ></iframe>
+                </div>
               </div>
             </div>
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn bg-light-green"
                 data-bs-dismiss="modal"
               >Close</button>
             </div>
