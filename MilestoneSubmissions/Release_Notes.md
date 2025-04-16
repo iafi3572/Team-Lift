@@ -22,7 +22,7 @@
 
 - **Kirin**:
 
-  -
+  - Added edit and delete functionality to schedule
 
 - **Ian**:
 
