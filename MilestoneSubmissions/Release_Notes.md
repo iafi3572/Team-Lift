@@ -26,7 +26,7 @@
 
 - **Ian**:
 
-  -
+  - Finished the home page besides adding mission statement
 
 ### Other Notes / Known Issues
 
