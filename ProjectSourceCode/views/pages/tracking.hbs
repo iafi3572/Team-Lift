@@ -164,25 +164,31 @@
     <!-- Today's Exercise Section -->
     <div class="dashboard-section">
         <h2 class="section-title">Today's Exercise</h2>
-        <form id="exercise-form" class="exercise-form">
-            {{#each exercises}}
-            <div class="exercise-card">
-                <h3>{{this}}</h3>
-                <div class="chart-container" style="position: relative; height:200px; width:100%">
-                    <canvas id="{{this}}-chart"></canvas>
+        {{#if exercises.length}}
+            <form id="exercise-form" class="exercise-form">
+                {{#each exercises}}
+                <div class="exercise-card">
+                    <h3>{{this}}</h3>
+                    <div class="chart-container" style="position: relative; height:200px; width:100%">
+                        <canvas id="{{this}}-chart"></canvas>
+                    </div>
+                    <div class="averages">
+                        <span>Avg Reps: <span class="reps-avg">-</span></span>
+                        <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
+                    </div>
+                    <div class="exercise-inputs">
+                        <input type="number" id="{{this}}-reps" placeholder="Reps" required>
+                        <input type="number" id="{{this}}-weight" placeholder="Weight (kg)" step="0.1" required>
+                    </div>
                 </div>
-                <div class="averages">
-                    <span>Avg Reps: <span class="reps-avg">-</span></span>
-                    <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
-                </div>
-                <div class="exercise-inputs">
-                    <input type="number" id="{{this}}-reps" placeholder="Reps" required>
-                    <input type="number" id="{{this}}-weight" placeholder="Weight (kg)" step="0.1" required>
-                </div>
+                {{/each}}
+                <button type="submit" class="save-button">Save Workout</button>
+            </form>
+        {{else}}
+            <div style="text-align: center; padding: 40px;">
+                <h3 style="color: #636e72; margin-bottom: 20px;">No workout scheduled for today</h3>
             </div>
-            {{/each}}
-            <button type="submit" class="save-button">Save Workout</button>
-        </form>
+        {{/if}}
     </div>
 
     <script>
