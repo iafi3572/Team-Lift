@@ -61,6 +61,21 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER exercise_log_update
 AFTER INSERT OR UPDATE OR DELETE ON exercise_log
 FOR EACH STATEMENT EXECUTE FUNCTION refresh_avg_cache();
+CREATE TABLE IF NOT EXISTS default_workouts (
+    workout_name VARCHAR(255) PRIMARY KEY,
+    time_hours INT,
+    time_minutes INT,
+    num_exercises INT
+);
+
+CREATE TABLE IF NOT EXISTS default_workout_exercises (
+    workout_name VARCHAR(255),
+    exercise_name VARCHAR(255),
+    muscle_target VARCHAR(255),
+    PRIMARY KEY (workout_name, exercise_name),
+    FOREIGN KEY (workout_name) REFERENCES default_workouts(workout_name)
+);
+
 
 CREATE TABLE exercises (
   bodyPart VARCHAR(50),
@@ -71,6 +86,31 @@ CREATE TABLE exercises (
   muscle_target VARCHAR(50),
   instructions TEXT
 );
+
+
+INSERT INTO default_workouts(workout_name, time_hours, time_minutes, num_exercises) VALUES
+('Legs - Default', 1, 50, 6),
+('Chest/Triceps - Default', 1, 30, 5),
+('Back/Biceps - Default', 1, 40, 5);
+
+INSERT INTO default_workout_exercises(workout_name, exercise_name, muscle_target) VALUES
+('Legs - Default', 'barbell full squat', 'glutes'),
+('Legs - Default', 'assisted prone hamstring', 'hamstrings'),
+('Legs - Default', 'barbell wide squat', 'quads'),
+('Legs - Default', 'donkey calf raise', 'calves'),
+('Legs - Default', 'lever leg extension', 'quads'),
+('Legs - Default', 'inverse leg curl (bench support)', 'hamstrings'),
+('Chest/Triceps - Default', 'barbell bench press', 'pectorals'),
+('Chest/Triceps - Default', 'assisted chest dip (kneeling)', 'pectorals'),
+('Chest/Triceps - Default', 'barbell front raise and pullover', 'pectorals'),
+('Chest/Triceps - Default', 'barbell decline close grip to skull press', 'triceps'),
+('Chest/Triceps - Default', 'barbell incline reverse-grip press', 'triceps'),
+('Back/Biceps - Default', 'barbell bent over row', 'upper back'),
+('Back/Biceps - Default', 'cable decline seated wide-grip row', 'upper back'),
+('Back/Biceps - Default', 'cable shrug', 'traps'),
+('Back/Biceps - Default', 'barbell curl', 'biceps'),
+('Back/Biceps - Default', 'barbell alternate biceps curl', 'biceps');
+
 
 INSERT INTO exercises (bodyPart,equipment,gifUrl,id,exercise_name,muscle_target,instructions)
 VALUES
