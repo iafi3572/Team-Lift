@@ -10,7 +10,9 @@
 
 - **Sam**:
 
-  -
+  - Styled Login, Register, MyWorkout, Exercises
+  - Correceted all page titles
+  - Rearranged file structure
 
 - **Matthew**:
 
