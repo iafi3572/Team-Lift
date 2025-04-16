@@ -33,6 +33,34 @@ CREATE TABLE IF NOT EXISTS workout_exercises (
     FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
 );
 
+CREATE TABLE IF NOT EXISTS goals (
+    goal_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) REFERENCES users(username),
+    goal_text TEXT NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS exercise_log (
+    log_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) REFERENCES users(username),
+    exercise_name VARCHAR(255) NOT NULL,
+    reps INT,
+    weight DECIMAL,
+    log_date DATE DEFAULT CURRENT_DATE
+);
+
+CREATE OR REPLACE FUNCTION refresh_avg_cache()
+RETURNS TRIGGER AS $$
+BEGIN
+    NOTIFY refresh_averages;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER exercise_log_update
+AFTER INSERT OR UPDATE OR DELETE ON exercise_log
+FOR EACH STATEMENT EXECUTE FUNCTION refresh_avg_cache();
 CREATE TABLE IF NOT EXISTS default_workouts (
     workout_name VARCHAR(255) PRIMARY KEY,
     time_hours INT,

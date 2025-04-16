@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,7 +70,7 @@
             margin-top: 15px;
         }
 
-        input[type="number"] {
+        input[type="number"] {https://yt3.ggpht.com/nxYrc_1_2f77DoBadyxMTmv7ZpRZapHR5jbuYe7PlPd5cIRJxtNNEYyOC0ZsxaDyJJzXrnJiuDE=s68-c-k-c0x00ffffff-no-rj
             padding: 12px;
             border: 1px solid #dcdde1;
             border-radius: 8px;
@@ -85,6 +86,61 @@
             border-radius: 10px;
         }
 
+        .goals-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }       
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9ff;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        .goal-item span.completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .goal-item button {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+        }
+
+        .exercise-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .save-button {
+            padding: 12px 24px;
+            background: #0984e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .save-button:hover {
+            background: #0873c4;
+        }
+
+        .chart-container {
+            margin: 15px 0;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         @media (max-width: 768px) {
             body {
                 grid-template-columns: 1fr;
@@ -93,44 +149,215 @@
     </style>
 </head>
 <body>
-    <!-- Left Column -->
     <div class="left-column">
         <!-- Goals Section -->
         <div class="dashboard-section">
             <h2 class="section-title">Goals</h2>
-            <div id="goals-list"></div>
+            <div id="goals-list" class="goals-list"></div>
             <div class="exercise-inputs">
                 <input type="text" id="new-goal" placeholder="New goal...">
                 <button onclick="addGoal()">Add</button>
             </div>
         </div>
-
-        <!-- Progress Section -->
-        <div class="dashboard-section">
-            <h2 class="section-title">Average</h2>
-            
-            </div>
-        </div>
     </div>
 
-    
+    <!-- Today's Exercise Section -->
     <div class="dashboard-section">
         <h2 class="section-title">Today's Exercise</h2>
-        
-        <div class="exercise-card">
-            <h3>Bench Press</h3>
-            <div class="exercise-inputs">
-                <input type="number" placeholder="Reps">
-                <input type="number" placeholder="Weight (kg)">
+        {{#if exercises.length}}
+            <form id="exercise-form" class="exercise-form">
+                {{#each exercises}}
+                <div class="exercise-card">
+                    <h3>{{this}}</h3>
+                    <div class="chart-container" style="position: relative; height:200px; width:100%">
+                        <canvas id="{{this}}-chart"></canvas>
+                    </div>
+                    <div class="averages">
+                        <span>Avg Reps: <span class="reps-avg">-</span></span>
+                        <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
+                    </div>
+                    <div class="exercise-inputs">
+                        <input type="number" id="{{this}}-reps" placeholder="Reps" required>
+                        <input type="number" id="{{this}}-weight" placeholder="Weight (kg)" step="0.1" required>
+                    </div>
+                </div>
+                {{/each}}
+                <button type="submit" class="save-button">Save Workout</button>
+            </form>
+        {{else}}
+            <div style="text-align: center; padding: 40px;">
+                <h3 style="color: #636e72; margin-bottom: 20px;">No workout scheduled for today</h3>
             </div>
-        </div>
-
-        <div class="exercise-card">
-            <h3>Squats</h3>
-            <div class="exercise-inputs">
-                <input type="number" placeholder="Reps">
-                <input type="number" placeholder="Weight (kg)">
-            </div>
-        </div>
+        {{/if}}
     </div>
+
+    <script>
+        // Goals functionality
+        async function loadGoals() {
+            const response = await fetch('/api/goals');
+            const goals = await response.json();
+            const goalsList = document.getElementById('goals-list');
+            
+            goalsList.innerHTML = goals.map(goal => `
+                <div class="goal-item" data-id="${goal.goal_id}">
+                    <input type="checkbox" ${goal.completed ? 'checked' : ''} 
+                           onchange="toggleGoal(${goal.goal_id}, this.checked)">
+                    <span class="${goal.completed ? 'completed' : ''}">${goal.goal_text}</span>
+                    <button onclick="deleteGoal(${goal.goal_id})">×</button>
+                </div>
+            `).join('');
+        }
+
+        async function addGoal() {
+            const input = document.getElementById('new-goal');
+            await fetch('/api/goals', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ goalText: input.value })
+            });
+            input.value = '';
+            loadGoals();
+        }
+
+        async function toggleGoal(id, completed) {
+            await fetch(`/api/goals/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ completed })
+            });
+            loadGoals();
+        }
+
+        async function deleteGoal(id) {
+            await fetch(`/api/goals/${id}`, { method: 'DELETE' });
+            loadGoals();
+        }
+
+        // Exercise Log functionality
+        document.getElementById('exercise-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const exercises = Array.from(document.querySelectorAll('.exercise-card')).map(card => {
+                const name = card.querySelector('h3').textContent;
+                return {
+                    name: name,
+                    reps: document.getElementById(`${name}-reps`).value,
+                    weight: document.getElementById(`${name}-weight`).value
+                };
+            });
+
+            try {
+                for (const exercise of exercises) {
+                    await fetch('/api/exercise-log', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(exercise)
+                    });
+                }
+        
+                loadAverages();
+                e.target.reset();
+                alert('Workout saved successfully!');
+            } catch (error) {
+                alert('Error saving workout');
+            }
+        });
+        // Load averages
+        let exerciseCharts = {};
+
+        async function loadAverages() {
+            const exerciseCards = document.querySelectorAll('.exercise-card');
+    
+            for (const card of exerciseCards) {
+                const exerciseName = card.querySelector('h3').textContent;
+                try {
+                    // Get averages
+                    const avgResponse = await fetch(`/api/averages/${encodeURIComponent(exerciseName)}`);
+                    const avgData = await avgResponse.json();
+            
+                    // Get historical data
+                    const historyResponse = await fetch(`/api/history/${encodeURIComponent(exerciseName)}`);
+                    const historyData = await historyResponse.json();
+            
+                    // Update averages display
+                    if (avgData) {
+                        card.querySelector('.reps-avg').textContent = 
+                            avgData.avg_reps ? Math.round(avgData.avg_reps) : '-';
+                        card.querySelector('.weight-avg').textContent = 
+                            avgData.avg_weight ? Math.round(avgData.avg_weight * 10)/10 : '-';
+                    }
+            
+                    // Create or update chart
+                    renderChart(exerciseName, historyData);
+            
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                }
+            }
+        }
+
+        function renderChart(exerciseName, data) {
+            const ctx = document.getElementById(`${exerciseName}-chart`);
+    
+            // Destroy existing chart if it exists
+            if (exerciseCharts[exerciseName]) {
+                exerciseCharts[exerciseName].destroy();
+            }
+    
+            // Prepare dataset
+            const labels = data.map(entry => new Date(entry.log_date).toLocaleDateString());
+            const repsData = data.map(entry => entry.reps);
+            const weightData = data.map(entry => entry.weight);
+
+            exerciseCharts[exerciseName] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Reps',
+                        data: repsData,
+                        borderColor: '#0984e3',
+                        tension: 0.1,
+                        yAxisID: 'reps'
+                    }, {
+                        label: 'Weight (kg)',
+                        data: weightData,
+                        borderColor: '#00b894',
+                        tension: 0.1,
+                        yAxisID: 'weight'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        reps: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Reps' }
+                        },
+                        weight: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Weight (kg)' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update form submit handler to refresh charts
+        document.getElementById('exercise-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // ... existing submit code ...
+            await loadAverages(); // Refresh charts after save
+        });
+
+        // Initial load
+        loadGoals();
+        loadAverages();
+    </script>
 </body>
