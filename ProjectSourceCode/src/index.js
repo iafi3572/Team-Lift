@@ -80,7 +80,7 @@ app.use(
   })
 );
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/img", express.static(path.join(__dirname, "resources/img")));
 
 app.get("/tracking", (req, res) => {
   res.render("pages/tracking");
@@ -273,25 +273,31 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 const weekLabels = [
-  { id: 'sun', label: 'Sunday' },
-  { id: 'mon', label: 'Monday' },
-  { id: 'tues', label: 'Tuesday' },
-  { id: 'wed', label: 'Wednesday' },
-  { id: 'thurs', label: 'Thursday' },
-  { id: 'fri', label: 'Friday' },
-  { id: 'sat', label: 'Saturday' }
+  { id: "sun", label: "Sunday" },
+  { id: "mon", label: "Monday" },
+  { id: "tues", label: "Tuesday" },
+  { id: "wed", label: "Wednesday" },
+  { id: "thurs", label: "Thursday" },
+  { id: "fri", label: "Friday" },
+  { id: "sat", label: "Saturday" },
 ];
 
-app.get('/home', async (req, res) => {
+app.get("/home", async (req, res) => {
   const username = req.session.user?.username;
-  if (!username) return res.redirect('/login');
+  if (!username) return res.redirect("/login");
 
   try {
-    const date = new Date().toLocaleDateString('en-US', { timeZone: "America/Denver" });
-    const today = new Date().toLocaleDateString('en-US', { timeZone: "America/Denver", weekday: 'long' });
+    const date = new Date().toLocaleDateString("en-US", {
+      timeZone: "America/Denver",
+    });
+    const today = new Date().toLocaleDateString("en-US", {
+      timeZone: "America/Denver",
+      weekday: "long",
+    });
 
     // Get today's scheduled workouts
-    const scheduledSets = await db.any(`
+    const scheduledSets = await db.any(
+      `
       SELECT
         ws.start_time,
         w.workout_name,
@@ -302,50 +308,50 @@ app.get('/home', async (req, res) => {
       JOIN workouts w ON ws.workout_id = w.workout_id
       WHERE ws.username = $1 AND ws.day_of_week = $2
       ORDER BY ws.start_time;
-    `, [username, today]);
+    `,
+      [username, today]
+    );
 
     // Add exercises to each workout
     for (const set of scheduledSets) {
-      const exercises = await db.any(`
+      const exercises = await db.any(
+        `
         SELECT exercise_name, muscle_target
         FROM workout_exercises
         WHERE workout_id = $1;
-      `, [set.workout_id]);
+      `,
+        [set.workout_id]
+      );
 
       set.exercises = exercises;
       set.start_time = set.start_time.slice(0, 5); // format time
     }
 
-    res.render('pages/home', {
+    res.render("pages/home", {
       date: date,
-      scheduledSets
+      scheduledSets,
     });
-
   } catch (err) {
-    console.error('Error loading home page:', err);
-    res.render('pages/home', {
-      date: '',
+    console.error("Error loading home page:", err);
+    res.render("pages/home", {
+      date: "",
       scheduledSets: [],
-      message: 'Error loading today’s plan.',
-      error: true
+      message: "Error loading today’s plan.",
+      error: true,
     });
   }
 });
 
-
-
-
-
-app.get('/logout', (req, res) => {
-  req.session.destroy(err => {
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
     if (err) {
-      return res.render('pages/home', {
-        message: 'Error logging out. Please try again.',
+      return res.render("pages/home", {
+        message: "Error logging out. Please try again.",
         error: true, // Indicate an error occurred
       });
     }
-    res.render('pages/login', {
-      message: 'Logged out Successfully',
+    res.render("pages/login", {
+      message: "Logged out Successfully",
       error: false,
     });
   });
@@ -367,19 +373,17 @@ app.get('/logout', (req, res) => {
 //     ],
 //     allWorkouts: [] // make sure this is included too
 //   });
-  
+
 // });
 
-
-
-
-app.get('/myplan', async (req, res) => {
+app.get("/myplan", async (req, res) => {
   const username = req.session.user?.username;
-  if (!username) return res.redirect('/login');
+  if (!username) return res.redirect("/login");
 
   try {
     // Step 1: Get scheduled workouts for the user
-    const scheduledWorkouts = await db.any(`
+    const scheduledWorkouts = await db.any(
+      `
       SELECT
         ws.day_of_week,
         ws.start_time,
@@ -391,15 +395,20 @@ app.get('/myplan', async (req, res) => {
       JOIN workouts w ON ws.workout_id = w.workout_id
       WHERE ws.username = $1
       ORDER BY ws.day_of_week, ws.start_time;
-    `, [username]);
+    `,
+      [username]
+    );
 
     // Step 2: Attach exercises to each scheduled workout individually
     for (const workout of scheduledWorkouts) {
-      const exercises = await db.any(`
+      const exercises = await db.any(
+        `
         SELECT exercise_name, muscle_target
         FROM workout_exercises
         WHERE workout_id = $1;
-      `, [workout.workout_id]);
+      `,
+        [workout.workout_id]
+      );
 
       workout.exercises = exercises;
       workout.start_time = workout.start_time.slice(0, 5); // format to HH:MM
@@ -415,13 +424,14 @@ app.get('/myplan', async (req, res) => {
     }
 
     // Step 4: Map into final format using external weekLabels
-    const weekdays = weekLabels.map(day => ({
+    const weekdays = weekLabels.map((day) => ({
       ...day,
-      scheduledWorkouts: scheduleByDay[day.label] || []
+      scheduledWorkouts: scheduleByDay[day.label] || [],
     }));
 
     // Step 5: Fetch user-created workouts
-    const allWorkouts = await db.any(`
+    const allWorkouts = await db.any(
+      `
       SELECT workout_id, workout_name
       FROM workouts
       WHERE username = $1
@@ -430,39 +440,34 @@ app.get('/myplan', async (req, res) => {
           WHERE workout_exercises.workout_id = workouts.workout_id
         )
       ORDER BY workout_name;
-    `, [username]);
-    
+    `,
+      [username]
+    );
 
-    res.render('pages/myplan', {
+    res.render("pages/myplan", {
       weekdays,
-      allWorkouts
+      allWorkouts,
     });
-
   } catch (err) {
-    console.error('Error loading schedule:', err);
-    res.render('pages/myplan', {
+    console.error("Error loading schedule:", err);
+    res.render("pages/myplan", {
       weekdays: [],
       allWorkouts: [],
-      message: 'Failed to load schedule.',
-      error: true
+      message: "Failed to load schedule.",
+      error: true,
     });
   }
 });
 
-
-app.post('/myplan/add', async (req, res) => {
+app.post("/myplan/add", async (req, res) => {
   try {
     const username = req.session.user?.username;
-    if (!username) return res.redirect('/login');
+    if (!username) return res.redirect("/login");
 
-    const {
-      day_of_week,
-      start_time,
-      workout_id
-    } = req.body;
+    const { day_of_week, start_time, workout_id } = req.body;
 
     if (!day_of_week || !start_time || !workout_id) {
-      throw new Error('Missing required fields');
+      throw new Error("Missing required fields");
     }
 
     await db.none(
@@ -471,21 +476,60 @@ app.post('/myplan/add', async (req, res) => {
       [username, workout_id, day_of_week, start_time]
     );
 
-    res.redirect('/myplan');
-
+    res.redirect("/myplan");
   } catch (err) {
-    console.error('Error adding workout to schedule:', err);
-    res.status(400).render('pages/myplan', {
-      message: 'Failed to add workout. Please check your inputs.',
+    console.error("Error adding workout to schedule:", err);
+    res.status(400).render("pages/myplan", {
+      message: "Failed to add workout. Please check your inputs.",
       error: true,
       weekdays: [],
-      allWorkouts: []
+      allWorkouts: [],
     });
   }
 });
 
-
 //myworkouts page
+//adds default workouts
+app.post("/add_default_workout", async (req, res) => {
+  try {
+    const workouts = req.body;
+    const username = req.session.user.username;
+
+    let defaultWorkout = await db.one(
+      `SELECT * FROM default_workouts WHERE workout_name = $1;`,
+      [workouts.workouts]
+    );
+
+    let workoutName = defaultWorkout.workout_name;
+    let hour = defaultWorkout.time_hours;
+    let min = defaultWorkout.time_minutes;
+    workout_id = await db.one(
+      `INSERT INTO workouts (username, workout_name,time_hours, time_minutes) VALUES ($1, $2, $3, $4) RETURNING workout_id;`,
+      [username, workoutName, hour, min]
+    );
+
+    const exercises = await db.any(
+      `SELECT exercise_name, muscle_target FROM default_workout_exercises 
+      WHERE workout_name = $1;`,
+      [workoutName]
+    );
+
+    for (const exercise of exercises) {
+      await db.none(
+        `
+        INSERT INTO workout_exercises (workout_id,exercise_name,muscle_target) VALUES ($1, $2,$3);`,
+        [workout_id.workout_id, exercise.exercise_name, exercise.muscle_target]
+      );
+    }
+
+    res.redirect("/myworkouts");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/myworkouts");
+  }
+});
+
+//adds new workouts
 app.post("/myworkouts", async (req, res) => {
   let workoutName = req.body.workoutName;
   let hour = req.body.hour;
@@ -526,6 +570,7 @@ app.post("/myworkouts", async (req, res) => {
 });
 
 app.get("/myworkouts", async (req, res) => {
+  const message = req.query.message;
   const username = req.session.user.username;
 
   try {
@@ -555,6 +600,18 @@ app.get("/myworkouts", async (req, res) => {
 
     //gets all the exercises within each muscle target group
     const exercisesByMuscleTarget = [];
+    for (const workout of workouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(
+        `
+        SELECT exercise_name, muscle_target FROM workout_exercises 
+        WHERE workout_id = $1;`,
+        [workout.workout_id]
+      );
+
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
     for (const muscle of muscleTarget) {
       const exercises = await db.any(
         `SELECT exercise_name FROM exercises WHERE muscle_target = $1`,
@@ -566,15 +623,76 @@ app.get("/myworkouts", async (req, res) => {
         exercises: exercises,
       });
     }
+    //gets all default workouts
+    const defaultWorkouts = await db.any(`SELECT * FROM default_workouts;`);
+
+    //gets exercises for default workouts
+    for (const workout of defaultWorkouts) {
+      // gets the exercises for each workout based on workout_id
+      const exercises = await db.any(
+        `
+        SELECT exercise_name, muscle_target FROM default_workout_exercises 
+        WHERE workout_name = $1;`,
+        [workout.workout_name]
+      );
+      // Add the exercises to the workout
+      workout.exercises = exercises;
+    }
 
     res.render("pages/myworkouts", {
       workouts,
       exercisesByMuscleTarget,
+      defaultWorkouts,
+      message,
     });
   } catch (err) {
     res.status(500).render("pages/myworkouts", {
       error: true,
       message: "Could not load workouts. Please try again",
+    });
+  }
+});
+
+//delete a workout
+app.post("/deleteWorkout", async (req, res) => {
+  const { workoutId } = req.body;
+
+  try {
+    await db.query("DELETE FROM workout_schedule WHERE workout_id = $1", [
+      workoutId,
+    ]);
+    await db.query("DELETE FROM workout_exercises WHERE workout_id = $1", [
+      workoutId,
+    ]);
+    await db.query("DELETE FROM workouts WHERE workout_id = $1", [workoutId]);
+
+    res.redirect("/myworkouts?message=Workout Deleted");
+  } catch (err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error deleting workout. Please try again`,
+      error: true,
+    });
+  }
+});
+
+//edit a workout
+app.post("/editWorkout", async (req, res) => {
+  const { workoutId } = req.body;
+  let workoutName = req.body.workoutName;
+  let hour = req.body.hour;
+  let min = req.body.min;
+  console.log(workoutId, workoutName, hour, min);
+  try {
+    await db.query(
+      `UPDATE workouts SET workout_name = $1, time_hours = $2, time_minutes = $3 WHERE workout_id = $4`,
+      [workoutName, hour, min, workoutId]
+    );
+
+    res.redirect("/myworkouts?message=Workout Edited");
+  } catch (err) {
+    res.status(500).render("pages/myworkouts", {
+      message: `Error editing workout. Please try again`,
+      error: true,
     });
   }
 });
