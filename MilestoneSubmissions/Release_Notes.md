@@ -14,7 +14,9 @@
 
 - **Matthew**:
 
-  -
+  - Fully finished backed end of tracking/analytics page
+  - Adding graphs to display averages over time
+  - Updated look of nav bar
 
 - **Kirin**:
 
