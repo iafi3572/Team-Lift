@@ -697,14 +697,14 @@ app.post("/deleteWorkout", async (req, res) => {
   const { workoutId } = req.body;
 
   try {
-<<<<<<< HEAD:ProjectSourceCode/index.js
+
     await db.query('DELETE FROM workout_exercises WHERE workout_id = $1', [workoutId]);
     await db.query('DELETE FROM workout_schedule WHERE workout_id = $1', [workoutId]);
     await db.query('DELETE FROM workouts WHERE workout_id = $1', [workoutId]);
     
     res.redirect('/myworkouts?message=Workout Deleted');
   
-=======
+
     await db.query("DELETE FROM workout_schedule WHERE workout_id = $1", [
       workoutId,
     ]);
@@ -714,7 +714,7 @@ app.post("/deleteWorkout", async (req, res) => {
     await db.query("DELETE FROM workouts WHERE workout_id = $1", [workoutId]);
 
     res.redirect("/myworkouts?message=Workout Deleted");
->>>>>>> main:ProjectSourceCode/src/index.js
+
   } catch (err) {
     res.status(500).render("pages/myworkouts", {
       message: `Error deleting workout. Please try again`,
