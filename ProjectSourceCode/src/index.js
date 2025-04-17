@@ -794,10 +794,16 @@ app.get('/api/averages/:exercise', async (req, res) => {
 
 app.get("/tracking", async (req, res) => {
   try {
-      const username = req.session.user.username;
-      const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-      
-      // Get today's scheduled workouts
+      const username = req.session.user?.username;
+      if (!username) return res.redirect('/login');
+
+      // Default to UTC if no timezone provided
+      const timeZone = req.query.tz || 'UTC';
+      const today = new Date().toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          timeZone 
+      });
+
       const scheduledWorkouts = await db.any(`
           SELECT we.exercise_name
           FROM workout_schedule ws
@@ -806,7 +812,8 @@ app.get("/tracking", async (req, res) => {
       `, [username, today]);
 
       res.render("pages/tracking", {
-          exercises: scheduledWorkouts.map(w => w.exercise_name)
+          exercises: scheduledWorkouts.map(w => w.exercise_name),
+          timeZone // Pass timeZone to template
       });
   } catch (error) {
       console.error(error);
