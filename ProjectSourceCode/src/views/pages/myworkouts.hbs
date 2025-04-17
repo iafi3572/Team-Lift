@@ -1,11 +1,11 @@
 {{>message}}
             
 <div class="container mt-4">
-    <h1 class="text-center">My Workouts</h1>
-    
-    <div class="row justify-content-center">
+
+    <h1 class="text-center my-4 fs-1">My Workouts</h1>
+    <div class="row justify-content-center my-4">
         <div class="col-auto" >
-            <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#event_modal">
+            <button class="btn bg-light-green mt-3" data-bs-toggle="modal" data-bs-target="#event_modal">
                 Create Workout
             </button>
             <br>
@@ -13,7 +13,7 @@
             <br>
         </div>
         <div class="col-auto" >
-            <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#default_modal">
+            <button class="btn btn-outline-light-green login-secondary-btn-green mt-3" data-bs-toggle="modal" data-bs-target="#default_modal">
                 Add a Default Workout
             </button>
             <br>
@@ -30,7 +30,7 @@
         >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content bg-charcoal text-white box-outline-lime">
-                    <div class="modal-header">
+                    <div class="modal-header border-0">
                         <h5 class="modal-title" id="default_modal_label">Default Workouts</h5>
                         <button
                             type="submit"
@@ -49,7 +49,7 @@
                         >
                         <div class="list-group bg-charcoal">
                             {{#each defaultWorkouts}}
-                                <div class="card mb-3 bg-charcoal box-outline-white text-white">
+                                <div class="card mb-3 bg-charcoal box-outline-steel text-white">
                                     <div class="card-header">
                                         <h5>{{workout_name}} ({{time_hours}} hour(s) {{time_minutes}} minutes)</h5>
                                     </div>
@@ -163,13 +163,14 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center my-4">
             <div class="row w-100" style="max-width: 1140px;">
                 {{#if workouts.length}}
                     {{#each workouts}}
                     <div class="col-md-4 col-sm-6 mb-5">
-                        <div class="card">
+                        <div class="card bg-steel text-white">
                             <div class="card-body">
+
                                 <img src="/img/weight.png" class="card-img-top w-75 mx-auto d-block mt-3" alt="Workout Image" />
                                 
                                 <h5 class="card-title">{{workout_name}}</h5>

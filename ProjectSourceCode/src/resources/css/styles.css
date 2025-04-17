@@ -41,6 +41,9 @@
 .box-outline-white {
   border: 2px solid whitesmoke !important;
 }
+.box-outline-steel {
+  border: 2px solid var(--steel-light) !important;
+}
 .text-white {
   color: whitesmoke !important;
 }
