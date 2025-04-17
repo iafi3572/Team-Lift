@@ -37,6 +37,10 @@
 .box-outline-lime {
   border: 2px solid var(--light-green) !important;
 }
+
+.box-outline-white {
+  border: 2px solid whitesmoke !important;
+}
 .text-white {
   color: whitesmoke !important;
 }

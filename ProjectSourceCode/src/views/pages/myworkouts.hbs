@@ -29,7 +29,7 @@
             aria-hidden="true"
         >
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+                <div class="modal-content bg-charcoal text-white box-outline-lime">
                     <div class="modal-header">
                         <h5 class="modal-title" id="default_modal_label">Default Workouts</h5>
                         <button
@@ -40,23 +40,23 @@
                         >
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body bg-charcoal">
                         <form
                         id="data-form"
                         class="needs-validation"
                         method="post"
                         action="/add_default_workout"
                         >
-                        <div class="list-group">
+                        <div class="list-group bg-charcoal">
                             {{#each defaultWorkouts}}
-                                <div class="card mb-3">
+                                <div class="card mb-3 bg-charcoal box-outline-white text-white">
                                     <div class="card-header">
                                         <h5>{{workout_name}} ({{time_hours}} hour(s) {{time_minutes}} minutes)</h5>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-charcoal text-white">
                                         <ul class="list-group">
                                             {{#each exercises}}
-                                                <li class="list-group-item">
+                                                <li class="list-group-item bg-charcoal text-white">
                                                     <p><strong>{{exercise_name}}</strong> - {{muscle_target}}</p>
                                                 </li>
                                             {{/each}}
@@ -79,7 +79,7 @@
                             {{/each}}
                         </div>
 
-                         <button class="btn btn-primary" type="submit">
+                         <button class="btn bg-light-green" type="submit">
                             Add Workout
                         </button>
                         </form>
@@ -96,8 +96,8 @@
             aria-hidden="true"
         >
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
+                <div class="modal-content bg-charcoal text-white box-outline-lime">
+                    <div class="modal-header border-0">
                         <h5 class="modal-title" id="event_modal_label">Workout Information</h5>
                         <button
                             type="submit"
@@ -145,15 +145,15 @@
                             <label for="avg_time" class="form-label"><strong>Time for Completion</strong></label>
                             <div>
                                 <label for="hour" class="form-label">Hour</label>
-                                <input type="number" class="form-control" id="hour" name="hour" min="0" max="23" placeholder="HH" required>
+                                <input type="number" class="form-control box-outline-lime text-white" id="hour" name="hour" min="0" max="23" placeholder="HH" required>
                             </div>
                             <div>
                                 <label for="minute" class="form-label">Minute</label>
-                                <input type="number" class="form-control" id="min" name="min" min="0" max="59" placeholder="MM" required>
+                                <input type="number" class="form-control box-outline-lime text-white" id="min" name="min" min="0" max="59" placeholder="MM" required>
                             </div>
 
                         </div>
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn bg-light-green" type="submit">
                             Create Workout
                         </button>
 
@@ -177,7 +177,7 @@
                                 <p class="card-text"><strong>Number of Exercises:</strong> {{exercises.length}}</p>
                                 <div>
                                     <button
-                                    class="btn btn-light mt-3"
+                                    class="btn bg-light-green mt-3"
                                     data-bs-toggle="modal"
                                     data-bs-target="#info_modal_{{@index}}"
                                     >
@@ -197,7 +197,7 @@
                     aria-hidden="true"
                     >
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content bg-charcoal text-white box-outline-lime">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="info_modal_label_{{@index}}">Workout Information</h5>
                                     <button
@@ -240,7 +240,7 @@
                         aria-hidden="true"
                     >
                         <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
+                            <div class="modal-content bg-charcoal text-white box-outline-lime">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="edit_modal_{{@index}}">Edit Workout</h5>
                                     <button
