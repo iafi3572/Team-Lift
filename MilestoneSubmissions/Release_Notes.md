@@ -10,7 +10,9 @@
 
 - **Sam**:
 
-  -
+  - Styled Login, Register, MyWorkout, Exercises
+  - Correceted all page titles
+  - Rearranged file structure
 
 - **Matthew**:
 
@@ -20,11 +22,11 @@
 
 - **Kirin**:
 
-  -
+  - Added edit and delete functionality to schedule
 
 - **Ian**:
 
-  -
+  - Finished the home page besides adding mission statement
 
 ### Other Notes / Known Issues
 
