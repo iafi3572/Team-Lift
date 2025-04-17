@@ -164,6 +164,7 @@
     <!-- Today's Exercise Section -->
     <div class="dashboard-section">
         <h2 class="section-title">Today's Exercise</h2>
+        <div id="exercises-container">
         {{#if exercises.length}}
             <form id="exercise-form" class="exercise-form">
                 {{#each exercises}}
@@ -189,7 +190,19 @@
                 <h3 style="color: #636e72; margin-bottom: 20px;">No workout scheduled for today</h3>
             </div>
         {{/if}}
+        </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+        if (clientTimeZone !== '{{timeZone}}') {
+            window.location.href = `/tracking?tz=${encodeURIComponent(clientTimeZone)}`;
+        }
+    });
+    </script>
+
 
     <script>
         // Goals functionality
@@ -299,12 +312,10 @@
         function renderChart(exerciseName, data) {
             const ctx = document.getElementById(`${exerciseName}-chart`);
     
-            // Destroy existing chart if it exists
             if (exerciseCharts[exerciseName]) {
                 exerciseCharts[exerciseName].destroy();
             }
     
-            // Prepare dataset
             const labels = data.map(entry => new Date(entry.log_date).toLocaleDateString());
             const repsData = data.map(entry => entry.reps);
             const weightData = data.map(entry => entry.weight);
@@ -349,11 +360,22 @@
             });
         }
 
-        // Update form submit handler to refresh charts
+        function checkTimeZone() {
+            const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const serverTimeZone = '{{timeZone}}';
+    
+            if (clientTimeZone !== serverTimeZone) {
+                window.location.href = `/tracking?tz=${encodeURIComponent(clientTimeZone)}`;
+            }
+        }
+
+
+    checkTimeZone();
+    setInterval(checkTimeZone, 3600000);
+
         document.getElementById('exercise-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // ... existing submit code ...
-            await loadAverages(); // Refresh charts after save
+            await loadAverages()
         });
 
         // Initial load
