@@ -1,3 +1,22 @@
+# 4/16 Standup
+
+## Demo Feedback:
+
+- work further on styling/ making it look better
+- **Suggestions**:
+  - Add images/animations to pages
+
+## Tasks:
+
+- **Sam**: Styled Login, register, Myworkout and exercises, and corrected file structure. Will work on finshing the documentation, finish style css.
+- **Kirin**: Added edit and delete functionality to the schedule. Will work on finshing the documentation, along with fixing a few bugs.
+- **Lana**: Worked on workouts page creating delete and edit functionality along with default workouts. Will work on finshing the documentation, along wit testing and merging.
+- **Ian**: continued on the home page. Will work on finshing the documentation, and finishing the home page.
+- **Matthew**: Worked on all the tracking and analytics back end. Will work on finshing the documentation, and moving part of his code to fit with .
+
+
+
+
 # 4/9 Standup
 
 ## Demo Feedback:
