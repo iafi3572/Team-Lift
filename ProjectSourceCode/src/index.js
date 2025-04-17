@@ -487,7 +487,7 @@ app.post("/myplan/add", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD:ProjectSourceCode/index.js
+
 //delete a workout from schedule
 app.post('/myplan/deleteWorkout', async (req, res) => {
   const { scheduleId } = req.body;
@@ -526,8 +526,7 @@ app.post('/myplan/editWorkout', async (req, res) => {
 });
 
 
-=======
->>>>>>> main:ProjectSourceCode/src/index.js
+
 //myworkouts page
 //adds default workouts
 app.post("/add_default_workout", async (req, res) => {
