@@ -1,0 +1,106 @@
+<div class="container my-5">
+  <!-- Welcome Section -->
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">Welcome {{username}}!</h1>
+    <h2 class="fw-bold">Make Your Fitness Routine Stand Out</h2>
+    <p class="lead text-muted">
+      Discover your potential and transform your body with a structured plan tailored to your goals.
+    </p>
+  </div>
+
+  <!-- Explore Features Section -->
+  <div class="mb-5">
+    <h2 class="text-center fw-bold mb-4">Explore Our Features</h2>
+    <div class="row g-4">
+      <div class="col-md-3 col-6">
+        <a href="/exercises" class="text-decoration-none">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body text-center">
+            <i class="bi bi-play-circle text-success display-4 mb-3"></i>
+            <h5 class="fw-bold">Exercise Videos</h5>
+            <p class="small text-muted">Access various workout videos to improve your fitness.</p>
+          </div>
+        </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-6">
+        <a href="/tracking" class="text-decoration-none">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body text-center">
+            <i class="bi bi-bar-chart-line text-primary display-4 mb-3"></i>
+            <h5 class="fw-bold">Progress Tracking</h5>
+            <p class="small text-muted">Track and monitor your fitness progress effectively.</p>
+          </div>
+        </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-6">
+        <a href="/myworkouts" class="text-decoration-none">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body text-center">
+            <i class="bi bi-pencil text-danger display-4 mb-3"></i>
+            <h5 class="fw-bold">My Workouts</h5>
+            <p class="small text-muted">Plan and manage your personalized workout routines.</p>
+          </div>
+        </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-6">
+        <a href="/myplan" class="text-decoration-none">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body text-center">
+            <i class="bi bi-calendar-check text-warning display-4 mb-3"></i>
+            <h5 class="fw-bold">Weekly Plan</h5>
+            <p class="small text-muted">Organize your fitness schedule for optimal results.</p>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Workout Section -->
+  <div class="py-5 bg-dark text-light rounded-4 shadow-sm">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Today's Workout</h2>
+        <h4 class="text-warning">{{date}}</h4>
+      </div>
+
+      {{#if scheduledSets.length}}
+        <div class="row g-4">
+          {{#each scheduledSets}}
+          <div class="col-md-4">
+            <div class="card border-0 bg-light text-dark shadow-sm rounded-4">
+              <div class="card-body">
+                <h6 class="fw-bold">{{workout_name}}</h6>
+                <p class="small text-muted mb-2">
+                  {{start_time}} ({{duration_hours}}h {{duration_minutes}}m)
+                </p>
+                {{#if exercises.length}}
+                  <ul class="list-unstyled small">
+                    {{#each exercises}}
+                      <li>• <strong>{{exercise_name}}</strong> ({{muscle_target}})</li>
+                    {{/each}}
+                  </ul>
+                {{else}}
+                  <p class="text-muted small mb-0">No exercises found.</p>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <div class="text-center py-4">
+          <p class="text-muted">No workouts scheduled for today.</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

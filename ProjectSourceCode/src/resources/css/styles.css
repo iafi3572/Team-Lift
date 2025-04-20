@@ -121,7 +121,6 @@ body {
   min-height: 100vh;
 }
 
-/* Nav Bar styling below */
 
 .dashboard-section {
   background: white;
@@ -139,13 +138,11 @@ body {
   border-bottom: 2px solid #0984e3;
 }
 
-/* Left Column Layout */
 .left-column {
   display: grid;
   gap: 25px;
 }
 
-/* Goals Section */
 .goal-item {
   display: flex;
   align-items: center;
@@ -155,7 +152,6 @@ body {
   border-radius: 8px;
 }
 
-/* Progress Section */
 .progress-metric {
   margin: 20px 0;
   padding: 15px;
@@ -163,7 +159,6 @@ body {
   border-radius: 8px;
 }
 
-/* Exercise Section */
 .exercise-card {
   margin: 20px 0;
   padding: 20px;
@@ -186,7 +181,6 @@ input[type="number"] {
   font-size: 1em;
 }
 
-/* Summary Section */
 .summary-card {
   margin-top: 25px;
   padding: 20px;
@@ -214,4 +208,103 @@ input[type="number"] {
   padding: 8px 12px;
   border-radius: 8px;
   transition: all 0.2s;
+}
+
+.modal-content {
+  background-color: var(--steel) !important;
+  border: 1px solid var(--steel-light) !important;
+  border-radius: 10px !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--steel-light) !important;
+}
+
+.modal-title {
+  color: var(--light-green) !important;
+  font-weight: 600;
+}
+
+.modal-body {
+  color: white !important;
+}
+
+.modal-body ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.modal-body li {
+  background-color: var(--steel-light);
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.modal-body .form-check-label {
+  color: white !important;
+}
+
+.modal-body .form-check-input:checked {
+  background-color: var(--light-green);
+  border-color: var(--light-green);
+}
+
+.modal-body .btn-outline-secondary {
+  border-color: var(--steel-light);
+  color: white;
+}
+
+.modal-body .btn-outline-secondary:hover {
+  border-color: var(--light-green);
+  background-color: rgba(123, 178, 116, 0.1);
+}
+
+.modal-body .form-label {
+  color: var(--light-green) !important;
+  font-weight: 500;
+}
+
+.modal-body .card {
+  background-color: var(--graphite) !important;
+  border: 1px solid var(--steel-light);
+}
+
+.modal-body .card-header {
+  background-color: var(--steel) !important;
+  border-bottom: 1px solid var(--steel-light);
+}
+
+.modal-body p,
+.modal-body h1,
+.modal-body h5 {
+  color: white !important;
+}
+
+.modal-body .btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.modal-body .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-body .form-control#workoutName {
+  background-color: var(--steel-light) !important;
+  border: 1px solid var(--light-green) !important;
+  color: white !important;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.modal-body .form-control#workoutName::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-style: italic;
+}
+
+.modal-body .form-control#workoutName:focus {
+  background-color: var(--steel-light) !important;
+  box-shadow: 0 0 0 0.25rem rgba(123, 178, 116, 0.25);
 }

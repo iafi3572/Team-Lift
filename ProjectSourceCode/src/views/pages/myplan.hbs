@@ -17,18 +17,18 @@
             <p class="card-text"><strong>Start Time:</strong> {{start_time}}</p>
             <button class="btn btn-light"
                     data-bs-toggle="modal"
-                    data-bs-target="#info_modal_{{@index}}">
+                    data-bs-target="#info_modal_{{schedule_id}}">
               View More
             </button>
           </div>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="info_modal_{{@index}}" tabindex="-1" aria-labelledby="info_modal_label_{{@index}}" aria-hidden="true">
+        <div class="modal fade" id="info_modal_{{schedule_id}}" tabindex="-1" aria-labelledby="info_modal_label_{{schedule_id}}" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="info_modal_label_{{@index}}">Workout Information</h5>
+                <h5 class="modal-title" id="info_modal_label_{{schedule_id}}">Workout Information</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -41,10 +41,66 @@
                     <li>{{exercise_name}} - {{muscle_target}}</li>
                   {{/each}}
                 </ul>
+                <div class="d-flex justify-content-start gap-2 mt-3">
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit_modal_{{schedule_id}}">Edit Workout Day/Time</button>
+
+                    <br>
+                    <form action="/myplan/deleteWorkout" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="scheduleId" value="{{schedule_id}}">
+                        <button type="submit" class="btn btn-outline-danger">Delete Workout from Schedule</button>
+                    </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="modal fade" id="edit_modal_{{schedule_id}}" tabindex="-1" aria-labelledby="edit_modal_label_{{schedule_id}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form method="POST" action="/myplan/editWorkout">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit_modal_label_{{schedule_id}}">Edit Workout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" name="scheduleId" value="{{schedule_id}}">
+
+          <div class="mb-3 text-start">
+            <label class="form-label"><strong>Workout Name</strong></label>
+            <div>{{workout_name}}</div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="day_{{schedule_id}}" class="form-label">Day</label>
+              <select class="form-select" id="day_{{schedule_id}}" name="day_of_week" required>
+                <option disabled selected>Select a day</option>
+                {{#each ../../weekdays as |editDays|}}
+                <option value="{{editDays.label}}" {{#ifEquals ../day_of_week editDays.label}}selected{{/ifEquals}}>
+                  {{this.label}}
+                </option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col">
+              <label for="startTime_{{schedule_id}}" class="form-label">Start Time</label>
+              <input type="time" class="form-control" id="startTime_{{schedule_id}}" name="start_time" value="{{start_time}}" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit Edit</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
       {{/each}}
 
       <div class="mt-4 mb-2">
