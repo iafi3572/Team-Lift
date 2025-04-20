@@ -2,6 +2,7 @@
             
 <div class="container mt-4">
     <h1 class="text-center">My Workouts</h1>
+    
     <div class="row justify-content-center">
         <div class="col-auto" >
             <button class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#event_modal">
@@ -169,6 +170,8 @@
                     <div class="col-md-4 col-sm-6 mb-5">
                         <div class="card">
                             <div class="card-body">
+                                <img src="/img/weight.png" class="card-img-top w-75 mx-auto d-block mt-3" alt="Workout Image" />
+                                
                                 <h5 class="card-title">{{workout_name}}</h5>
                                 <p class="card-text"><strong>Time:</strong> {{time_hours}} hour(s) {{time_minutes}} minutes</p>
                                 <p class="card-text"><strong>Number of Exercises:</strong> {{exercises.length}}</p>
@@ -301,6 +304,7 @@
                 {{else}}
                     <div class="text-center mt-5 text-secondary">
                         <h2>Your workout list is empty. Add one to begin.</h2>
+                        <p class="text-muted fst-italic">Start your fitness journey today — your future self will thank you!</p>
                     </div>
                 {{/if}}
             </div>
