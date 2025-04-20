@@ -13,6 +13,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session"); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require("bcryptjs"); //  To hash passwords
 const req = require("express/lib/request");
+const { title } = require("process");
 const axios = require("axios").default;
 
 // *****************************************************
@@ -32,7 +33,13 @@ const hbs = handlebars.create({
   },
 });
 
-app.use(express.static(path.join(__dirname, "resources")));
+app.use(express.static(path.join(__dirname, "resources"), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 // database configuration
 const dbConfig = {
@@ -93,7 +100,7 @@ app.use("/img", express.static(path.join(__dirname, "resources/img")));
 // TODO - Include your API routes here
 //Register
 app.get("/register", (req, res) => {
-  res.render("pages/register.hbs");
+  res.render("pages/register.hbs", { title: "Lift Track - Register" });
 });
 
 app.get("/welcome", (req, res) => {
@@ -115,6 +122,7 @@ app.post("/register", async (req, res) => {
       username: username,
       email: email,
       birthday: birthday,
+      title: "Lift Track - Register",
     });
   }
 
@@ -134,6 +142,7 @@ app.post("/register", async (req, res) => {
       res.render("pages/register", {
         error: true,
         message: "Username already exists",
+        title: "Lift Track - Register",
       });
     } else {
       console.error("error", err);
@@ -145,7 +154,7 @@ app.post("/register", async (req, res) => {
 
 //login
 app.get("/login", (req, res) => {
-  res.render("pages/login.hbs");
+  res.render("pages/login.hbs", { title: "Lift Track - Login" });
 });
 
 app.get("/exercises", async (req, res) => {
@@ -194,7 +203,7 @@ app.get("/exercises", async (req, res) => {
           return null;
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         return null;
       }
     };
@@ -219,10 +228,14 @@ app.get("/exercises", async (req, res) => {
     }));
     // console.log(mergedExercises);
 
-    res.render("pages/exercises.hbs", { mergedExercises });
+    res.render("pages/exercises.hbs", {
+      title: "Lift Track - Exercises",
+      mergedExercises,
+    });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).render("pages/exercises.hbs", {
+      title: "Lift Track - Exercise Page",
       exercises: [],
     });
   }
@@ -254,6 +267,7 @@ app.post("/login", async (req, res) => {
       res.status(400).render("pages/login", {
         message: `Incorrect password`,
         error: true,
+        title: "Lift Track - Login",
       });
     }
   } catch (err) {
@@ -282,6 +296,7 @@ const weekLabels = [
 ];
 
 app.get("/home", async (req, res) => {
+
   const username = req.session.user?.username;
   if (!username) return res.redirect("/login");
 
@@ -348,6 +363,7 @@ app.get("/logout", (req, res) => {
       return res.render("pages/home", {
         message: "Error logging out. Please try again.",
         error: true, // Indicate an error occurred
+        title: "Lift Track",
       });
     }
     res.render("pages/login", {
@@ -490,6 +506,7 @@ app.post("/myplan/add", async (req, res) => {
 });
 
 
+
 //delete a workout from schedule
 app.post('/myplan/deleteWorkout', async (req, res) => {
   const { scheduleId } = req.body;
@@ -526,6 +543,7 @@ app.post('/myplan/editWorkout', async (req, res) => {
   })
   }
 });
+
 
 
 
@@ -606,6 +624,7 @@ app.post("/myworkouts", async (req, res) => {
     res.status(500).render("pages/myworkouts", {
       message: `Error saving workout. Please try again`,
       error: true,
+      title: "Lift Track - My Workouts",
     });
   }
 });
@@ -690,6 +709,7 @@ app.get("/myworkouts", async (req, res) => {
     res.status(500).render("pages/myworkouts", {
       error: true,
       message: "Could not load workouts. Please try again",
+      title: "Lift Track - My Workouts",
     });
   }
 });
@@ -753,17 +773,19 @@ app.get("/logout", (req, res) => {
       return res.render("pages/home", {
         message: "Error logging out. Please try again.",
         error: true, // Indicate an error occurred
+        title: "Lift Track",
       });
     }
     res.render("pages/login", {
       message: "Logged out Successfully",
       error: false,
+      title: "Lift Track - Login",
     });
   });
 });
 
 app.get("/myplan", (req, res) => {
-  res.render("pages/myplan.hbs");
+  res.render("pages/myplan.hbs", { title: "Lift Track" });
 });
 
 // Goals endpoints
