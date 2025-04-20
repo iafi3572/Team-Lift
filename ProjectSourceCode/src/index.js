@@ -335,6 +335,7 @@ app.get("/home", async (req, res) => {
     res.render("pages/home", {
       date: date,
       scheduledSets,
+      username: username,
     });
   } catch (err) {
     console.error("Error loading home page:", err);
