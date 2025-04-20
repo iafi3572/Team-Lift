@@ -32,7 +32,13 @@ const hbs = handlebars.create({
   },
 });
 
-app.use(express.static(path.join(__dirname, "resources")));
+app.use(express.static(path.join(__dirname, "resources"), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 // database configuration
 const dbConfig = {
