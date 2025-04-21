@@ -9,13 +9,13 @@
       <strong class="fs-4">{{this.label}}</strong>
 
       {{#each this.scheduledWorkouts}}
-        <div class="card mt-3">
-          <div class="card-body">
+        <div class="card mt-3 btn-outline-light-green rounded text-white">
+          <div class="card-body bg-steel rounded">
             <h5 class="card-title">{{workout_name}}</h5>
             <p class="card-text"><strong>Time:</strong> {{time_hours}} hours {{time_minutes}} minutes</p>
             <p class="card-text"><strong>Exercises:</strong> {{exercises.length}}</p>
             <p class="card-text"><strong>Start Time:</strong> {{start_time}}</p>
-            <button class="btn btn-light"
+            <button class="btn btn-outline-light-green login-secondary-btn-green"
                     data-bs-toggle="modal"
                     data-bs-target="#info_modal_{{schedule_id}}">
               View More
@@ -42,7 +42,7 @@
                   {{/each}}
                 </ul>
                 <div class="d-flex justify-content-start gap-2 mt-3">
-                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit_modal_{{schedule_id}}">Edit Workout Day/Time</button>
+                    <button class="btn btn-outline-light-green login-secondary-btn-green" data-bs-toggle="modal" data-bs-target="#edit_modal_{{schedule_id}}">Edit Workout Day/Time</button>
 
                     <br>
                     <form action="/myplan/deleteWorkout" method="POST">
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="modal fade" id="edit_modal_{{schedule_id}}" tabindex="-1" aria-labelledby="edit_modal_label_{{schedule_id}}" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg bg-steel">
     <form method="POST" action="/myplan/editWorkout">
       <div class="modal-content">
         <div class="modal-header">
@@ -72,10 +72,10 @@
             <div>{{workout_name}}</div>
           </div>
 
-          <div class="row mb-3">
+          <div class="row mb-3 bg-steel">
             <div class="col">
-              <label for="day_{{schedule_id}}" class="form-label">Day</label>
-              <select class="form-select" id="day_{{schedule_id}}" name="day_of_week" required>
+              <label for="day_{{schedule_id}}" class="form-label btn-outline-light-green">Day</label>
+              <select class="form-select btn-outline-light-green" id="day_{{schedule_id}}" name="day_of_week" required>
                 <option disabled selected>Select a day</option>
                 {{#each ../../weekdays as |editDays|}}
                 <option value="{{editDays.label}}" {{#ifEquals ../day_of_week editDays.label}}selected{{/ifEquals}}>
@@ -84,16 +84,16 @@
                 {{/each}}
               </select>
             </div>
-            <div class="col">
-              <label for="startTime_{{schedule_id}}" class="form-label">Start Time</label>
-              <input type="time" class="form-control" id="startTime_{{schedule_id}}" name="start_time" value="{{start_time}}" required>
+            <div class="col btn-outline-light-green">
+              <label for="startTime_{{schedule_id}}" class="form-label btn-outline-light-green">Start Time</label>
+              <input type="time" class="form-control btn-outline-light-green" id="startTime_{{schedule_id}}" name="start_time" value="{{start_time}}" required>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Submit Edit</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn bg-light-green">Submit Edit</button>
+          <button type="button" class="btn btn-outline-light-green login-secondary-btn-green" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </form>
@@ -129,7 +129,7 @@
 
           <div class="row mb-3">
             <div class="col">
-              <label for="day" class="form-label">Day</label>
+              <label for="day" class="bg-steel">Day</label>
               <select class="form-select" id="day" name="day_of_week" required>
                 <option disabled selected>Select a day</option>
                 {{#each weekdays}}
@@ -137,9 +137,9 @@
                 {{/each}}
               </select>
             </div>
-            <div class="col">
-              <label for="startTime" class="form-label">Start Time</label>
-              <input type="time" class="form-control" id="startTime" name="start_time" required>
+            <div class="col btn-outline-light-green">
+              <label for="startTime" class="form-label btn-outline-light-green">Start Time</label>
+              <input type="time" class="form-control btn-outline-light-green" id="startTime" name="start_time" required>
             </div>
           </div>
 

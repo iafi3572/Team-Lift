@@ -4,68 +4,166 @@
 
 {{>message}}
 
-<div class="container-fluid bg-charcoal px-0">
+        .dashboard-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e0e3eb;
+        }
 
-    <div class="container my-4 text-center">
-        <h1 class="text-light-green display-5 fw-bold">Analytics Dashboard</h1>
-    </div>
+        .section-title {
+            font-size: 1.4em;
+            color: #2d3436;
+            margin: 0 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #0984e3;
+        }
 
-    <div class="tracking-body wide-view"> 
-        <div class="left-column expanded">
-            <div class="dashboard-section">
-                <h2 class="section-title">Goals</h2>
-                <div id="goals-list" class="goals-list"></div>
+        /* Left Column Layout */
+        .left-column {
+            display: grid;
+            gap: 25px;
+        }
+
+        /* Goals Section */
+        .goal-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 12px;
+            background: #f8f9ff;
+            border-radius: 8px;
+        }
+
+        /* Progress Section */
+        .progress-metric {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff9f2;
+            border-radius: 8px;
+        }
+
+        /* Exercise Section */
+        .exercise-card {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+
+        .exercise-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        input[type="number"] {
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        /* Summary Section */
+        .summary-card {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f3f8ff;
+            border-radius: 10px;
+        }
+
+        .goals-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }       
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9ff;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        .goal-item span.completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .goal-item button {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+        }
+
+        .exercise-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .save-button {
+            padding: 12px 24px;
+            background: #0984e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .save-button:hover {
+            background: #0873c4;
+        }
+
+        .chart-container {
+            margin: 15px 0;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+<div class="dashboard-section">
+    <h2 class="section-title">Today's Exercise</h2>
+    <div id="exercises-container">
+    {{#if exercises.length}}
+        <form id="exercise-form" class="exercise-form">
+            {{#each exercises}}
+            <div class="exercise-card">
+                <h3>{{this}}</h3>
+                <div class="chart-container" style="position: relative; height:200px; width:100%">
+                    <canvas id="{{this}}-chart"></canvas>
+                </div>
+                <div class="averages">
+                    <span>Avg Reps: <span class="reps-avg">-</span></span>
+                    <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
+                </div>
                 <div class="exercise-inputs">
-                    <input type="text" id="new-goal" placeholder="New goal..." 
-                           class="form-control w-100">
-                    <button onclick="addGoal()" 
-                            class="btn bg-light-green w-100 mt-3">
-                        Add
-                    </button>
+                    <input type="number" id="{{this}}-reps" placeholder="Reps" required>
+                    <input type="number" id="{{this}}-weight" placeholder="Weight (kg)" step="0.1" required>
                 </div>
             </div>
+            {{/each}}
+            <button type="submit" class="save-button">Save Workout</button>
+        </form>
+    {{else}}
+        <div style="text-align: center; padding: 40px;">
+            <h3 style="color: #636e72; margin-bottom: 20px;">No workout scheduled for today</h3>
         </div>
-
-        <div class="dashboard-section expanded">
-            <h2 class="section-title">Today's Exercise</h2>
-            <div id="exercises-container" class="w-100">
-                {{#if exercises.length}}
-                    <form id="exercise-form" class="exercise-form">
-                        {{#each exercises}}
-                        <div class="exercise-card">
-                            <h3 class="text-light-green">{{this}}</h3>
-                            <div class="chart-container">
-                                <canvas id="{{this}}-chart"></canvas>
-                            </div>
-                            <div class="averages text-white">
-                                <span>Avg Reps: <span class="reps-avg">-</span></span>
-                                <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
-                            </div>
-                            <div class="exercise-inputs w-100">
-                                <input type="number" id="{{this}}-reps" 
-                                       placeholder="Reps" 
-                                       class="w-100"
-                                       required>
-                                <input type="number" id="{{this}}-weight" 
-                                       placeholder="Weight (kg)" 
-                                       class="w-100"
-                                       step="0.1" 
-                                       required>
-                            </div>
-                        </div>
-                        {{/each}}
-                        <button type="submit" 
-                                class="save-button w-100">
-                            Save Workout
-                        </button>
-                    </form>
-                {{else}}
-                    <div class="empty-state">
-                        <h3 class="text-light-green">No workout scheduled for today</h3>
-                        <p class="text-steel-light">Enjoy your rest day or add new exercises!</p>
-                    </div>
-                {{/if}}
-            </div>
-        </div>
+    {{/if}}
     </div>
 </div>
