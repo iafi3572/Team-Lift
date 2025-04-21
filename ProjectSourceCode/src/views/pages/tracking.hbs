@@ -1,58 +1,71 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="timezone-data" data-timezone="{{timeZone}}" style="display: none;"></div>
+<script src="/js/script.js"></script>
 
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f5f6fa;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 25px;
-        }
+{{>message}}
 
-    <div class="left-column">
-        <!-- Goals Section -->
-        <div class="dashboard-section">
-            <h2 class="section-title">Goals</h2>
-            <div id="goals-list" class="goals-list"></div>
-            <div class="exercise-inputs">
-                <input type="text" id="new-goal" placeholder="New goal...">
-                <button onclick="addGoal()">Add</button>
-            </div>
-        </div>
+<div class="container-fluid bg-charcoal px-0">
+
+    <div class="container my-4 text-center">
+        <h1 class="text-light-green display-5 fw-bold">Analytics Dashboard</h1>
     </div>
 
-    <!-- Today's Exercise Section -->
-    <div class="dashboard-section">
-        <h2 class="section-title">Today's Exercise</h2>
-        <div id="exercises-container">
-        {{#if exercises.length}}
-            <form id="exercise-form" class="exercise-form">
-                {{#each exercises}}
-                <div class="exercise-card">
-                    <h3>{{this}}</h3>
-                    <div class="chart-container" style="position: relative; height:200px; width:100%">
-                        <canvas id="{{this}}-chart"></canvas>
-                    </div>
-                    <div class="averages">
-                        <span>Avg Reps: <span class="reps-avg">-</span></span>
-                        <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
-                    </div>
-                    <div class="exercise-inputs">
-                        <input type="number" id="{{this}}-reps" placeholder="Reps" required>
-                        <input type="number" id="{{this}}-weight" placeholder="Weight (kg)" step="0.1" required>
-                    </div>
+    <div class="tracking-body wide-view"> 
+        <div class="left-column expanded">
+            <div class="dashboard-section">
+                <h2 class="section-title">Goals</h2>
+                <div id="goals-list" class="goals-list"></div>
+                <div class="exercise-inputs">
+                    <input type="text" id="new-goal" placeholder="New goal..." 
+                           class="form-control w-100">
+                    <button onclick="addGoal()" 
+                            class="btn bg-light-green w-100 mt-3">
+                        Add
+                    </button>
                 </div>
-                {{/each}}
-                <button type="submit" class="save-button">Save Workout</button>
-            </form>
-        {{else}}
-            <div style="text-align: center; padding: 40px;">
-                <h3 style="color: #636e72; margin-bottom: 20px;">No workout scheduled for today</h3>
             </div>
-        {{/if}}
+        </div>
+
+        <div class="dashboard-section expanded">
+            <h2 class="section-title">Today's Exercise</h2>
+            <div id="exercises-container" class="w-100">
+                {{#if exercises.length}}
+                    <form id="exercise-form" class="exercise-form">
+                        {{#each exercises}}
+                        <div class="exercise-card">
+                            <h3 class="text-light-green">{{this}}</h3>
+                            <div class="chart-container">
+                                <canvas id="{{this}}-chart"></canvas>
+                            </div>
+                            <div class="averages text-white">
+                                <span>Avg Reps: <span class="reps-avg">-</span></span>
+                                <span>Avg Weight: <span class="weight-avg">-</span> kg</span>
+                            </div>
+                            <div class="exercise-inputs w-100">
+                                <input type="number" id="{{this}}-reps" 
+                                       placeholder="Reps" 
+                                       class="w-100"
+                                       required>
+                                <input type="number" id="{{this}}-weight" 
+                                       placeholder="Weight (kg)" 
+                                       class="w-100"
+                                       step="0.1" 
+                                       required>
+                            </div>
+                        </div>
+                        {{/each}}
+                        <button type="submit" 
+                                class="save-button w-100">
+                            Save Workout
+                        </button>
+                    </form>
+                {{else}}
+                    <div class="empty-state">
+                        <h3 class="text-light-green">No workout scheduled for today</h3>
+                        <p class="text-steel-light">Enjoy your rest day or add new exercises!</p>
+                    </div>
+                {{/if}}
+            </div>
         </div>
     </div>
-
-</body>
+</div>
