@@ -77,10 +77,19 @@ To run this application, ensure the following software is installed on your syst
 
 
 1. **Open a terminal**
-2. **Ensure Git is installed** ```bash git --version ```
-3. **Clone the repository** ```bash git clone https://github.com/sagen704/Team-Lift.git ```
-4. **Navigate to the project directory** ```bash cd ProjectSourceCode ```
-5. **Create a `.env` file with necessary variables**
+2. **Ensure Git is installed**
+   ```bash
+   git --version
+   ```
+6. **Clone the repository**
+   ```bash
+    git clone https://github.com/sagen704/Team-Lift.git
+   ```
+8. **Navigate to the project directory**
+   ```bash
+   cd ProjectSourceCode
+   ```
+10. **Create a `.env` file with necessary variables**
 
 
   ```env
@@ -98,4 +107,29 @@ To run this application, ensure the following software is installed on your syst
 
    ```
 6. **Make sure Docker is running**
-7. **Start the application** ```bash docker compose up ```
+7. **Start the application**
+   ```bash
+    docker compose up
+   ```
+
+### Instructions to Run the Tests:
+
+1. **Clone the repository**  
+   Make sure you've cloned the repository using the steps outlined above.
+
+2. **Modify `docker-compose.yaml`**  
+   - Comment out the line:  
+     ```yaml
+     command: "npm start"
+     ```
+   - Uncomment the line:  
+     ```yaml
+     # command: "npm run testandrun"
+     ```
+
+3. **Execute the following in your terminal:**  
+   ```bash
+   docker compose up
+    ```
+
+## Link to the deployed application: [Click Here](https://team-lift.onrender.com/login)
