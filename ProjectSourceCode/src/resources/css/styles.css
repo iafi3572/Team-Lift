@@ -14,6 +14,10 @@
   background-color: var(--steel) !important;
 }
 
+.border-steel {
+  border: 2px solid var(--steel) !important;
+}
+
 .text-light-green {
   color: var(--light-green);
 }

@@ -53,10 +53,10 @@
                                     <div class="card-header">
                                         <h5>{{workout_name}} ({{time_hours}} hour(s) {{time_minutes}} minutes)</h5>
                                     </div>
-                                    <div class="card-body bg-charcoal text-white">
+                                    <div class="card-body text-white">
                                         <ul class="list-group">
                                             {{#each exercises}}
-                                                <li class="list-group-item bg-charcoal text-white">
+                                                <li class="list-group-item bg-charcoal text-white border-steel">
                                                     <p><strong>{{exercise_name}}</strong> - {{muscle_target}}</p>
                                                 </li>
                                             {{/each}}
@@ -291,7 +291,7 @@
                                             {{/each}}
                                         </ul>
                                         </div>
-                                        <button class="btn btn-primary" type="submit">
+                                        <button class="btn btn-outline-light-green login-secondary-btn-green" type="submit">
                                             Submit Edit
                                         </button>
                                     </form>
