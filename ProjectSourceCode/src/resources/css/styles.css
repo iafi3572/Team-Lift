@@ -9,41 +9,65 @@
 .bg-charcoal {
   background-color: var(--charcoal) !important;
 }
+
 .bg-steel {
   background-color: var(--steel) !important;
 }
+
+.border-steel {
+  border: 2px solid var(--steel) !important;
+}
+
 .text-light-green {
   color: var(--light-green);
 }
+
 .bg-light-green {
   background-color: var(--light-green) !important;
 }
+
 .bg-light-green:hover {
   background-color: rgb(177, 235, 119) !important;
   color: #2c2c2e;
 }
+
 .btn-outline-light-green {
   border-color: var(--light-green) !important;
 }
+
 .btn-outline-light-green:hover {
   border-color: rgb(177, 235, 119) !important;
 }
+
 .login-secondary-btn-green {
   color: var(--light-green) !important;
 }
+
 .login-secondary-btn-green:hover {
   color: rgb(177, 235, 119) !important;
 }
+
 .box-outline-lime {
   border: 2px solid var(--light-green) !important;
 }
+
+.box-outline-white {
+  border: 2px solid whitesmoke !important;
+}
+
+.box-outline-steel {
+  border: 2px solid var(--steel-light) !important;
+}
+
 .text-white {
   color: whitesmoke !important;
 }
+
 .text-white::placeholder {
   color: white !important;
   opacity: 0.7;
 }
+
 .btn-close {
   filter: brightness(0) invert(1);
 }
@@ -54,16 +78,16 @@
 
 .form-control {
   background-color: var(--steel);
-  border: 1px solid #666666;
-  color: white;
   border: none;
+  color: white;
 }
+
 .form-control:focus {
   background-color: var(--steel-light);
-  border: 1px solid #666666;
-  color: white;
   border: none;
+  color: white;
 }
+
 .exercise_cards {
   background-color: var(--steel) !important;
   color: white;
@@ -77,6 +101,7 @@ body {
 .navbar {
   background-color: #333;
 }
+
 .navbar a {
   float: left;
   font-size: 16px;
@@ -85,57 +110,63 @@ body {
   padding: 16px;
   text-decoration: none;
 }
+
 .dropbtn {
   color: black;
   padding: 16px;
   font-size: 16px;
   border: none;
 }
+
 .dropdown {
   position: relative;
   display: inline-block;
 }
+
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
-  box-shadow: 0px 8px 16px 0px rgba(37, 37, 37, 0.2);
+  background-color: var(--steel-light) !important;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
   z-index: 1;
 }
+
 .dropdown-content a {
-  color: black;
+  color: white !important;
   text-decoration: none;
   display: block;
 }
+
 .dropdown-content a:hover {
-  background-color: rgb(232, 229, 229);
+  background-color: rgba(255, 255, 255, 0.1) !important;
   color: #2c2c2e;
   border-radius: 8px;
 }
+
 .dropdown:hover .dropdown-content {
   display: block;
   border-radius: 8px;
 }
 
 .register-form {
+  background-color: var(--charcoal) !important;
   min-height: 100vh;
 }
 
-
 .dashboard-section {
-  background: white;
+  background-color: var(--steel) !important;
+  border: 1px solid var(--steel-light) !important;
   border-radius: 15px;
   padding: 25px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e0e3eb;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
 }
 
 .section-title {
   font-size: 1.4em;
-  color: #2d3436;
   margin: 0 0 25px 0;
   padding-bottom: 15px;
-  border-bottom: 2px solid #0984e3;
+  color: var(--light-green) !important;
+  border-bottom: 2px solid var(--light-green) !important;
 }
 
 .left-column {
@@ -144,26 +175,71 @@ body {
 }
 
 .goal-item {
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  padding: 12px;
-  background: #f8f9ff;
-  border-radius: 8px;
+  align-items: flex-start !important;
+  padding: 12px 15px !important;
+  margin: 10px 0 !important;
+  gap: 15px !important;
+  background-color: var(--steel) !important;
+  border: 1px solid var(--steel-light) !important;
 }
 
-.progress-metric {
-  margin: 20px 0;
-  padding: 15px;
-  background: #fff9f2;
-  border-radius: 8px;
+.goal-item span {
+  line-height: 1.4;
+  flex-grow: 1;
+  margin: 0 15px;
+}
+
+.goal-item button {
+  margin-left: 0 !important;
+  color: #ff6b6b !important;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.goal-item button:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.goal-item input[type="checkbox"] {
+  margin-top: 3px;
+  transform: translateY(1px);
+  align-self: center;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--light-green);
+}
+
+.goal-item span.completed {
+  color: var(--steel-light) !important;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+#goals-list + .exercise-inputs button {
+  background-color: var(--light-green) !important;
+  color: var(--charcoal) !important;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+#goals-list + .exercise-inputs button:hover {
+  background-color: rgb(177, 235, 119) !important;
+}
+
+#new-goal {
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .exercise-card {
-  margin: 20px 0;
+  background-color: var(--graphite) !important;
+  border: 1px solid var(--steel-light) !important;
   padding: 20px;
-  background: #f8f9ff;
   border-radius: 10px;
+  margin: 20px 0;
 }
 
 .exercise-inputs {
@@ -175,39 +251,33 @@ body {
 
 input[type="number"] {
   padding: 12px;
-  border: 1px solid #dcdde1;
+  border: 1px solid var(--light-green) !important;
   border-radius: 8px;
   width: 100%;
   font-size: 1em;
+  background-color: var(--steel-light) !important;
+  color: white !important;
 }
 
-.summary-card {
-  margin-top: 25px;
-  padding: 20px;
-  background: #f3f8ff;
-  border-radius: 10px;
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.nav-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-grow: 1;
+.save-button {
+  background-color: var(--light-green) !important;
+  color: var(--charcoal) !important;
+  border: none !important;
+  padding: 12px 24px !important;
 }
 
-.links_in_nav_dropdown {
-  color: white;
-  padding: 10px 16px;
+.save-button:hover {
+  background-color: rgb(177, 235, 119) !important;
 }
 
-.nav_links {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 500;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: all 0.2s;
+.empty-state {
+  color: var(--steel-light) !important;
+  text-align: center;
+  padding: 40px;
 }
 
 .modal-content {
@@ -275,12 +345,6 @@ input[type="number"] {
   border-bottom: 1px solid var(--steel-light);
 }
 
-.modal-body p,
-.modal-body h1,
-.modal-body h5 {
-  color: white !important;
-}
-
 .modal-body .btn-outline-danger {
   border-color: #dc3545;
   color: #dc3545;
@@ -307,4 +371,226 @@ input[type="number"] {
 .modal-body .form-control#workoutName:focus {
   background-color: var(--steel-light) !important;
   box-shadow: 0 0 0 0.25rem rgba(123, 178, 116, 0.25);
+}
+
+.tracking-body {
+  background-color: var(--charcoal) !important;
+  color: white !important;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 25px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .tracking-body {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+}
+
+.display-4.fw-bold {
+  color: var(--light-green) !important;
+}
+
+.lead.text-muted {
+  color: var(--steel-light) !important;
+}
+
+.card.border-0 {
+  background-color: var(--graphite) !important;
+  border: 1px solid var(--steel-light) !important;
+}
+
+.bi-play-circle,
+.bi-bar-chart-line,
+.bi-pencil,
+.bi-calendar-check {
+  color: var(--light-green) !important;
+}
+
+.bg-dark.text-light {
+  background-color: var(--graphite) !important;
+  color: white !important;
+  border: 1px solid var(--steel-light);
+}
+
+.card.bg-light {
+  background-color: var(--steel) !important;
+  color: white !important;
+}
+
+.plan-container .day {
+  background-color: var(--steel) !important;
+  border-color: var(--steel-light) !important;
+}
+
+.plan-container .card {
+  background-color: var(--graphite) !important;
+  border: 1px solid var(--steel-light);
+}
+
+.plan-container .card-title {
+  color: var(--light-green) !important;
+}
+
+.btn-light {
+  background-color: var(--light-green) !important;
+  color: var(--charcoal) !important;
+  border: none !important;
+}
+
+.btn-light:hover {
+  background-color: rgb(177, 235, 119) !important;
+}
+
+.form-select {
+  background-color: var(--steel-light) !important;
+  color: white !important;
+  border: 1px solid var(--steel-light) !important;
+}
+
+.form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(123, 178, 116, 0.25);
+}
+
+.modal-footer .btn-secondary {
+  background-color: var(--steel-light) !important;
+  border-color: var(--steel-light) !important;
+}
+
+.btn.box-outline-lime {
+  border: 2px solid var(--light-green) !important;
+  color: var(--light-green) !important;
+  background-color: transparent !important;
+}
+
+.btn.box-outline-lime:hover {
+  background-color: rgba(123, 178, 116, 0.1) !important;
+}
+
+input[type="time"] {
+  background-color: var(--steel-light) !important;
+  color: white !important;
+  border: 1px solid var(--steel-light) !important;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.modal-body ul li {
+  background-color: var(--steel-light) !important;
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+
+.text-muted {
+  color: white !important;
+}
+
+.lead {
+  color: var(--light-green) !important;
+}
+
+.card-title {
+  color: var(--light-green) !important;
+}
+
+.card-text {
+  color: white !important;
+}
+
+.plan-container strong.fs-4 {
+  color: var(--light-green) !important;
+}
+
+.modal-body h5 {
+  color: var(--light-green) !important;
+}
+
+.modal-body p {
+  color: white !important;
+}
+
+.modal-body ul li {
+  color: white !important;
+}
+
+.modal-body ul li strong {
+  color: var(--light-green) !important;
+}
+
+.text-warning {
+  color: var(--light-green) !important;
+}
+
+.btn.box-outline-lime {
+  color: var(--light-green) !important;
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.small.text-muted {
+  color: white !important;
+  opacity: 0.8 !important;
+}
+
+.empty-state h3 {
+  color: var(--light-green) !important;
+}
+
+.empty-state p {
+  color: white !important;
+}
+
+.row.g-4 .card-body h5.fw-bold {
+  color: white !important;
+}
+
+.row.g-4 .card-body p.small.text-muted {
+  color: var(--light-green) !important;
+}
+
+.tracking-body.wide-view {
+  max-width: 100vw;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+.expanded {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.dashboard-section {
+  padding: 2rem;
+  margin: 0;
+}
+
+.exercise-inputs {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.chart-container {
+  min-width: 400px;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.form-control {
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+.exercise-card {
+  min-width: 500px;
+  padding: 2rem;
 }
