@@ -141,7 +141,7 @@ app.post("/register", async (req, res) => {
     if (err.code == "23505") {
       res.render("pages/register", {
         error: true,
-        message: "Username already exists",
+        message: "Username or email already exists",
         title: "Lift Track - Register",
       });
     } else {
