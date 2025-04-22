@@ -53,10 +53,10 @@
                                     <div class="card-header">
                                         <h5>{{workout_name}} ({{time_hours}} hour(s) {{time_minutes}} minutes)</h5>
                                     </div>
-                                    <div class="card-body bg-charcoal text-white">
+                                    <div class="card-body text-white">
                                         <ul class="list-group">
                                             {{#each exercises}}
-                                                <li class="list-group-item bg-charcoal text-white">
+                                                <li class="list-group-item bg-charcoal text-white border-steel">
                                                     <p><strong>{{exercise_name}}</strong> - {{muscle_target}}</p>
                                                 </li>
                                             {{/each}}
@@ -219,7 +219,7 @@
                                     </ul>
                                 
                                     <div class="d-flex justify-content-start gap-2 mt-3">
-                                        <button  class="btn btn-outline-secondary"  data-bs-dismiss="modal" onclick="setTimeout(() => bootstrap.Modal.getOrCreateInstance(document.querySelector('#edit_modal_{{@index}}')).show(), 500)">Edit Workout</button>
+                                        <button  class="btn btn-outline-light-green login-secondary-btn-green"  data-bs-dismiss="modal" onclick="setTimeout(() => bootstrap.Modal.getOrCreateInstance(document.querySelector('#edit_modal_{{@index}}')).show(), 500)">Edit Workout</button>
                 
                                         <br>
                                         <form action="/deleteWorkout" method="POST">
@@ -291,7 +291,7 @@
                                             {{/each}}
                                         </ul>
                                         </div>
-                                        <button class="btn btn-primary" type="submit">
+                                        <button class="btn btn-outline-light-green login-secondary-btn-green" type="submit">
                                             Submit Edit
                                         </button>
                                     </form>
@@ -303,7 +303,7 @@
                 </div>
 
                 {{else}}
-                    <div class="text-center mt-5 text-secondary">
+                    <div class="text-center mt-5 text-light-green">
                         <h2>Your workout list is empty. Add one to begin.</h2>
                         <p class="text-muted fst-italic">Start your fitness journey today — your future self will thank you!</p>
                     </div>
