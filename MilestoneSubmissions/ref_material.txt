@@ -1,4 +1,39 @@
+References:
 https://www.w3schools.com/js/js_graphics_chartjs.asp
 https://www.w3schools.com/howto/howto_css_dropdown.asp
 https://www.w3schools.com/html/tryit.asp?filename=tryhtml_links_image
 https://www.w3schools.com/tags/att_input_type_checkbox.asp
+
+GenAI usage citation:
+  Name of AI tool: ChatGPT
+  
+  Prompt: How to get this button to close the modal it is currently in before opening the new one <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-      
+  target="#edit_modal_{{@index}}">Edit Workout</button>
+
+  Response: If you want the button to close the current modal and open another, you can do it purely with Bootstrap's data attributes — with a little trick:
+
+  Unfortunately, Bootstrap doesn’t support switching modals directly with data-bs-* alone. But you can work around this by:
+  
+  ✅ Adding data-bs-dismiss="modal" to the button
+  This closes the current modal.
+  
+  Then use a little delay trick using setTimeout in a one-liner onclick, if you're okay with just one line of inline JS.
+
+  Best alternative with no external JS files:
+  If you're okay with onclick="..." inline just for modal switching, the earlier solution using:
+  
+  html
+  Copy
+  Edit
+  <button data-bs-dismiss="modal" onclick="setTimeout(() => bootstrap.Modal.getOrCreateInstance(document.querySelector('#edit_modal_{{@index}}')).show(), 500)">Edit Workout</button>
+  is the cleanest and most Bootstrap-compliant way to go.
+  
+  Let me know if you'd accept a minimal inline JS workaround, or if you're building this with a framework like React or Vue — there are even cleaner ways depending on that.
+
+
+
+
+
+
+
+
