@@ -1,0 +1,4 @@
+https://www.w3schools.com/js/js_graphics_chartjs.asp
+https://www.w3schools.com/howto/howto_css_dropdown.asp
+https://www.w3schools.com/html/tryit.asp?filename=tryhtml_links_image
+https://www.w3schools.com/tags/att_input_type_checkbox.asp
